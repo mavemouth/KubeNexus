@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"tertiary-fixed-dim":"#4edea3","surface-tint":"#7bd0ff","surface-container-lowest":"#010f1f","error-container":"#93000a","on-primary-container":"#004965","secondary-fixed-dim":"#a4c9ff","tertiary-container":"#30c88f","on-tertiary-container":"#004e34","on-error-container":"#ffdad6","on-secondary":"#00315d","on-secondary-fixed":"#001c39","inverse-on-surface":"#233143","on-surface-variant":"#bdc8d1","outline-variant":"#3e484f","secondary-fixed":"#d4e3ff","on-surface":"#d4e4fa","on-tertiary-fixed-variant":"#005236","on-primary":"#00354a","on-secondary-container":"#d6e5ff","on-tertiary":"#003824","primary-fixed":"#c4e7ff","on-primary-fixed-variant":"#004c69","on-primary-fixed":"#001e2c","surface-container":"#122131","background":"#051424","primary-container":"#38bdf8","on-background":"#d4e4fa","primary":"#8ed5ff","secondary-container":"#0267b8","on-secondary-fixed-variant":"#004883","on-tertiary-fixed":"#002113","tertiary-fixed":"#6ffbbe","tertiary":"#56e5a9","surface-bright":"#2c3a4c","surface":"#051424","secondary":"#a4c9ff","surface-dim":"#051424","surface-variant":"#273647","surface-container-high":"#1c2b3c","primary-fixed-dim":"#7bd0ff","outline":"#87929a","on-error":"#690005","inverse-surface":"#d4e4fa","surface-container-highest":"#273647","inverse-primary":"#00668a","error":"#ffb4ab","surface-container-low":"#0d1c2d"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xs":"0.25rem","space-lg":"1.5rem","space-xl":"2rem","margin":"1rem","space-md":"1rem","gutter":"1rem","gutter-desktop":"1.5rem","margin-desktop":"2rem","space-sm":"0.5rem"},fontFamily:{"headline-xl":["Inter"],"body-sm":["Inter"],"headline-md":["Inter"],"label-sm":["JetBrains Mono"],"body-lg":["Inter"],"body-md":["Inter"],"headline-sm":["Inter"],"label-md":["JetBrains Mono"],"code-snippet":["JetBrains Mono"],"headline-lg":["Inter"]},fontSize:{"headline-xl":["32px",{"lineHeight":"40px","fontWeight":"700"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-md":["18px",{"lineHeight":"24px","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","fontWeight":"500"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-sm":["15px",{"lineHeight":"20px","fontWeight":"600"}],"label-md":["13px",{"lineHeight":"16px","fontWeight":"500"}],"code-snippet":["12px",{"lineHeight":"18px","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"32px","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface min-h-screen selection:bg-primary-container selection:text-on-primary-container"><aside class="fixed left-0 top-0 h-screen w-60 bg-surface-container-low/95 backdrop-blur-xl z-50 flex flex-col justify-between shadow-[0_4px_24px_rgba(0,0,0,0.35)]"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center justify-between bg-surface-container-lowest/60"><div class="flex items-center gap-space-sm"><img alt="KubeNexus Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1USC0AV9hq2XmneiEjTxCkX67F9ZQYvrqre71k7t88qnkUd7dGHvaGP2L1ONKvSpO-gwKL0xkQhvt0ZE46OgbVzzYkUdyosmUJS3DEH0pSzPpKw0RhjISuJPnGvf-BBdPOTbzRtX5miADbyiPPnfIpUScB2eZzFRMhp-eV6MkIB7UNXxSLJetGG5_TpQ3IZzeUHpWb0U8V9npedQUOCHCku_jiRVGKwUDsCNLVot0qo"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">KubeNexus</span><span class="font-label-sm text-label-sm text-on-surface-variant leading-none mt-1">K8s Optimizer</span></div></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded-full bg-secondary-container/30 text-secondary border border-secondary-container/40">v1.0</span></div><nav class="flex-1 px-space-sm py-space-sm space-y-1 overflow-y-auto" data-active-classes="bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(56,189,248,0.25)]"><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="overview" href="#"><span class="font-body-md text-body-md">Overview</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="clusters" href="#"><span class="font-body-md text-body-md">Clusters</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="workloads" href="#"><span class="font-body-md text-body-md">Workloads</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="monitoring" href="#"><span class="font-body-md text-body-md">Monitoring</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="recommendations" href="#"><span class="font-body-md text-body-md">Recommendations</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="cost-optimization" href="#"><span class="font-body-md text-body-md">Cost Optimization</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="alerts" href="#"><span class="font-body-md text-body-md">Alerts</span><span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-error-container text-on-error-container">3</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="changes-audit" href="#"><span class="font-body-md text-body-md">Changes &amp; Audit</span></a><a aria-current="page" class="flex items-center justify-between px-space-sm py-2 rounded-lg transition-all bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(56,189,248,0.25)]" data-path="evaluation" href="#"><span class="font-body-md text-body-md">Evaluation</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="settings" href="#"><span class="font-body-md text-body-md">Settings</span></a></nav></div><div class="p-space-sm space-y-2 bg-surface-container-lowest/80"><div class="p-2.5 rounded-lg bg-surface-container/60 flex items-center justify-between"><div class="flex items-center gap-2 min-w-0"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span></span><div class="flex flex-col truncate"><span class="font-label-sm text-label-sm text-on-surface truncate">k8s-prod-us-east</span><span class="font-label-sm text-label-sm text-tertiary leading-none">Connected</span></div></div><span class="material-symbols-outlined text-[16px] text-on-surface-variant">cloud_done</span></div><div class="px-2 py-1 flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"><span class="truncate">Capstone v1.0.4-rc</span><a class="text-primary hover:text-on-primary-fixed hover:underline flex items-center gap-1" href="#"><span class="material-symbols-outlined text-[14px]">code</span>Repo</a></div></div></aside><div class="pl-60"><header class="fixed top-0 left-60 right-0 h-16 bg-surface-container-low/85 backdrop-blur-xl z-40 px-space-lg flex items-center justify-between shadow-[0_1px_12px_rgba(0,0,0,0.25)]"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2"><img alt="KubeNexus Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1USC0AV9hq2XmneiEjTxCkX67F9ZQYvrqre71k7t88qnkUd7dGHvaGP2L1ONKvSpO-gwKL0xkQhvt0ZE46OgbVzzYkUdyosmUJS3DEH0pSzPpKw0RhjISuJPnGvf-BBdPOTbzRtX5miADbyiPPnfIpUScB2eZzFRMhp-eV6MkIB7UNXxSLJetGG5_TpQ3IZzeUHpWb0U8V9npedQUOCHCku_jiRVGKwUDsCNLVot0qo"/><span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">KubeNexus</span></div><span class="text-outline-variant font-body-sm text-body-sm">/</span><div class="relative flex items-center"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-high/80 text-on-surface hover:bg-surface-bright transition-colors" type="button"><span class="material-symbols-outlined text-[18px] text-primary">hub</span><span class="font-body-md text-body-md font-medium">primary-eks-cluster (us-east-1)</span><span class="material-symbols-outlined text-[18px] text-on-surface-variant">keyboard_arrow_down</span></button></div><div class="relative flex items-center"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container/70 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">schedule</span><span class="font-body-md text-body-md">Last 24 Hours</span><span class="material-symbols-outlined text-[16px]">expand_more</span></button></div></div><div class="flex items-center gap-space-md"><div class="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm"><span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span><span>Synced 2s ago</span></div><button aria-label="Notifications" class="relative p-2 rounded-lg bg-surface-container/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 px-1.5 py-0.2 rounded-full bg-error-container text-on-error-container font-label-sm text-[10px] leading-tight font-semibold ring-2 ring-surface-container">3</span></button><div class="flex items-center gap-2.5 pl-2 bg-surface-container-high/30 py-1 pr-2 rounded-full"><div class="flex flex-col text-right leading-none"><span class="font-headline-sm text-headline-sm text-on-surface">Alex M.</span><span class="font-label-sm text-label-sm text-on-surface-variant">Team Nexus</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_0_10px_rgba(142,213,255,0.4)]"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface px-space-lg py-space-md"><div class="flex flex-col w-full space-y-space-lg pb-space-xl">
+<!-- Top Evaluation Header & Filter Bar -->
+<div class="flex flex-col gap-space-md lg:flex-row lg:items-center lg:justify-between bg-surface-container-low/80 backdrop-blur-xl p-space-lg rounded-xl shadow-md">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">Evaluation</span>
+<span class="px-2.5 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm uppercase tracking-wider font-semibold">Post-Optimization Verification</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">link</span>REC-2024-0892
+        </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+        Empirical verification of applied resource optimizations comparing telemetry baselines against post-change workload health and SLA stability.
+      </p>
+</div>
+<!-- Actions & Selectors -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center gap-2 bg-surface-container-high/60 px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-primary">hub</span>
+<span class="font-label-md text-label-md text-on-surface">primary-eks-cluster</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">(us-east-1)</span>
+</div>
+<div class="relative group">
+<button class="flex items-center gap-2 bg-surface-container-high/60 hover:bg-surface-bright px-3 py-1.5 rounded-lg transition-colors text-left" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">deployed_code</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">payment-service</span>
+<span class="font-label-sm text-label-sm text-tertiary">prod</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</button>
+</div>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors text-body-sm font-headline-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">refresh</span>
+<span>Re-run Evaluation</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container text-on-primary-container hover:bg-primary transition-colors text-body-sm font-headline-sm shadow-[0_0_12px_rgba(56,189,248,0.25)]" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Export Report</span>
+</button>
+</div>
+</div>
+<!-- Key Impact Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Card 1: Resource Reduction -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low/70 backdrop-blur-md rounded-xl shadow-sm hover:bg-surface-container-low transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Resource Reduction</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+          +38.4% Efficiency
+        </span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-tertiary font-bold tracking-tight">-40.0%</span>
+<span class="font-body-md text-body-md text-on-surface">CPU Requests</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span class="text-tertiary-fixed-dim">-25.0% Limits</span>
+<span>(1,000m → 750m)</span>
+</div>
+</div>
+<div class="pt-2 bg-surface-container/40 -mx-space-md -mb-space-md px-space-md py-2 rounded-b-xl flex items-center justify-between text-body-sm text-on-surface-variant">
+<span>Reclaimed 200m / pod</span>
+<span class="font-label-sm text-label-sm text-primary">800m Total (4 Pods)</span>
+</div>
+</div>
+<!-- Card 2: Cost Reduction -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low/70 backdrop-blur-md rounded-xl shadow-sm hover:bg-surface-container-low transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Estimated Cost Delta</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">savings</span>
+          -40.0% Saved
+        </span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-tertiary font-bold tracking-tight">-$18.00</span>
+<span class="font-body-md text-body-md text-on-surface">/ month</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="line-through text-outline">$45.00</span>
+<span class="material-symbols-outlined text-[12px]">arrow_right_alt</span>
+<span class="text-on-surface font-semibold">$27.00 / mo</span>
+</div>
+</div>
+<div class="pt-2 bg-surface-container/40 -mx-space-md -mb-space-md px-space-md py-2 rounded-b-xl flex items-center justify-between text-body-sm text-on-surface-variant">
+<span>Annualized Savings:</span>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">$216.00 / yr</span>
+</div>
+</div>
+<!-- Card 3: Performance Change -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low/70 backdrop-blur-md rounded-xl shadow-sm hover:bg-surface-container-low transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Performance Impact</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+          Stable SLA
+        </span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">0.0%</span>
+<span class="font-body-md text-body-md text-on-surface-variant">SLA Degradation</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span>p99 Latency: 18.2ms → 18.4ms</span>
+</div>
+</div>
+<div class="pt-2 bg-surface-container/40 -mx-space-md -mb-space-md px-space-md py-2 rounded-b-xl flex items-center justify-between text-body-sm text-on-surface-variant">
+<span>Variance:</span>
+<span class="font-label-sm text-label-sm text-on-surface">±1.1% (Standard Jitter)</span>
+</div>
+</div>
+<!-- Card 4: Evaluation Status -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low/70 backdrop-blur-md rounded-xl shadow-sm hover:bg-surface-container-low transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Evaluation Verdict</span>
+<span class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-tertiary-container/30 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="h-1.5 w-1.5 rounded-full bg-tertiary animate-pulse"></span>
+          VALIDATED
+        </span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-primary font-bold">Successful</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span class="text-tertiary">99.8% Confidence</span>
+<span>· 48h Window</span>
+</div>
+</div>
+<div class="pt-2 bg-surface-container/40 -mx-space-md -mb-space-md px-space-md py-2 rounded-b-xl flex items-center justify-between text-body-sm text-on-surface-variant">
+<span>Rollback Risk:</span>
+<span class="font-label-sm text-label-sm text-tertiary">Extremely Low (0.01%)</span>
+</div>
+</div>
+</div>
+<!-- Before vs After Empirical Telemetry Comparison -->
+<div class="flex flex-col space-y-space-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">compare_arrows</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Before vs After Empirical Telemetry</h2>
+</div>
+<div class="flex items-center gap-space-sm font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-surface-container-highest"></span> Baseline Config
+        </span>
+<span class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-primary-container"></span> Optimized Pod Config
+        </span>
+</div>
+</div>
+<!-- Split Panels Container -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-space-lg">
+<!-- LEFT PANEL: BEFORE OPTIMIZATION -->
+<div class="flex flex-col bg-surface-container-low/90 backdrop-blur-xl rounded-xl p-space-lg space-y-space-md shadow-md">
+<div class="flex items-center justify-between pb-space-sm bg-surface-container-lowest/50 -mx-space-lg -mt-space-lg px-space-lg pt-space-md rounded-t-xl">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline-variant text-[20px]">history</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">BEFORE OPTIMIZATION</span>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant">
+            Baseline: Nov 01 – Nov 14 (14-day P95)
+          </span>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-space-sm pt-2">
+<div class="p-3 rounded-lg bg-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant">CPU Utilization</span>
+<div class="font-headline-sm text-headline-sm text-on-surface mt-1">36.4% avg <span class="text-on-surface-variant text-body-sm">(182m)</span></div>
+<div class="font-label-sm text-label-sm text-outline mt-0.5">P95 Peak: 49.0% (245m)</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Memory Utilization</span>
+<div class="font-headline-sm text-headline-sm text-on-surface mt-1">64.0% avg <span class="text-on-surface-variant text-body-sm">(640 MiB)</span></div>
+<div class="font-label-sm text-label-sm text-outline mt-0.5">P95 Peak: 78.0% (780 MiB)</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Resource Allocation</span>
+<div class="font-label-md text-label-md text-primary mt-1 font-semibold">500m Request / 1,000m Limit</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Mem: 1 GiB · 4 Replicas</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Estimated Run Cost</span>
+<div class="font-headline-sm text-headline-sm text-on-surface mt-1">$45.00 <span class="text-body-sm text-on-surface-variant">/ mo</span></div>
+<div class="font-label-sm text-label-sm text-outline mt-0.5">$0.061 / cluster hour</div>
+</div>
+</div>
+<!-- Allocation vs Actual Usage Bar Gauge -->
+<div class="space-y-2 pt-2">
+<div class="flex justify-between items-center text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface">Allocated Request: 500m</span>
+<span class="font-label-sm text-label-sm text-error">51.0% Idle Headroom (Waste)</span>
+</div>
+<div class="h-7 w-full bg-surface-container-highest rounded-lg flex overflow-hidden p-1 gap-1">
+<div class="h-full bg-secondary-container rounded flex items-center justify-center font-label-sm text-[10px] text-on-secondary-container" style="width: 49%">
+              P95 Used 245m
+            </div>
+<div class="h-full bg-error-container/40 rounded flex items-center justify-center font-label-sm text-[10px] text-error" style="width: 51%">
+              Unutilized 255m
+            </div>
+</div>
+<div class="flex justify-between font-label-sm text-[11px] text-on-surface-variant">
+<span>0m</span>
+<span>245m P95 Usage</span>
+<span>500m Requested</span>
+</div>
+</div>
+<!-- Kernel CFS Throttling Monospace Indicator -->
+<div class="p-3 rounded-lg bg-surface-container-lowest/80 flex items-center justify-between font-code-snippet text-code-snippet">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline-variant text-[16px]">speed</span>
+<span class="text-on-surface-variant">CFS Throttling Rate:</span>
+</div>
+<span class="text-on-surface font-semibold">0.00% (Substantially Oversubscribed)</span>
+</div>
+</div>
+<!-- RIGHT PANEL: AFTER OPTIMIZATION -->
+<div class="flex flex-col bg-surface-container-low/90 backdrop-blur-xl rounded-xl p-space-lg space-y-space-md shadow-md">
+<div class="flex items-center justify-between pb-space-sm bg-surface-container-lowest/50 -mx-space-lg -mt-space-lg px-space-lg pt-space-md rounded-t-xl">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">check_circle</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">AFTER OPTIMIZATION</span>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary">
+            Post-Change: Nov 15 – Nov 17 (48h active)
+          </span>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-space-sm pt-2">
+<div class="p-3 rounded-lg bg-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant">CPU Utilization</span>
+<div class="font-headline-sm text-headline-sm text-tertiary mt-1">60.7% avg <span class="text-on-surface-variant text-body-sm">(182m)</span></div>
+<div class="font-label-sm text-label-sm text-tertiary-fixed-dim mt-0.5">P95 Peak: 81.7% (245m)</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Memory Utilization</span>
+<div class="font-headline-sm text-headline-sm text-on-surface mt-1">64.0% avg <span class="text-on-surface-variant text-body-sm">(640 MiB)</span></div>
+<div class="font-label-sm text-label-sm text-outline mt-0.5">P95 Peak: 78.0% (Unchanged)</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Resource Allocation</span>
+<div class="font-label-md text-label-md text-tertiary mt-1 font-semibold">300m Request / 750m Limit</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Mem: 1 GiB · 4 Replicas</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Estimated Run Cost</span>
+<div class="font-headline-sm text-headline-sm text-tertiary mt-1">$27.00 <span class="text-body-sm text-on-surface-variant">/ mo</span></div>
+<div class="font-label-sm text-label-sm text-tertiary mt-0.5">$0.037 / cluster hour (-40%)</div>
+</div>
+</div>
+<!-- Allocation vs Actual Usage Bar Gauge -->
+<div class="space-y-2 pt-2">
+<div class="flex justify-between items-center text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface">Allocated Request: 300m</span>
+<span class="font-label-sm text-label-sm text-tertiary">+22.4% Safe Headroom (Optimal)</span>
+</div>
+<div class="h-7 w-full bg-surface-container-highest rounded-lg flex overflow-hidden p-1 gap-1">
+<div class="h-full bg-primary-container rounded flex items-center justify-center font-label-sm text-[10px] text-on-primary-container font-semibold" style="width: 81.6%">
+              P95 Used 245m (81.6%)
+            </div>
+<div class="h-full bg-tertiary-container/40 rounded flex items-center justify-center font-label-sm text-[10px] text-tertiary font-semibold" style="width: 18.4%">
+              Buffer 55m
+            </div>
+</div>
+<div class="flex justify-between font-label-sm text-[11px] text-on-surface-variant">
+<span>0m</span>
+<span>245m P95 Usage</span>
+<span>300m Right-Sized Request</span>
+</div>
+</div>
+<!-- Kernel CFS Throttling Monospace Indicator -->
+<div class="p-3 rounded-lg bg-surface-container-lowest/80 flex items-center justify-between font-code-snippet text-code-snippet">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[16px]">speed</span>
+<span class="text-on-surface-variant">CFS Throttling Rate:</span>
+</div>
+<span class="text-tertiary font-semibold">0.01% (Within Linux Kernel Jitter Margin)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry Timeline Comparative Visualization -->
+<div class="p-space-lg bg-surface-container-low/80 backdrop-blur-xl rounded-xl space-y-space-md shadow-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Continuous CPU Request vs p95 Consumption Trend</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Continuous telemetry spanning pre-optimization baseline and the post-deployment observation window</p>
+</div>
+<div class="flex items-center gap-3 font-label-sm text-label-sm">
+<span class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="h-2 w-4 bg-outline-variant rounded"></span> Request Allocation
+        </span>
+<span class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="h-2 w-4 bg-primary-container rounded"></span> Actual CPU p95
+        </span>
+<span class="flex items-center gap-1.5 text-tertiary font-medium">
+<span class="h-2 w-2 rounded-full bg-tertiary"></span> Cutover Point (Nov 15)
+        </span>
+</div>
+</div>
+<!-- Inline Telemetry SVG Graph -->
+<div class="relative w-full h-56 bg-surface-container-lowest/70 rounded-lg p-4 overflow-hidden">
+<svg class="w-full h-full" fill="none" preserveaspectratio="none" viewbox="0 0 900 180">
+<!-- Grid horizontal lines -->
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="900" y1="30" y2="30"></line>
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="900" y1="80" y2="80"></line>
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="900" y1="130" y2="130"></line>
+<!-- Cutover Marker -->
+<line class="text-tertiary" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1.5" x1="450" x2="450" y1="10" y2="170"></line>
+<text class="text-tertiary font-label-sm" fill="currentColor" font-family="JetBrains Mono" font-size="11" x="456" y="24">Optimization Applied (REC-2024-0892)</text>
+<!-- Allocation Step Line (500m -> 300m) -->
+<path class="text-outline" d="M 0 35 L 450 35 L 450 95 L 900 95" fill="none" stroke="currentColor" stroke-width="2"></path>
+<!-- CPU Consumption Area & Path -->
+<defs>
+<lineargradient id="cpuUsageGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#38bdf8" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<path d="M 0 115 Q 75 105 150 118 T 300 112 T 450 114 T 600 115 T 750 110 L 900 112 L 900 170 L 0 170 Z" fill="url(#cpuUsageGrad)"></path>
+<path class="text-primary-container" d="M 0 115 Q 75 105 150 118 T 300 112 T 450 114 T 600 115 T 750 110 L 900 112" fill="none" stroke="currentColor" stroke-width="2.5"></path>
+<!-- Data Labels / Annotations -->
+<text class="text-on-surface-variant font-label-sm" fill="currentColor" font-family="JetBrains Mono" font-size="10" x="20" y="26">Pre-Alloc: 500m</text>
+<text class="text-tertiary font-label-sm" fill="currentColor" font-family="JetBrains Mono" font-size="10" x="800" y="88">Post-Alloc: 300m</text>
+<text class="text-primary font-label-sm" fill="currentColor" font-family="JetBrains Mono" font-size="10" x="20" y="148">p95 Actual: ~245m (Constant)</text>
+</svg>
+<div class="flex justify-between items-center px-1 pt-1 font-label-sm text-[10px] text-on-surface-variant">
+<span>Nov 01 00:00</span>
+<span>Nov 07 (Mid-Baseline)</span>
+<span>Nov 15 00:00 (Applied)</span>
+<span>Nov 16 12:00</span>
+<span>Nov 17 00:00 (Current)</span>
+</div>
+</div>
+</div>
+<!-- Performance SLA Guardrails Section -->
+<div class="flex flex-col space-y-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[22px]">health_and_safety</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Application Performance Indicators (SLA Guardrails)</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Empirical telemetry confirming right-sizing CPU requests preserved service responsiveness without triggering kernel throttling or HTTP anomalies.
+      </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Latency Card -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low/80 backdrop-blur-xl rounded-xl shadow-sm">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Latency Latitudes</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">SLA &lt; 35.0ms</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">p50 Latency:</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="text-on-surface font-semibold">4.2ms</span>
+<span class="text-outline">(was 4.1ms)</span>
+<span class="text-tertiary text-[10px]">+0.1ms</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">p95 Latency:</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="text-on-surface font-semibold">11.8ms</span>
+<span class="text-outline">(was 11.6ms)</span>
+<span class="text-tertiary text-[10px]">+0.2ms</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium text-primary">p99 Latency (Critical):</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="text-primary font-bold">18.4ms</span>
+<span class="text-outline">(was 18.2ms)</span>
+<span class="text-tertiary text-[10px]">+0.2ms</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 bg-surface-container/50 -mx-space-md -mb-space-md p-space-md rounded-b-xl">
+<!-- Latency Sparkline -->
+<div class="h-10 w-full mb-1">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 200 40">
+<path class="text-tertiary" d="M 0 20 Q 30 18 60 21 T 120 19 T 160 22 L 200 20" fill="none" stroke="currentColor" stroke-width="2"></path>
+<line class="text-error" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="0" x2="200" y1="5" y2="5"></line>
+</svg>
+</div>
+<div class="flex justify-between font-label-sm text-[11px] text-on-surface-variant">
+<span>Floor: 4.1ms</span>
+<span class="text-tertiary font-semibold">Variance: +1.1% (Safe)</span>
+<span class="text-error-container text-on-error-container px-1 rounded">SLA: 35.0ms</span>
+</div>
+</div>
+</div>
+<!-- Error Rate Card -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low/80 backdrop-blur-xl rounded-xl shadow-sm">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Error Rates &amp; Failures</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">SLA &lt; 0.05%</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Global Error Rate:</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="text-tertiary font-bold">0.002%</span>
+<span class="text-outline">(Unchanged)</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">HTTP 5xx Server Errors:</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="text-tertiary font-semibold">0 detected</span>
+<span class="text-tertiary material-symbols-outlined text-[14px]">check</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">HTTP 4xx Client Errors:</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="text-on-surface">14 reqs</span>
+<span class="text-outline">(Standard auth noise)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 bg-surface-container/50 -mx-space-md -mb-space-md p-space-md rounded-b-xl flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">cached</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Pod Restarts (CrashLoop)</span>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">0 restarts across 4 pods</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-label-sm text-label-sm">100% Up</span>
+</div>
+</div>
+<!-- Throughput Card -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low/80 backdrop-blur-xl rounded-xl shadow-sm">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Throughput &amp; Load Handling</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/30 text-secondary font-label-sm text-label-sm">Elastic</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Current RPS:</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="text-on-surface font-bold">1,420 req/s</span>
+<span class="text-tertiary text-[10px]">(+2.1% traffic)</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Peak Handled:</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="text-primary font-semibold">2,150 req/s</span>
+<span class="text-outline">(Autoscaler Stable)</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Network Egress:</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="text-on-surface font-semibold">42.8 MB/s</span>
+<span class="text-outline">(Within link caps)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 bg-surface-container/50 -mx-space-md -mb-space-md p-space-md rounded-b-xl flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">tune</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">HPA State</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Min: 4 · Max: 12 · Target: 75%</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">0 thrashing events</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Prominent Final Verdict Callout Card -->
+<div class="p-space-lg bg-surface-container-low/95 backdrop-blur-2xl rounded-xl space-y-space-md shadow-xl">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary/15 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[24px]">verified</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Optimization Successful — Confidence Score 99.8%</h3>
+<span class="font-label-sm text-label-sm text-tertiary tracking-wide font-semibold uppercase">STATUS: VERIFIED &amp; STABLE IN PRODUCTION</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-full bg-tertiary/20 text-tertiary font-label-sm text-label-sm font-semibold flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-tertiary"></span>
+          Telemetry Sign-off Cleared
+        </span>
+</div>
+</div>
+<!-- Narrative Paragraph -->
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+      The downscaling of <code class="font-code-snippet text-primary bg-surface-container px-1 py-0.5 rounded text-code-snippet">payment-service</code> CPU requests from <strong>500m to 300m</strong> has yielded an immediate <strong>40.0% resource cost reduction ($18.00/mo saved)</strong> with zero breach of the p99 latency SLA (18.4ms recorded against a 35.0ms threshold) and <strong>0% pod crash restarts</strong>. Empirical telemetry confirms that the preserved 22.4% headroom is mathematically sufficient for handling peak workload surges without autoscaler jitter or kernel throttling.
+    </p>
+<!-- Metadata Details Table / Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-sm p-space-md bg-surface-container-lowest/80 rounded-lg">
+<div class="flex flex-col space-y-1">
+<span class="font-label-sm text-label-sm text-outline">Baseline Observation Window</span>
+<span class="font-code-snippet text-code-snippet text-on-surface">Nov 01, 2024 – Nov 14, 2024</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14 Continuous Days (P95)</span>
+</div>
+<div class="flex flex-col space-y-1">
+<span class="font-label-sm text-label-sm text-outline">Post-Change Telemetry Window</span>
+<span class="font-code-snippet text-code-snippet text-on-surface">Nov 15, 2024 – Nov 17, 2024</span>
+<span class="font-label-sm text-label-sm text-tertiary">48 Hours Active Telemetry</span>
+</div>
+<div class="flex flex-col space-y-1">
+<span class="font-label-sm text-label-sm text-outline">Execution Timestamp</span>
+<span class="font-code-snippet text-code-snippet text-on-surface">Nov 17, 2024 · 09:30:15 UTC</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Automated Audit #EVAL-4402</span>
+</div>
+<div class="flex flex-col space-y-1">
+<span class="font-label-sm text-label-sm text-outline">Data Telemetry Quality</span>
+<span class="font-code-snippet text-code-snippet text-tertiary">100.0% Scrape Accuracy</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">11,520 Prometheus samples</span>
+</div>
+</div>
+<!-- Action Call to Actions -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-2">
+<div class="flex items-center gap-space-sm">
+<button class="px-4 py-2 rounded-lg bg-primary-container text-on-primary-container hover:bg-primary transition-all font-headline-sm text-body-md font-semibold flex items-center gap-2 shadow-[0_0_16px_rgba(56,189,248,0.3)]" type="button">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+<span>Lock In New Baseline</span>
+</button>
+<button class="px-4 py-2 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-headline-sm text-body-md flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">history_edu</span>
+<span>View in Changes &amp; Audit</span>
+</button>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container text-error hover:bg-error-container/20 transition-colors font-label-md text-label-md flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[16px]">undo</span>
+<span>Revert to Previous Baseline (Rollback)</span>
+</button>
+</div>
+</div>
+</div></main></div></body></html>

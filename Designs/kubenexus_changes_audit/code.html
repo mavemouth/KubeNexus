@@ -1,0 +1,663 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-tertiary-fixed":"#002113","surface-container":"#122131","tertiary":"#56e5a9","secondary-fixed-dim":"#a4c9ff","on-surface":"#d4e4fa","on-primary":"#00354a","secondary-fixed":"#d4e3ff","surface-container-high":"#1c2b3c","tertiary-fixed-dim":"#4edea3","on-tertiary-container":"#004e34","on-primary-container":"#004965","on-secondary-container":"#d6e5ff","surface-container-low":"#0d1c2d","surface-bright":"#2c3a4c","primary-fixed":"#c4e7ff","outline":"#87929a","inverse-on-surface":"#233143","primary-container":"#38bdf8","surface-container-lowest":"#010f1f","secondary":"#a4c9ff","on-tertiary-fixed-variant":"#005236","outline-variant":"#3e484f","inverse-surface":"#d4e4fa","surface-tint":"#7bd0ff","surface-dim":"#051424","tertiary-fixed":"#6ffbbe","on-surface-variant":"#bdc8d1","secondary-container":"#0267b8","error":"#ffb4ab","surface-container-highest":"#273647","on-secondary-fixed-variant":"#004883","on-primary-fixed":"#001e2c","background":"#051424","on-background":"#d4e4fa","surface":"#051424","on-secondary":"#00315d","surface-variant":"#273647","primary-fixed-dim":"#7bd0ff","on-tertiary":"#003824","on-error-container":"#ffdad6","primary":"#8ed5ff","on-primary-fixed-variant":"#004c69","on-secondary-fixed":"#001c39","on-error":"#690005","inverse-primary":"#00668a","tertiary-container":"#30c88f","error-container":"#93000a"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-sm":"0.5rem","space-xl":"2rem","space-md":"1rem","space-lg":"1.5rem","gutter-desktop":"1.5rem","space-xs":"0.25rem","margin-desktop":"2rem","margin":"1rem","gutter":"1rem"},fontFamily:{"code-snippet":["JetBrains Mono"],"body-md":["Inter"],"headline-lg":["Inter"],"label-md":["JetBrains Mono"],"body-lg":["Inter"],"label-sm":["JetBrains Mono"],"headline-xl":["Inter"],"body-sm":["Inter"],"headline-sm":["Inter"],"headline-md":["Inter"]},fontSize:{"code-snippet":["12px",{"lineHeight":"18px","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"32px","fontWeight":"600"}],"label-md":["13px",{"lineHeight":"16px","fontWeight":"500"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","fontWeight":"500"}],"headline-xl":["32px",{"lineHeight":"40px","fontWeight":"700"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-sm":["15px",{"lineHeight":"20px","fontWeight":"600"}],"headline-md":["18px",{"lineHeight":"24px","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface min-h-screen selection:bg-primary-container selection:text-on-primary-container"><aside class="fixed left-0 top-0 h-screen w-60 bg-surface-container-low/95 backdrop-blur-xl z-50 flex flex-col justify-between shadow-[0_4px_24px_rgba(0,0,0,0.35)]"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center justify-between bg-surface-container-lowest/60"><div class="flex items-center gap-space-sm"><img alt="KubeNexus Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1USC0AV9hq2XmneiEjTxCkX67F9ZQYvrqre71k7t88qnkUd7dGHvaGP2L1ONKvSpO-gwKL0xkQhvt0ZE46OgbVzzYkUdyosmUJS3DEH0pSzPpKw0RhjISuJPnGvf-BBdPOTbzRtX5miADbyiPPnfIpUScB2eZzFRMhp-eV6MkIB7UNXxSLJetGG5_TpQ3IZzeUHpWb0U8V9npedQUOCHCku_jiRVGKwUDsCNLVot0qo"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">KubeNexus</span><span class="font-label-sm text-label-sm text-on-surface-variant leading-none mt-1">K8s Optimizer</span></div></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded-full bg-secondary-container/30 text-secondary border border-secondary-container/40">v1.0</span></div><nav class="flex-1 px-space-sm py-space-sm space-y-1 overflow-y-auto" data-active-classes="bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(56,189,248,0.25)]"><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="overview" href="#"><span class="font-body-md text-body-md">Overview</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="clusters" href="#"><span class="font-body-md text-body-md">Clusters</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="workloads" href="#"><span class="font-body-md text-body-md">Workloads</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="monitoring" href="#"><span class="font-body-md text-body-md">Monitoring</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="recommendations" href="#"><span class="font-body-md text-body-md">Recommendations</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="cost-optimization" href="#"><span class="font-body-md text-body-md">Cost Optimization</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="alerts" href="#"><span class="font-body-md text-body-md">Alerts</span><span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-error-container text-on-error-container">3</span></a><a aria-current="page" class="flex items-center justify-between px-space-sm py-2 rounded-lg transition-all bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(56,189,248,0.25)]" data-path="changes-audit" href="#"><span class="font-body-md text-body-md">Changes &amp; Audit</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="evaluation" href="#"><span class="font-body-md text-body-md">Evaluation</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="settings" href="#"><span class="font-body-md text-body-md">Settings</span></a></nav></div><div class="p-space-sm space-y-2 bg-surface-container-lowest/80"><div class="p-2.5 rounded-lg bg-surface-container/60 flex items-center justify-between"><div class="flex items-center gap-2 min-w-0"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span></span><div class="flex flex-col truncate"><span class="font-label-sm text-label-sm text-on-surface truncate">k8s-prod-us-east</span><span class="font-label-sm text-label-sm text-tertiary leading-none">Connected</span></div></div><span class="material-symbols-outlined text-[16px] text-on-surface-variant">cloud_done</span></div><div class="px-2 py-1 flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"><span class="truncate">Capstone v1.0.4-rc</span><a class="text-primary hover:text-on-primary-fixed hover:underline flex items-center gap-1" href="#"><span class="material-symbols-outlined text-[14px]">code</span>Repo</a></div></div></aside><div class="pl-60"><header class="fixed top-0 left-60 right-0 h-16 bg-surface-container-low/85 backdrop-blur-xl z-40 px-space-lg flex items-center justify-between shadow-[0_1px_12px_rgba(0,0,0,0.25)]"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2"><img alt="KubeNexus Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1USC0AV9hq2XmneiEjTxCkX67F9ZQYvrqre71k7t88qnkUd7dGHvaGP2L1ONKvSpO-gwKL0xkQhvt0ZE46OgbVzzYkUdyosmUJS3DEH0pSzPpKw0RhjISuJPnGvf-BBdPOTbzRtX5miADbyiPPnfIpUScB2eZzFRMhp-eV6MkIB7UNXxSLJetGG5_TpQ3IZzeUHpWb0U8V9npedQUOCHCku_jiRVGKwUDsCNLVot0qo"><span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">KubeNexus</span></div><span class="text-outline-variant font-body-sm text-body-sm">/</span><div class="relative flex items-center"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-high/80 text-on-surface hover:bg-surface-bright transition-colors" type="button"><span class="material-symbols-outlined text-[18px] text-primary">hub</span><span class="font-body-md text-body-md font-medium">primary-eks-cluster (us-east-1)</span><span class="material-symbols-outlined text-[18px] text-on-surface-variant">keyboard_arrow_down</span></button></div><div class="relative flex items-center"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container/70 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">schedule</span><span class="font-body-md text-body-md">Last 24 Hours</span><span class="material-symbols-outlined text-[16px]">expand_more</span></button></div></div><div class="flex items-center gap-space-md"><div class="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm"><span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span><span class="">Synced 2s ago</span></div><button aria-label="Notifications" class="relative p-2 rounded-lg bg-surface-container/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 px-1.5 py-0.2 rounded-full bg-error-container text-on-error-container font-label-sm text-[10px] leading-tight font-semibold ring-2 ring-surface-container">3</span></button><div class="flex items-center gap-2.5 pl-2 bg-surface-container-high/30 py-1 pr-2 rounded-full"><div class="flex flex-col text-right leading-none"><span class="font-headline-sm text-headline-sm text-on-surface">Alex M.</span><span class="font-label-sm text-label-sm text-on-surface-variant">Team Nexus</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface px-space-lg py-space-md"><div class="flex flex-col w-full space-y-space-md">
+<!-- PAGE HEADER & STATUS STRIP -->
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-md pb-space-sm">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center gap-2">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">Changes &amp; Audit</h1>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm">Cluster Trail</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-4xl">
+        Auditable trace of automated recommendations, engineer reviews, and GitOps / cluster state transitions across managed infrastructure.
+      </p>
+</div>
+<!-- Header Actions -->
+<div class="flex items-center flex-wrap gap-2.5">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low shadow-sm">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+</span>
+<span class="font-label-sm text-label-sm text-tertiary">Live Stream: Active</span>
+</div>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high/90 text-on-surface hover:bg-surface-bright transition-colors font-body-sm text-body-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">tune</span>
+<span class="">Filter Presets</span>
+</button>
+<div class="relative inline-block text-left">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container text-on-primary-container hover:bg-primary transition-all font-headline-sm text-body-sm font-semibold" id="exportDropdownBtn" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span class="">Export Audit Log</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</button>
+</div>
+</div>
+</div>
+<!-- KPI SUMMARY ROW -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-md">
+<!-- Stat 1 -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Events (7d)</span>
+<span class="material-symbols-outlined text-[18px] text-primary">timeline</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold">142</span>
+<span class="font-label-sm text-label-sm text-primary">+12% vs last wk</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block mt-1">Logged across all namespaces</span>
+
+</div>
+<!-- Stat 2 -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Approvals &amp; Applied</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary">verified</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-tertiary font-bold">34</span>
+<span class="font-label-sm text-label-sm text-tertiary">94.4% success</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block mt-1">Changes merged &amp; synced</span>
+
+</div>
+<!-- Stat 3 -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Failed / Retried</span>
+<span class="material-symbols-outlined text-[18px] text-error">warning</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-error font-bold">2</span>
+<span class="font-label-sm text-label-sm text-error">PDB violations</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block mt-1">Safely blocked by admission</span>
+
+</div>
+<!-- Stat 4 -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Auto Rollbacks</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">history</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-secondary font-bold">1</span>
+<span class="font-label-sm text-label-sm text-secondary">Self-healing trigger</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block mt-1">Reverted on latency spike</span>
+
+</div>
+</div>
+<!-- STREAMLINED FILTER BAR -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md shadow-sm flex flex-col gap-space-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+<!-- Cluster Selector -->
+<div class="flex flex-col space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Cluster</label>
+<div class="relative">
+<select class="w-full bg-surface-container px-3 py-1.5 rounded-lg text-on-surface font-body-sm text-body-sm appearance-none focus:outline-none focus:bg-surface-container-high transition-colors pr-8 cursor-pointer">
+<option>primary-eks-cluster (us-east-1)</option>
+<option>staging-gke-cluster (europe-west1)</option>
+<option>dev-local-kind</option>
+<option>All Clusters</option>
+</select>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant pointer-events-none absolute right-2.5 top-2.5">expand_more</span>
+</div>
+</div>
+<!-- Workload Search -->
+<div class="flex flex-col space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Workload / Namespace</label>
+<div class="relative">
+<span class="material-symbols-outlined text-[16px] text-outline pointer-events-none absolute left-2.5 top-2.5">search</span>
+<input class="w-full bg-surface-container pl-8 pr-3 py-1.5 rounded-lg text-on-surface font-body-sm text-body-sm placeholder-outline focus:outline-none focus:bg-surface-container-high transition-colors" placeholder="Filter workload (e.g. payment)..." type="text" value="payment-service">
+</div>
+</div>
+<!-- Actor Filter -->
+<div class="flex flex-col space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">User / Actor</label>
+<div class="relative">
+<select class="w-full bg-surface-container px-3 py-1.5 rounded-lg text-on-surface font-body-sm text-body-sm appearance-none focus:outline-none focus:bg-surface-container-high transition-colors pr-8 cursor-pointer">
+<option>All Actors</option>
+<option selected="">Alex M. (Staff SRE)</option>
+<option>Autonomous Optimizer v1.4</option>
+<option>GitOps Sync Engine</option>
+<option>CI/CD Pipeline</option>
+<option>Sarah K.</option>
+</select>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant pointer-events-none absolute right-2.5 top-2.5">expand_more</span>
+</div>
+</div>
+<!-- Action Type Filter -->
+<div class="flex flex-col space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Action Type</label>
+<div class="relative">
+<select class="w-full bg-surface-container px-3 py-1.5 rounded-lg text-on-surface font-body-sm text-body-sm appearance-none focus:outline-none focus:bg-surface-container-high transition-colors pr-8 cursor-pointer">
+<option>All Actions</option>
+<option>Recommendation approved</option>
+<option>Change applied</option>
+<option>Change failed</option>
+<option>Rollback</option>
+<option>Recommendation generated</option>
+<option>Recommendation rejected</option>
+<option>Evaluation completed</option>
+</select>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant pointer-events-none absolute right-2.5 top-2.5">expand_more</span>
+</div>
+</div>
+<!-- Date Range Chips & Reset -->
+<div class="flex flex-col space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Time Window</label>
+<div class="flex items-center gap-1 bg-surface-container p-1 rounded-lg">
+<button class="flex-1 py-0.5 text-center font-label-sm text-[10px] rounded text-on-surface-variant hover:text-on-surface transition-colors">Today</button>
+<button class="flex-1 py-0.5 text-center font-label-sm text-[10px] rounded text-on-surface-variant hover:text-on-surface transition-colors">24h</button>
+<button class="flex-1 py-0.5 text-center font-label-sm text-[10px] rounded bg-primary-container text-on-primary-container font-semibold transition-colors">7d</button>
+<button class="flex-1 py-0.5 text-center font-label-sm text-[10px] rounded text-on-surface-variant hover:text-on-surface transition-colors">30d</button>
+</div>
+</div>
+</div>
+<!-- Active Filter Tags & Clear -->
+<div class="flex items-center justify-between pt-1 font-body-sm text-body-sm">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Active:</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container-high text-primary font-code-snippet text-code-snippet">
+          workload: payment-service
+          <span class="material-symbols-outlined text-[12px] cursor-pointer hover:text-on-surface">close</span>
+</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container-high text-secondary font-code-snippet text-code-snippet">
+          actor: Alex M.
+          <span class="material-symbols-outlined text-[12px] cursor-pointer hover:text-on-surface">close</span>
+</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container-high text-on-surface font-code-snippet text-code-snippet">
+          window: 7d (Nov 08 - Nov 15)
+        </span>
+</div>
+<button class="text-on-surface-variant hover:text-primary font-label-sm text-label-sm flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[14px]">restart_alt</span>
+        Reset all filters
+      </button>
+</div>
+</div>
+<!-- SPLIT MASTER-DETAIL WORKSPACE -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start">
+<!-- LEFT PANE: AUDIT LOG TABLE (7 Cols on desktop) -->
+<div class="lg:col-span-7 bg-surface-container-low/90 backdrop-blur-md rounded-xl shadow-sm flex flex-col overflow-hidden">
+<!-- Table Header & Controls -->
+<div class="p-space-md flex items-center justify-between bg-surface-container-lowest/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Audit Event Log</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high font-label-sm text-label-sm text-on-surface-variant">Showing 6 of 142</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Auto-refresh 5s</span>
+<button class="p-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors" title="Reload entries">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+</button>
+</div>
+</div>
+<!-- Main Responsive Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest/80 text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-2.5 px-3">Time</th>
+<th class="py-2.5 px-3">Actor</th>
+<th class="py-2.5 px-3">Workload</th>
+<th class="py-2.5 px-3">Action</th>
+<th class="py-2.5 px-3 text-right">Config Delta</th>
+<th class="py-2.5 px-3 text-center">Status</th>
+<th class="py-2.5 px-3">Rec ID</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 text-on-surface font-body-sm text-body-sm">
+<!-- Row 1: SELECTED ACTIVE ROW -->
+<tr class="bg-surface-container-high/90 hover:bg-surface-container-high cursor-pointer transition-colors relative" id="row-evt-9042">
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-primary">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="">12m ago</span>
+</div>
+<span class="text-[10px] text-on-surface-variant block">16:42:10 UTC</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">Alex M.</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Staff SRE</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-code-snippet text-code-snippet text-primary font-medium">payment-service</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">ns: production · deploy</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">
+<span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span>
+                  Approved
+                </span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-right font-code-snippet text-[11px]">
+<div class="text-on-surface-variant line-through">500m / 1GiB</div>
+<div class="text-tertiary font-semibold">300m / 1GiB</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-center">
+<span class="px-2 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-sm text-[10px] font-semibold">Success</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-primary underline">
+                REC-2024-0892
+              </td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container/60 cursor-pointer transition-colors bg-surface-container-low/40">
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-on-surface-variant">
+<span class="">18m ago</span>
+<span class="text-[10px] text-outline block">16:36:04 UTC</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">GitOps Agent</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">ArgoCD Sync</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-code-snippet text-code-snippet text-on-surface font-medium">redis-cache-statefulset</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">ns: caching · sts</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/20 text-secondary font-label-sm text-label-sm">
+<span class="h-1.5 w-1.5 rounded-full bg-secondary"></span>
+                  Change applied
+                </span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-right font-code-snippet text-[11px]">
+<div class="text-on-surface-variant line-through">4GiB / 2 pods</div>
+<div class="text-secondary font-semibold">2GiB / 2 pods</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-center">
+<span class="px-2 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-sm text-[10px] font-semibold">Success</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-on-surface-variant">
+                REC-2024-0889
+              </td>
+</tr>
+<!-- Row 3: FAILED OPERATION -->
+<tr class="hover:bg-surface-container/60 cursor-pointer transition-colors bg-surface-container-low/80">
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-error">
+<span class="">1h 14m ago</span>
+<span class="text-[10px] text-outline block">15:40:22 UTC</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">CI/CD Pipeline</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">GitHub Actions</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-code-snippet text-code-snippet text-on-surface font-medium">elasticsearch-data</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">ns: logging · sts</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container/20 text-error font-label-sm text-label-sm">
+<span class="h-1.5 w-1.5 rounded-full bg-error"></span>
+                  Change failed
+                </span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-right font-code-snippet text-[11px]">
+<div class="text-on-surface-variant">8GiB -&gt; 4GiB</div>
+<div class="text-error font-semibold">PDB Rejection</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-center">
+<span class="px-2 py-0.5 rounded bg-error-container/30 text-error font-label-sm text-[10px] font-semibold">Failed</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-on-surface-variant">
+                REC-2024-0877
+              </td>
+</tr>
+<!-- Row 4: ROLLBACK -->
+<tr class="hover:bg-surface-container/60 cursor-pointer transition-colors bg-surface-container-low/40">
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-on-surface-variant">
+<span class="">3h 05m ago</span>
+<span class="text-[10px] text-outline block">13:49:12 UTC</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">Auto-Healer</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Nexus Daemon</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-code-snippet text-code-snippet text-on-surface font-medium">auth-gateway</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">ns: security · deploy</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-variant text-on-surface font-label-sm text-label-sm">
+<span class="h-1.5 w-1.5 rounded-full bg-error"></span>
+                  Rollback
+                </span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-right font-code-snippet text-[11px]">
+<div class="text-on-surface-variant line-through">200m -&gt; 100m</div>
+<div class="text-on-surface font-semibold">Restored 200m</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-[10px] font-semibold">Rolled Back</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-on-surface-variant">
+                REC-2024-0865
+              </td>
+</tr>
+<!-- Row 5: GENERATED -->
+<tr class="hover:bg-surface-container/60 cursor-pointer transition-colors bg-surface-container-low/80">
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-on-surface-variant">
+<span class="">4h 22m ago</span>
+<span class="text-[10px] text-outline block">12:32:01 UTC</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">Autonomous Optimizer</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Heuristic Engine</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-code-snippet text-code-snippet text-on-surface font-medium">checkout-api-deployment</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">ns: checkout · deploy</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm">
+<span class="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                  Rec generated
+                </span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-right font-code-snippet text-[11px]">
+<div class="text-on-surface-variant">6 pods -&gt; 3 pods</div>
+<div class="text-primary font-semibold">-$240/mo</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-center">
+<span class="px-2 py-0.5 rounded bg-secondary-container/20 text-secondary font-label-sm text-[10px] font-semibold">Pending Review</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-on-surface-variant">
+                REC-2024-0858
+              </td>
+</tr>
+<!-- Row 6: REJECTED -->
+<tr class="hover:bg-surface-container/60 cursor-pointer transition-colors bg-surface-container-low/40">
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-on-surface-variant">
+<span class="">6h 15m ago</span>
+<span class="text-[10px] text-outline block">10:39:48 UTC</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">Sarah K.</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Lead Architect</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="font-code-snippet text-code-snippet text-on-surface font-medium">order-processing-worker</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">ns: production · deploy</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="h-1.5 w-1.5 rounded-full bg-outline"></span>
+                  Rec rejected
+                </span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-right font-code-snippet text-[11px]">
+<div class="text-on-surface-variant">1.5GiB -&gt; 800MiB</div>
+<div class="text-outline">Black Friday Headroom</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-[10px] font-semibold">Dismissed</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap font-code-snippet text-code-snippet text-on-surface-variant">
+                REC-2024-0842
+              </td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="p-3 px-4 flex items-center justify-between bg-surface-container-lowest/50 text-on-surface-variant font-body-sm text-body-sm">
+<span class="font-label-sm text-label-sm">Page 1 of 24 (142 log items)</span>
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container text-outline hover:text-on-surface disabled:opacity-40 transition-colors font-label-sm text-label-sm" disabled="">Previous</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-high text-primary hover:bg-surface-bright transition-colors font-label-sm text-label-sm">Next</button>
+</div>
+</div>
+</div>
+<!-- RIGHT PANE: DETAIL INSPECTOR PANEL (5 Cols on desktop) -->
+<div class="lg:col-span-5 flex flex-col space-y-space-md">
+<!-- INSPECTOR CARD -->
+<div class="bg-surface-container-low/95 backdrop-blur-xl rounded-xl shadow-md p-space-md flex flex-col space-y-space-md">
+<!-- Header & Action Ribbon -->
+<div class="flex items-start justify-between pb-3 bg-surface-container-lowest/40 -mx-4 -mt-4 p-4 rounded-t-xl">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-code-snippet text-code-snippet font-bold text-primary tracking-wide">AUDIT-EVT-9042</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold">
+                Recommendation approved
+              </span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">
+              Nov 14, 2024 · 16:42:10 UTC (18 minutes ago)
+            </span>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container" title="Copy raw event JSON">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<!-- Actor Information Card -->
+<div class="p-3 rounded-lg bg-surface-container/70 flex flex-col space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Actor Credentials &amp; Origin</span>
+<span class="font-label-sm text-[11px] px-1.5 py-0.5 rounded bg-tertiary-container/15 text-tertiary">Verified Identity</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary font-headline-sm text-headline-sm font-bold shadow-sm">
+              AM
+            </div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-body-md text-on-surface font-semibold">Alex M.</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Role: Staff SRE (Authorize Only Privileges)</span>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between text-on-surface-variant font-code-snippet text-[11px]">
+<span class="">IP: 10.14.0.82 (Internal VPN)</span>
+<span class="">Auth: SSO via Okta (MFA Valid)</span>
+</div>
+</div>
+<!-- Related Recommendation Card -->
+<div class="p-3 rounded-lg bg-surface-container/70 flex flex-col space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Linked Recommendation</span>
+<span class="font-label-sm text-[11px] px-1.5 py-0.5 rounded bg-primary-container/15 text-primary">Downscale CPU</span>
+</div>
+<div class="flex flex-col space-y-1">
+<span class="font-headline-sm text-body-md text-primary font-semibold">REC-2024-0892 (payment-service)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Autonomous Optimizer v1.4 recommendation to downscale CPU requests from 500m to 300m (-40%) based on 14-day P95 utilization (245m). Projected savings: $64.80/month.
+            </p>
+</div>
+<div class="pt-1">
+<a class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-primary font-body-sm text-body-sm transition-colors font-medium" href="#">
+<span class="">Open Recommendation REC-2024-0892</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- State Transition / Configuration Diff Card -->
+<div class="p-3 rounded-lg bg-surface-container/70 flex flex-col space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Configuration Diff (YAML Spec)</span>
+<span class="font-code-snippet text-[11px] text-tertiary">-200m CPU delta</span>
+</div>
+<!-- Side-by-Side Diff Table -->
+<div class="grid grid-cols-2 gap-2 text-left font-code-snippet text-code-snippet">
+<!-- Previous State -->
+<div class="p-2.5 rounded bg-surface-container-lowest/80 flex flex-col space-y-1.5">
+<span class="text-on-surface-variant uppercase font-bold text-[10px]">Previous State</span>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">cpu.request:</span>
+<span class="text-on-surface">500m</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">cpu.limit:</span>
+<span class="text-on-surface">1000m</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">memory.req:</span>
+<span class="text-on-surface">1 GiB</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">replicas:</span>
+<span class="text-on-surface">4</span>
+</div>
+</div>
+<!-- New State -->
+<div class="p-2.5 rounded bg-surface-container-lowest/80 flex flex-col space-y-1.5">
+<span class="text-tertiary uppercase font-bold text-[10px]">Target State (Applied)</span>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">cpu.request:</span>
+<span class="text-tertiary font-bold">300m (-40%)</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">cpu.limit:</span>
+<span class="text-tertiary font-bold">750m (-25%)</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">memory.req:</span>
+<span class="text-on-surface">1 GiB (same)</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">replicas:</span>
+<span class="text-on-surface">4 (same)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Result & Verification Strip -->
+<div class="p-3 rounded-lg bg-surface-container/70 flex flex-col space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">GitOps Dispatch Status</span>
+<span class="font-label-sm text-[11px] text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> PR #4812 Queued
+            </span>
+</div>
+<div class="flex flex-col space-y-1 font-body-sm text-body-sm text-on-surface">
+<div class="flex items-center justify-between font-code-snippet text-[11px]">
+<span class="text-on-surface-variant">Manifest Repository:</span>
+<span class="text-primary truncate max-w-[220px]">git@github.com:k8s-prod-manifests.git</span>
+</div>
+<div class="flex items-center justify-between font-code-snippet text-[11px]">
+<span class="text-on-surface-variant">Commit Reference:</span>
+<span class="text-secondary font-mono">commit `f8a91c2`</span>
+</div>
+<div class="flex items-center justify-between font-code-snippet text-[11px]">
+<span class="text-on-surface-variant">Branch:</span>
+<span class="text-on-surface font-mono">rec-2024-0892-payment-svc</span>
+</div>
+</div>
+<!-- Collapsible / Informative Diagnostic Mock for Failed Operations -->
+<div class="mt-2 pt-2 bg-surface-container-high/40 rounded p-2">
+<div class="flex items-center justify-between cursor-pointer" onclick="document.getElementById('failureDiagnosticBox').classList.toggle('hidden')">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-outline">info</span>
+                Admission webhook diagnostics test
+              </span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</div>
+<div class="hidden mt-2 p-2 rounded bg-surface-container-lowest font-code-snippet text-[11px] text-error leading-relaxed" id="failureDiagnosticBox">
+              [Info for failed events]: Webhook validation failed: PodDisruptionBudget violated for elasticsearch-data-0. Minimum available pods constraint not satisfied during scale window.
+            </div>
+</div>
+</div>
+<!-- Audit Event Lifecycle Timeline -->
+<div class="p-3 rounded-lg bg-surface-container/70 flex flex-col space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Event Lifecycle Timeline</span>
+<span class="font-label-sm text-[11px] text-tertiary">4 of 5 Completed</span>
+</div>
+<div class="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-surface-variant">
+<!-- Step 1 -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="h-2 w-2 rounded-full bg-primary"></span>
+</span>
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-body-sm text-on-surface font-medium">1. Generated</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">14:15 UTC</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Autonomous Optimizer v1.4 computed 14-day P95 heuristic.</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="h-2 w-2 rounded-full bg-primary"></span>
+</span>
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-body-sm text-on-surface font-medium">2. Evaluated</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">16:30 UTC</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Risk engine completed 4/4 safety checks (SLA risk: Negligible).</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-tertiary/20 text-tertiary">
+<span class="h-2 w-2 rounded-full bg-tertiary"></span>
+</span>
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-body-sm text-tertiary font-semibold">3. Approved</span>
+<span class="font-label-sm text-[10px] text-tertiary font-medium">16:42 UTC</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Alex M. authenticated and approved downsizing diff.</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="h-2 w-2 rounded-full bg-primary"></span>
+</span>
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-body-sm text-on-surface font-medium">4. GitOps PR Created</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">16:43 UTC</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface-variant">PR #4812 committed to branch `rec-2024-0892-payment-svc`.</span>
+</div>
+</div>
+<!-- Step 5 (Pending) -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-surface-variant text-outline">
+<span class="h-2 w-2 rounded-full bg-outline"></span>
+</span>
+<div class="flex flex-col opacity-80">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-body-sm text-on-surface font-medium">5. Apply &amp; Sync</span>
+<span class="font-label-sm text-[10px] text-secondary">Awaiting Merge</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface-variant">ArgoCD sync wave scheduled upon pull request merge.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- INLINE INTERACTION SCRIPT -->
+<script>
+    // Simple mock interactions for row selection & dropdown
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      row.addEventListener('click', () => {
+        rows.forEach(r => {
+          r.classList.remove('bg-surface-container-high/90');
+          if(!r.classList.contains('bg-surface-container-low/40')) {
+            r.classList.add('bg-surface-container-low/80');
+          }
+        });
+        row.classList.remove('bg-surface-container-low/80');
+        row.classList.add('bg-surface-container-high/90');
+      });
+    });
+
+    const exportBtn = document.getElementById('exportDropdownBtn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        alert('Generating export archive: audit-log-7d.csv & audit-log-7d.json');
+      });
+    }
+  </script>
+</div></main></div>
+
+</body></html>

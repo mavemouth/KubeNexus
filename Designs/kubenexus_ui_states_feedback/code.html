@@ -1,0 +1,445 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-dim":"#051424","on-secondary-fixed":"#001c39","surface-container":"#122131","outline-variant":"#3e484f","surface-container-low":"#0d1c2d","surface-container-high":"#1c2b3c","on-secondary":"#00315d","primary-container":"#38bdf8","outline":"#87929a","on-background":"#d4e4fa","surface-variant":"#273647","surface-container-lowest":"#010f1f","primary":"#8ed5ff","tertiary-fixed-dim":"#4edea3","tertiary-fixed":"#6ffbbe","on-secondary-container":"#d6e5ff","on-tertiary-fixed":"#002113","surface-tint":"#7bd0ff","secondary-fixed":"#d4e3ff","background":"#051424","on-primary-fixed":"#001e2c","on-primary":"#00354a","on-surface-variant":"#bdc8d1","on-error-container":"#ffdad6","surface":"#051424","surface-bright":"#2c3a4c","on-tertiary-container":"#004e34","on-surface":"#d4e4fa","on-tertiary-fixed-variant":"#005236","inverse-surface":"#d4e4fa","on-error":"#690005","on-tertiary":"#003824","secondary":"#a4c9ff","secondary-container":"#0267b8","primary-fixed":"#c4e7ff","secondary-fixed-dim":"#a4c9ff","tertiary":"#56e5a9","error-container":"#93000a","error":"#ffb4ab","on-secondary-fixed-variant":"#004883","tertiary-container":"#30c88f","on-primary-fixed-variant":"#004c69","on-primary-container":"#004965","surface-container-highest":"#273647","inverse-on-surface":"#233143","inverse-primary":"#00668a","primary-fixed-dim":"#7bd0ff"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-lg":"1.5rem","gutter-desktop":"1.5rem","space-md":"1rem","margin":"1rem","space-sm":"0.5rem","gutter":"1rem","space-xs":"0.25rem","margin-desktop":"2rem","space-xl":"2rem"},fontFamily:{"body-lg":["Inter"],"headline-md":["Inter"],"code-snippet":["JetBrains Mono"],"headline-xl":["Inter"],"label-sm":["JetBrains Mono"],"headline-sm":["Inter"],"label-md":["JetBrains Mono"],"headline-lg":["Inter"],"body-sm":["Inter"],"body-md":["Inter"]},fontSize:{"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-md":["18px",{"lineHeight":"24px","fontWeight":"600"}],"code-snippet":["12px",{"lineHeight":"18px","fontWeight":"400"}],"headline-xl":["32px",{"lineHeight":"40px","fontWeight":"700"}],"label-sm":["11px",{"lineHeight":"14px","fontWeight":"500"}],"headline-sm":["15px",{"lineHeight":"20px","fontWeight":"600"}],"label-md":["13px",{"lineHeight":"16px","fontWeight":"500"}],"headline-lg":["24px",{"lineHeight":"32px","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface min-h-screen selection:bg-primary-container selection:text-on-primary-container"><aside class="fixed left-0 top-0 h-screen w-60 bg-surface-container-low/95 backdrop-blur-xl z-50 flex flex-col justify-between shadow-[0_4px_24px_rgba(0,0,0,0.35)]"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center justify-between bg-surface-container-lowest/60"><div class="flex items-center gap-space-sm"><img alt="KubeNexus Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1USC0AV9hq2XmneiEjTxCkX67F9ZQYvrqre71k7t88qnkUd7dGHvaGP2L1ONKvSpO-gwKL0xkQhvt0ZE46OgbVzzYkUdyosmUJS3DEH0pSzPpKw0RhjISuJPnGvf-BBdPOTbzRtX5miADbyiPPnfIpUScB2eZzFRMhp-eV6MkIB7UNXxSLJetGG5_TpQ3IZzeUHpWb0U8V9npedQUOCHCku_jiRVGKwUDsCNLVot0qo"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">KubeNexus</span><span class="font-label-sm text-label-sm text-on-surface-variant leading-none mt-1">K8s Optimizer</span></div></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded-full bg-secondary-container/30 text-secondary border border-secondary-container/40">v1.0</span></div><nav class="flex-1 px-space-sm py-space-sm space-y-1 overflow-y-auto" data-active-classes="bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(56,189,248,0.25)]"><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="overview" href="#"><span class="font-body-md text-body-md">Overview</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="clusters" href="#"><span class="font-body-md text-body-md">Clusters</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="workloads" href="#"><span class="font-body-md text-body-md">Workloads</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="monitoring" href="#"><span class="font-body-md text-body-md">Monitoring</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="recommendations" href="#"><span class="font-body-md text-body-md">Recommendations</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="cost-optimization" href="#"><span class="font-body-md text-body-md">Cost Optimization</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="alerts" href="#"><span class="font-body-md text-body-md">Alerts</span><span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-error-container text-on-error-container">3</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="changes-audit" href="#"><span class="font-body-md text-body-md">Changes &amp; Audit</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="evaluation" href="#"><span class="font-body-md text-body-md">Evaluation</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="settings" href="#"><span class="font-body-md text-body-md">Settings</span></a></nav></div><div class="p-space-sm space-y-2 bg-surface-container-lowest/80"><div class="p-2.5 rounded-lg bg-surface-container/60 flex items-center justify-between"><div class="flex items-center gap-2 min-w-0"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span></span><div class="flex flex-col truncate"><span class="font-label-sm text-label-sm text-on-surface truncate">k8s-prod-us-east</span><span class="font-label-sm text-label-sm text-tertiary leading-none">Connected</span></div></div><span class="material-symbols-outlined text-[16px] text-on-surface-variant">cloud_done</span></div><div class="px-2 py-1 flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"><span class="truncate">Capstone v1.0.4-rc</span><a class="text-primary hover:text-on-primary-fixed hover:underline flex items-center gap-1" href="#"><span class="material-symbols-outlined text-[14px]">code</span>Repo</a></div></div></aside><div class="pl-60"><header class="fixed top-0 left-60 right-0 h-16 bg-surface-container-low/85 backdrop-blur-xl z-40 px-space-lg flex items-center justify-between shadow-[0_1px_12px_rgba(0,0,0,0.25)]"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2"><img alt="KubeNexus Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1USC0AV9hq2XmneiEjTxCkX67F9ZQYvrqre71k7t88qnkUd7dGHvaGP2L1ONKvSpO-gwKL0xkQhvt0ZE46OgbVzzYkUdyosmUJS3DEH0pSzPpKw0RhjISuJPnGvf-BBdPOTbzRtX5miADbyiPPnfIpUScB2eZzFRMhp-eV6MkIB7UNXxSLJetGG5_TpQ3IZzeUHpWb0U8V9npedQUOCHCku_jiRVGKwUDsCNLVot0qo"><span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">KubeNexus</span></div><span class="text-outline-variant font-body-sm text-body-sm">/</span><div class="relative flex items-center"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-high/80 text-on-surface hover:bg-surface-bright transition-colors" type="button"><span class="material-symbols-outlined text-[18px] text-primary">hub</span><span class="font-body-md text-body-md font-medium">primary-eks-cluster (us-east-1)</span><span class="material-symbols-outlined text-[18px] text-on-surface-variant">keyboard_arrow_down</span></button></div><div class="relative flex items-center"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container/70 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">schedule</span><span class="font-body-md text-body-md">Last 24 Hours</span><span class="material-symbols-outlined text-[16px]">expand_more</span></button></div></div><div class="flex items-center gap-space-md"><div class="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm"><span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span><span class="">Synced 2s ago</span></div><button aria-label="Notifications" class="relative p-2 rounded-lg bg-surface-container/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 px-1.5 py-0.2 rounded-full bg-error-container text-on-error-container font-label-sm text-[10px] leading-tight font-semibold ring-2 ring-surface-container">3</span></button><div class="flex items-center gap-2.5 pl-2 bg-surface-container-high/30 py-1 pr-2 rounded-full"><div class="flex flex-col text-right leading-none"><span class="font-headline-sm text-headline-sm text-on-surface">Alex M.</span><span class="font-label-sm text-label-sm text-on-surface-variant">Team Nexus</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_0_10px_rgba(142,213,255,0.4)]"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface px-space-lg py-space-md"><div class="flex flex-col w-full">
+<!-- Subtle Ambient Glow Orbs -->
+
+<!-- Header Section -->
+<div class="relative z-10 flex flex-col gap-space-md pb-space-lg">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-secondary-container/30 px-2.5 py-0.5 font-label-sm text-label-sm text-secondary">
+<span class="h-1.5 w-1.5 rounded-full bg-secondary"></span>
+        DESIGN TOKENS &amp; PATTERNS
+      </span>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-surface-container-high px-2.5 py-0.5 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">layers</span>
+        REUSABLE COMPONENTS
+      </span>
+<span class="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-surface-container px-2 py-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary">check_circle</span>
+        SPECIFICATION v1.4.0 COMPLIANT
+      </span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end md:justify-between gap-space-md">
+<div class="space-y-1">
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">System States &amp; Feedback Library</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+          Standardized empty states, feedback notifications, telemetry exceptions, and loading skeletons across KubeNexus.
+        </p>
+</div>
+<!-- Quick Actions / Meta Badge -->
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 rounded-lg bg-surface-container-low px-3 py-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">data_object</span>
+<span class="font-code-snippet text-code-snippet text-on-surface">10 Scenarios Defined</span>
+</div>
+</div>
+</div>
+<!-- Filter Pills / Tabs -->
+<div class="flex items-center gap-2 overflow-x-auto pt-2 pb-1" id="filter-bar">
+<button class="state-filter active-filter flex items-center gap-1.5 rounded-lg bg-primary-container px-3.5 py-1.5 font-headline-sm text-headline-sm text-on-primary-container transition-all" onclick="filterState('all', this)">
+<span class="">All States</span>
+<span class="rounded-full bg-on-primary-container/20 px-1.5 py-0.2 font-label-sm text-[10px]">10</span>
+</button>
+<button class="state-filter flex items-center gap-1.5 rounded-lg bg-surface-container-low px-3.5 py-1.5 font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" onclick="filterState('empty-telemetry', this)">
+<span class="">Empty &amp; Telemetry</span>
+<span class="rounded-full bg-surface-container-high px-1.5 py-0.2 font-label-sm text-[10px]">6</span>
+</button>
+<button class="state-filter flex items-center gap-1.5 rounded-lg bg-surface-container-low px-3.5 py-1.5 font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" onclick="filterState('access-feedback', this)">
+<span class="">Access &amp; Feedback</span>
+<span class="rounded-full bg-surface-container-high px-1.5 py-0.2 font-label-sm text-[10px]">2</span>
+</button>
+<button class="state-filter flex items-center gap-1.5 rounded-lg bg-surface-container-low px-3.5 py-1.5 font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" onclick="filterState('loading', this)">
+<span class="">Loading Skeletons</span>
+<span class="rounded-full bg-surface-container-high px-1.5 py-0.2 font-label-sm text-[10px]">1</span>
+</button>
+<button class="state-filter flex items-center gap-1.5 rounded-lg bg-surface-container-low px-3.5 py-1.5 font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" onclick="filterState('operations', this)">
+<span class="">Operation Results</span>
+<span class="rounded-full bg-surface-container-high px-1.5 py-0.2 font-label-sm text-[10px]">2</span>
+</button>
+</div>
+</div>
+<!-- Main States Catalog Grid (10 States) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-space-lg pb-space-xl" id="states-grid">
+<!-- STATE 1: No clusters connected -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="empty-telemetry">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-primary uppercase font-medium">EMPTY STATE · ONBOARDING</span>
+<span class="font-code-snippet text-code-snippet rounded bg-surface-container px-2 py-0.5 text-on-surface-variant border border-surface-container-highest/50">STATE_01</span>
+</div>
+<div class="flex flex-col items-center text-center py-4 px-2">
+<div class="relative mb-space-md flex h-14 w-14 items-center justify-center rounded-lg bg-surface-container-high/60 border border-surface-container-highest/60 text-primary">
+<span class="material-symbols-outlined text-[32px]">cloud_queue</span>
+<div class="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-surface-container-highest border border-surface-container-low">
+<span class="material-symbols-outlined text-[11px] text-outline">add</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">No Clusters Connected</h2>
+<p class="font-body-md text-body-md font-medium text-primary mb-2">No Kubernetes clusters connected yet.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+Connect your first AWS EKS, GKE, or self-hosted cluster via kubeconfig or Helm agent to start telemetry and right-sizing profiling.
+</p>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<button class="inline-flex items-center gap-1.5 rounded-lg bg-primary-container px-4 py-2 font-headline-sm text-headline-sm text-on-primary-container hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span class="">Register Cluster</span>
+</button>
+<a class="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary hover:underline" href="#">
+<span class="">View Documentation</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- STATE 2: No workloads found -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="empty-telemetry">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-secondary uppercase font-medium">EMPTY STATE · FILTERING</span>
+<span class="font-code-snippet text-code-snippet rounded bg-surface-container px-2 py-0.5 text-on-surface-variant border border-surface-container-highest/50">STATE_02</span>
+</div>
+<div class="flex flex-col items-center text-center py-4 px-2">
+<div class="relative mb-space-md flex h-14 w-14 items-center justify-center rounded-lg bg-surface-container-high/60 border border-surface-container-highest/60 text-secondary">
+<span class="material-symbols-outlined text-[30px]">filter_alt_off</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">No Workloads Found</h2>
+<p class="font-body-md text-body-md font-medium text-secondary mb-2">No workloads found for the selected filters.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+No active Deployments, StatefulSets, or DaemonSets match the filter criteria in namespace <span class="font-code-snippet text-code-snippet text-on-surface px-1.5 py-0.5 rounded bg-surface-container border border-surface-container-highest/40">'staging-eu-central'</span>.
+</p>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<button class="inline-flex items-center gap-1.5 rounded-lg bg-surface-container-high px-4 py-2 font-headline-sm text-headline-sm text-on-surface hover:bg-surface-bright transition-colors border border-surface-container-highest/50">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">refresh</span>
+<span class="">Reset Filters</span>
+</button>
+<button class="inline-flex items-center gap-1 font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors">
+<span class="">Select All Namespaces</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- STATE 3: Insufficient monitoring data -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="empty-telemetry">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-tertiary uppercase font-medium">TELEMETRY EXCEPTION · HEURISTICS</span>
+<span class="font-code-snippet text-code-snippet rounded bg-surface-container px-2 py-0.5 text-on-surface-variant border border-surface-container-highest/50">STATE_03</span>
+</div>
+<div class="flex flex-col items-center text-center py-3 px-2">
+<div class="relative mb-space-md flex h-14 w-14 items-center justify-center rounded-lg bg-surface-container-high/60 border border-surface-container-highest/60 text-tertiary">
+<span class="material-symbols-outlined text-[30px]">analytics</span>
+<span class="absolute top-1.5 right-1.5 flex h-2 w-2 rounded-full bg-tertiary"></span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Insufficient Monitoring Data</h2>
+<p class="font-body-md text-body-md font-medium text-tertiary mb-2">Not enough monitoring data to generate a reliable recommendation.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md mb-3">
+KubeNexus requires at least 7 continuous days of P95 metric observations (current: 1.4 days recorded). Confidence threshold unreached.
+</p>
+<div class="w-full max-w-sm rounded-lg bg-surface-container p-2.5 border border-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-sm text-label-sm mb-1.5">
+<span class="text-on-surface-variant">Observation Window</span>
+<span class="text-tertiary font-code-snippet">34h / 168h minimum (20.2%)</span>
+</div>
+<div class="h-2 w-full rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 20.2%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<span class="inline-flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">timelapse</span>
+ETA ~5.6 days remaining
+</span>
+<button class="inline-flex items-center gap-1.5 rounded-lg bg-surface-container-high px-3 py-1.5 font-headline-sm text-headline-sm text-on-surface hover:bg-surface-bright transition-colors border border-surface-container-highest/50">
+<span class="material-symbols-outlined text-[16px] text-tertiary">speed</span>
+<span class="">View Scrape Health</span>
+</button>
+</div>
+</div>
+<!-- STATE 4: Stale data -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="empty-telemetry">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-secondary uppercase font-medium">TELEMETRY EXCEPTION · WARNING</span>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-surface-container px-2.5 py-0.5 font-label-sm text-label-sm text-secondary border border-surface-container-highest/50">
+<span class="h-1.5 w-1.5 rounded-full bg-secondary"></span>
+Last sync: 42m ago
+</span>
+</div>
+<div class="flex flex-col items-center text-center py-3 px-2">
+<div class="relative mb-space-md flex h-14 w-14 items-center justify-center rounded-lg bg-surface-container-high/60 border border-surface-container-highest/60 text-secondary">
+<span class="material-symbols-outlined text-[30px]">history</span>
+<div class="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-surface-container-highest border border-surface-container-low">
+<span class="material-symbols-outlined text-[11px] text-secondary">sync_problem</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Telemetry Stale</h2>
+<p class="font-body-md text-body-md font-medium text-secondary mb-2">Monitoring data is stale. Recommendations may be unavailable.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+Last telemetry sample received 42 minutes ago from Prometheus collector. Check worker node scrape connectivity.
+</p>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<button class="inline-flex items-center gap-1.5 rounded-lg bg-surface-container-high px-4 py-2 font-headline-sm text-headline-sm text-on-surface hover:bg-surface-bright transition-colors border border-surface-container-highest/50">
+<span class="material-symbols-outlined text-[16px] text-primary">play_arrow</span>
+<span class="">Trigger Immediate Scrape</span>
+</button>
+<a class="inline-flex items-center gap-1 font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface" href="#">
+<span class="">Inspect Scrape Agent</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- STATE 5: Prometheus unavailable -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="empty-telemetry">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-error uppercase font-medium">SERVICE OUTAGE · CRITICAL</span>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-error-container/30 px-2.5 py-0.5 font-label-sm text-label-sm text-error border border-error-container/40">
+<span class="h-1.5 w-1.5 rounded-full bg-error"></span>
+HTTP 503 Service Unavailable
+</span>
+</div>
+<div class="flex flex-col items-center text-center py-3 px-2">
+<div class="relative mb-space-md flex h-14 w-14 items-center justify-center rounded-lg bg-surface-container-high/60 border border-surface-container-highest/60 text-error">
+<span class="material-symbols-outlined text-[30px]">cloud_off</span>
+<div class="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-error-container border border-surface-container-low">
+<span class="material-symbols-outlined text-[11px] text-on-error-container">priority_high</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Prometheus Unavailable</h2>
+<p class="font-body-md text-body-md font-medium text-error mb-2">Monitoring service unavailable.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md mb-2">
+Unable to reach endpoint <code class="font-code-snippet text-code-snippet text-primary px-1.5 py-0.5 rounded bg-surface-container border border-surface-container-highest/40">http://prometheus-k8s.monitoring.svc:9090</code>. Metric ingestion and real-time utilization graphs are paused.
+</p>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<button class="inline-flex items-center gap-1.5 rounded-lg bg-surface-container-high px-4 py-2 font-headline-sm text-headline-sm text-on-surface hover:bg-surface-bright transition-colors border border-surface-container-highest/50">
+<span class="material-symbols-outlined text-[16px] text-error">network_ping</span>
+<span class="">Test Endpoint Connection</span>
+</button>
+<button class="inline-flex items-center gap-1 font-body-sm text-body-sm text-error hover:underline">
+<span class="">View Alert Details</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- STATE 6: Recommendation expired -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="empty-telemetry">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-secondary uppercase font-medium">LIFECYCLE · ADVISORY</span>
+<span class="font-code-snippet text-code-snippet rounded bg-surface-container px-2 py-0.5 text-on-surface-variant border border-surface-container-highest/50">ID: REC-2024-0871</span>
+</div>
+<div class="flex flex-col items-center text-center py-3 px-2">
+<div class="relative mb-space-md flex h-14 w-14 items-center justify-center rounded-lg bg-surface-container-high/60 border border-surface-container-highest/60 text-secondary">
+<span class="material-symbols-outlined text-[30px]">update_disabled</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Recommendation Expired</h2>
+<p class="font-body-md text-body-md font-medium text-secondary mb-2">This recommendation is no longer valid because the supporting data is outdated.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+Heuristic baseline changed following pod specification update on Nov 16. A fresh optimization analysis is scheduled.
+</p>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<span class="font-label-sm text-label-sm text-outline">Stale window: &gt;72h</span>
+<button class="inline-flex items-center gap-1.5 rounded-lg bg-surface-container-high px-4 py-2 font-headline-sm text-headline-sm text-primary hover:bg-surface-bright transition-colors border border-surface-container-highest/50">
+<span class="material-symbols-outlined text-[16px]">autorenew</span>
+<span class="">Recompute Recommendation</span>
+</button>
+</div>
+</div>
+<!-- STATE 7: Permission denied -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="access-feedback">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-outline uppercase font-medium">AUTHORIZATION · RBAC</span>
+<span class="font-code-snippet text-code-snippet rounded bg-surface-container px-2 py-0.5 text-error border border-error-container/40">403 FORBIDDEN</span>
+</div>
+<div class="flex flex-col items-center text-center py-3 px-2">
+<div class="relative mb-space-md flex h-14 w-14 items-center justify-center rounded-lg bg-surface-container-high/60 border border-surface-container-highest/60 text-error">
+<span class="material-symbols-outlined text-[30px]">lock</span>
+<div class="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-surface-container-highest border border-surface-container-low">
+<span class="material-symbols-outlined text-[11px] text-outline">shield</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Permission Denied</h2>
+<p class="font-body-md text-body-md font-medium text-error mb-2">You don't have permission to perform this action.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+Your assigned role <span class="font-code-snippet text-code-snippet text-on-surface px-1.5 py-0.5 rounded bg-surface-container border border-surface-container-highest/40">'Developer / Viewer'</span> cannot mutate cluster resource specifications or approve GitOps merge requests. Role 'DevOps / Approver' or 'Administrator' required.
+</p>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<button class="inline-flex items-center gap-1.5 rounded-lg bg-primary-container px-4 py-2 font-headline-sm text-headline-sm text-on-primary-container hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">key</span>
+<span class="">Request Access Elevation</span>
+</button>
+<a class="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary hover:underline" href="#">
+<span class="">View RBAC Policy</span>
+<span class="material-symbols-outlined text-[14px]">policy</span>
+</a>
+</div>
+</div>
+<!-- STATE 8: Loading State / Skeletons -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="loading">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-primary uppercase font-medium">SKELETON · ASYNC LOADING</span>
+<div class="inline-flex items-center gap-1.5 rounded-full bg-surface-container px-2.5 py-0.5 font-label-sm text-label-sm text-primary border border-surface-container-highest/50">
+<span class="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="">Live Shimmer</span>
+</div>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-2 font-semibold">Simple Skeleton Cards &amp; Table Rows</h2>
+<div class="space-y-3">
+<div class="rounded-lg bg-surface-container p-3 space-y-2 border border-surface-container-highest/40">
+<div class="flex items-center justify-between">
+<div class="h-3 w-28 rounded bg-surface-container-highest animate-pulse"></div>
+<div class="h-3 w-12 rounded bg-surface-container-highest animate-pulse"></div>
+</div>
+<div class="h-7 w-36 rounded bg-surface-container-highest/80 animate-pulse"></div>
+<div class="h-2.5 w-48 rounded bg-surface-container-highest/50 animate-pulse"></div>
+</div>
+<div class="rounded-lg bg-surface-container/50 p-2.5 space-y-2 border border-surface-container-highest/40">
+<div class="flex items-center justify-between gap-3 py-1">
+<div class="h-3 w-32 rounded bg-surface-container-highest animate-pulse"></div>
+<div class="h-2 w-24 rounded bg-surface-container-highest/70 animate-pulse"></div>
+<div class="h-2 w-16 rounded bg-surface-container-highest/60 animate-pulse"></div>
+<div class="h-5 w-14 rounded bg-surface-container-highest animate-pulse"></div>
+</div>
+<div class="flex items-center justify-between gap-3 py-1">
+<div class="h-3 w-40 rounded bg-surface-container-highest animate-pulse"></div>
+<div class="h-2 w-20 rounded bg-surface-container-highest/70 animate-pulse"></div>
+<div class="h-2 w-16 rounded bg-surface-container-highest/60 animate-pulse"></div>
+<div class="h-5 w-14 rounded bg-surface-container-highest animate-pulse"></div>
+</div>
+<div class="flex items-center justify-between gap-3 py-1">
+<div class="h-3 w-28 rounded bg-surface-container-highest animate-pulse"></div>
+<div class="h-2 w-28 rounded bg-surface-container-highest/70 animate-pulse"></div>
+<div class="h-2 w-16 rounded bg-surface-container-highest/60 animate-pulse"></div>
+<div class="h-5 w-14 rounded bg-surface-container-highest animate-pulse"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<div class="flex items-center gap-2">
+<div class="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Fetching cluster metrics &amp; telemetry...</span>
+</div>
+<span class="font-code-snippet text-code-snippet text-outline">HTTP GET /telemetry</span>
+</div>
+</div>
+<!-- STATE 9: Successful change -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="operations">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-tertiary uppercase font-medium">CONFIRMATION · SUCCESS</span>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-tertiary-container/20 px-2.5 py-0.5 font-label-sm text-label-sm text-tertiary border border-tertiary-container/30">
+<span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span>
+Synced &amp; Healthy
+</span>
+</div>
+<div class="flex items-start gap-space-md">
+<div class="shrink-0 flex h-10 w-10 items-center justify-center rounded-lg bg-tertiary-container/20 border border-tertiary-container/30 text-tertiary">
+<span class="material-symbols-outlined text-[24px]">check_circle</span>
+</div>
+<div class="space-y-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">Change Applied Successfully</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+Pull Request <span class="font-code-snippet text-code-snippet text-primary font-medium">#4812</span> merged and synced via ArgoCD. Workload <code class="font-code-snippet text-code-snippet text-on-surface px-1.5 py-0.5 rounded bg-surface-container border border-surface-container-highest/40">payment-service</code> downsized to 300m CPU / 750m Limit.
+</p>
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<span class="rounded bg-surface-container px-2 py-0.5 font-code-snippet text-code-snippet text-on-surface border border-surface-container-highest/40">GitOps PR #4812</span>
+<span class="rounded bg-surface-container px-2 py-0.5 font-code-snippet text-code-snippet text-tertiary border border-surface-container-highest/40">Verified in Cluster</span>
+<span class="rounded bg-surface-container px-2 py-0.5 font-code-snippet text-code-snippet text-on-surface-variant border border-surface-container-highest/40">0 Restarts</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<button class="inline-flex items-center gap-1.5 rounded-lg bg-surface-container-high px-4 py-2 font-headline-sm text-headline-sm text-on-surface hover:bg-surface-bright transition-colors border border-surface-container-highest/50">
+<span class="material-symbols-outlined text-[16px] text-tertiary">analytics</span>
+<span class="">View in Evaluation</span>
+</button>
+<a class="inline-flex items-center gap-1 font-body-sm text-body-sm text-tertiary hover:underline" href="#">
+<span class="">Inspect Audit Trail</span>
+<span class="material-symbols-outlined text-[14px]">receipt_long</span>
+</a>
+</div>
+</div>
+<!-- STATE 10: Failed change -->
+<div class="state-card flex flex-col justify-between rounded-lg bg-surface-container-low border border-surface-container-highest/60 p-space-lg transition-all hover:bg-surface-container" data-group="operations">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm tracking-wider text-error uppercase font-medium">ERROR · MUTATION FAILED</span>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-error-container/30 px-2.5 py-0.5 font-label-sm text-label-sm text-error border border-error-container/40">
+<span class="h-1.5 w-1.5 rounded-full bg-error"></span>
+Rollout Blocked
+</span>
+</div>
+<div class="flex items-start gap-space-md">
+<div class="shrink-0 flex h-10 w-10 items-center justify-center rounded-lg bg-error-container/30 border border-error-container/40 text-error">
+<span class="material-symbols-outlined text-[24px]">error</span>
+</div>
+<div class="space-y-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">Change Application Failed</h2>
+<p class="font-body-md text-body-md text-error font-medium">
+Admission Webhook Rejection: PodDisruptionBudget violated.
+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+Cluster admission controller rejected downscaling on <code class="font-code-snippet text-code-snippet text-on-surface px-1.5 py-0.5 rounded bg-surface-container border border-surface-container-highest/40">elasticsearch-data</code>. Minimum available replicas (minAvailable: 2) would be breached during rollout. No pods were terminated.
+</p>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest/60 border-t border-surface-container-highest/40 -mx-space-lg -mb-space-lg px-space-lg py-3 rounded-b-lg">
+<button class="inline-flex items-center gap-1.5 rounded-lg bg-surface-container-high px-4 py-2 font-headline-sm text-headline-sm text-on-surface hover:bg-surface-bright transition-colors border border-surface-container-highest/50">
+<span class="material-symbols-outlined text-[16px] text-primary">replay</span>
+<span class="">Retry with Staggered Rollout</span>
+</button>
+<button class="inline-flex items-center gap-1 font-body-sm text-body-sm text-error hover:underline">
+<span class="">Inspect Webhook Logs</span>
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Interactive Filtering Script -->
+<script>
+    function filterState(filter, button) {
+      // Update Tab Styles
+      const buttons = document.querySelectorAll('#filter-bar .state-filter');
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-primary-container', 'text-on-primary-container', 'shadow-[0_0_12px_rgba(56,189,248,0.25)]');
+        btn.classList.add('bg-surface-container-low', 'text-on-surface-variant');
+      });
+
+      button.classList.add('bg-primary-container', 'text-on-primary-container', 'shadow-[0_0_12px_rgba(56,189,248,0.25)]');
+      button.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
+
+      // Filter Cards
+      const cards = document.querySelectorAll('#states-grid .state-card');
+      cards.forEach(card => {
+        const group = card.getAttribute('data-group');
+        if (filter === 'all' || group === filter) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</div></main></div>
+
+</body></html>

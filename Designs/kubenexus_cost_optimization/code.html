@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"outline-variant":"#3e484f","error-container":"#93000a","primary-container":"#38bdf8","primary-fixed":"#c4e7ff","on-secondary-fixed-variant":"#004883","on-error-container":"#ffdad6","surface-container-lowest":"#010f1f","primary-fixed-dim":"#7bd0ff","secondary-container":"#0267b8","surface-container":"#122131","secondary-fixed-dim":"#a4c9ff","background":"#051424","on-secondary-fixed":"#001c39","tertiary-container":"#30c88f","secondary-fixed":"#d4e3ff","on-tertiary-container":"#004e34","on-secondary-container":"#d6e5ff","on-surface-variant":"#bdc8d1","secondary":"#a4c9ff","on-background":"#d4e4fa","surface-container-low":"#0d1c2d","surface-container-highest":"#273647","on-error":"#690005","surface-container-high":"#1c2b3c","primary":"#8ed5ff","on-tertiary-fixed-variant":"#005236","tertiary":"#56e5a9","error":"#ffb4ab","surface-dim":"#051424","on-primary-container":"#004965","on-tertiary-fixed":"#002113","surface-tint":"#7bd0ff","inverse-primary":"#00668a","inverse-surface":"#d4e4fa","on-primary":"#00354a","tertiary-fixed-dim":"#4edea3","surface-variant":"#273647","on-surface":"#d4e4fa","surface":"#051424","tertiary-fixed":"#6ffbbe","on-secondary":"#00315d","inverse-on-surface":"#233143","on-tertiary":"#003824","outline":"#87929a","on-primary-fixed":"#001e2c","surface-bright":"#2c3a4c","on-primary-fixed-variant":"#004c69"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-desktop":"1.5rem","space-xl":"2rem","gutter":"1rem","space-lg":"1.5rem","space-md":"1rem","space-xs":"0.25rem","space-sm":"0.5rem","margin-desktop":"2rem","margin":"1rem"},fontFamily:{"headline-md":["Inter"],"body-lg":["Inter"],"headline-xl":["Inter"],"headline-lg":["Inter"],"label-md":["JetBrains Mono"],"code-snippet":["JetBrains Mono"],"body-md":["Inter"],"label-sm":["JetBrains Mono"],"headline-sm":["Inter"],"body-sm":["Inter"]},fontSize:{"headline-md":["18px",{"lineHeight":"24px","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-xl":["32px",{"lineHeight":"40px","fontWeight":"700"}],"headline-lg":["24px",{"lineHeight":"32px","fontWeight":"600"}],"label-md":["13px",{"lineHeight":"16px","fontWeight":"500"}],"code-snippet":["12px",{"lineHeight":"18px","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","fontWeight":"500"}],"headline-sm":["15px",{"lineHeight":"20px","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface min-h-screen selection:bg-primary-container selection:text-on-primary-container"><aside class="fixed left-0 top-0 h-screen w-60 bg-surface-container-low/95 backdrop-blur-xl z-50 flex flex-col justify-between shadow-[0_4px_24px_rgba(0,0,0,0.35)]"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center justify-between bg-surface-container-lowest/60"><div class="flex items-center gap-space-sm"><img alt="KubeNexus Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1USC0AV9hq2XmneiEjTxCkX67F9ZQYvrqre71k7t88qnkUd7dGHvaGP2L1ONKvSpO-gwKL0xkQhvt0ZE46OgbVzzYkUdyosmUJS3DEH0pSzPpKw0RhjISuJPnGvf-BBdPOTbzRtX5miADbyiPPnfIpUScB2eZzFRMhp-eV6MkIB7UNXxSLJetGG5_TpQ3IZzeUHpWb0U8V9npedQUOCHCku_jiRVGKwUDsCNLVot0qo"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">KubeNexus</span><span class="font-label-sm text-label-sm text-on-surface-variant leading-none mt-1">K8s Optimizer</span></div></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded-full bg-secondary-container/30 text-secondary border border-secondary-container/40">v1.0</span></div><nav class="flex-1 px-space-sm py-space-sm space-y-1 overflow-y-auto" data-active-classes="bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(56,189,248,0.25)]"><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="overview" href="#"><span class="font-body-md text-body-md">Overview</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="clusters" href="#"><span class="font-body-md text-body-md">Clusters</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="workloads" href="#"><span class="font-body-md text-body-md">Workloads</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="monitoring" href="#"><span class="font-body-md text-body-md">Monitoring</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="recommendations" href="#"><span class="font-body-md text-body-md">Recommendations</span></a><a aria-current="page" class="flex items-center justify-between px-space-sm py-2 rounded-lg transition-all bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(56,189,248,0.25)]" data-path="cost-optimization" href="#"><span class="font-body-md text-body-md font-semibold text-on-primary-container">Cost Optimization</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="alerts" href="#"><span class="font-body-md text-body-md">Alerts</span><span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-error-container text-on-error-container">3</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="changes-audit" href="#"><span class="font-body-md text-body-md">Changes &amp; Audit</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="evaluation" href="#"><span class="font-body-md text-body-md">Evaluation</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="settings" href="#"><span class="font-body-md text-body-md">Settings</span></a></nav></div><div class="p-space-sm space-y-2 bg-surface-container-lowest/80"><div class="p-2.5 rounded-lg bg-surface-container/60 flex items-center justify-between"><div class="flex items-center gap-2 min-w-0"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span></span><div class="flex flex-col truncate"><span class="font-label-sm text-label-sm text-on-surface truncate">k8s-prod-us-east</span><span class="font-label-sm text-label-sm text-tertiary leading-none">Connected</span></div></div><span class="material-symbols-outlined text-[16px] text-on-surface-variant">cloud_done</span></div><div class="px-2 py-1 flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"><span class="truncate">Capstone v1.0.4-rc</span><a class="text-primary hover:text-on-primary-fixed hover:underline flex items-center gap-1" href="#"><span class="material-symbols-outlined text-[14px]">code</span>Repo</a></div></div></aside><div class="pl-60"><header class="fixed top-0 left-60 right-0 h-16 bg-surface-container-low/85 backdrop-blur-xl z-40 px-space-lg flex items-center justify-between shadow-[0_1px_12px_rgba(0,0,0,0.25)]"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2"><img alt="KubeNexus Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1USC0AV9hq2XmneiEjTxCkX67F9ZQYvrqre71k7t88qnkUd7dGHvaGP2L1ONKvSpO-gwKL0xkQhvt0ZE46OgbVzzYkUdyosmUJS3DEH0pSzPpKw0RhjISuJPnGvf-BBdPOTbzRtX5miADbyiPPnfIpUScB2eZzFRMhp-eV6MkIB7UNXxSLJetGG5_TpQ3IZzeUHpWb0U8V9npedQUOCHCku_jiRVGKwUDsCNLVot0qo"/><span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">KubeNexus</span></div><span class="text-outline-variant font-body-sm text-body-sm">/</span><div class="relative flex items-center"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-high/80 text-on-surface hover:bg-surface-bright transition-colors" type="button"><span class="material-symbols-outlined text-[18px] text-primary">hub</span><span class="font-body-md text-body-md font-medium">primary-eks-cluster (us-east-1)</span><span class="material-symbols-outlined text-[18px] text-on-surface-variant">keyboard_arrow_down</span></button></div><div class="relative flex items-center"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container/70 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">schedule</span><span class="font-body-md text-body-md">Last 24 Hours</span><span class="material-symbols-outlined text-[16px]">expand_more</span></button></div></div><div class="flex items-center gap-space-md"><div class="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm"><span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span><span>Synced 2s ago</span></div><button aria-label="Notifications" class="relative p-2 rounded-lg bg-surface-container/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary-container ring-2 ring-surface-container"></span></button><div class="flex items-center gap-2.5 pl-2 bg-surface-container-high/30 py-1 pr-2 rounded-full"><div class="flex flex-col text-right leading-none"><span class="font-headline-sm text-headline-sm text-on-surface">Alex M.</span><span class="font-label-sm text-label-sm text-on-surface-variant">Team Nexus</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_0_10px_rgba(142,213,255,0.4)]"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface px-space-lg py-space-md"><div class="flex flex-col w-full space-y-space-lg text-on-surface">
+<!-- TOP CONTEXT & FILTER BAR -->
+<section class="flex flex-col gap-space-md lg:flex-row lg:items-center lg:justify-between">
+<div class="flex flex-col space-y-1">
+<div class="flex flex-wrap items-center gap-space-sm">
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Cost Optimization</h1>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/20 text-secondary border border-secondary-container/30">
+<span class="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm tracking-wider uppercase font-semibold">Estimated Telemetry Metrics · Non-Invoicing</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-4xl">
+        Heuristic infrastructure expenditure estimates and right-sizing savings opportunities derived from continuous P95 telemetry profiling across scheduled workloads.
+      </p>
+</div>
+<!-- Right Controls / Filters -->
+<div class="flex flex-wrap items-center gap-2.5 self-start lg:self-auto">
+<div class="flex items-center bg-surface-container-low/90 backdrop-blur-md rounded-lg p-1 shadow-sm">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded text-on-surface font-body-sm text-body-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[16px] text-primary">hub</span>
+<span class="font-medium">primary-eks-cluster (us-east-1)</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
+</button>
+<span class="text-outline-variant px-1 text-label-sm">|</span>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded text-on-surface-variant font-body-sm text-body-sm hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[16px]">folder_copy</span>
+<span>All Namespaces</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</button>
+<span class="text-outline-variant px-1 text-label-sm">|</span>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded text-on-surface-variant font-body-sm text-body-sm hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[16px]">date_range</span>
+<span>Last 30 Days (Rolling)</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</button>
+</div>
+<button class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-container-high/80 hover:bg-surface-bright text-on-surface font-headline-sm text-headline-sm transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">download</span>
+<span>Export Cost Model</span>
+</button>
+</div>
+</section>
+<!-- KPI SUMMARY CARDS (4 COLUMNS) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Card 1 -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-md shadow-md flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-outline-variant to-transparent opacity-40"></div>
+<div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Current Estimated Cost</span>
+<span class="material-symbols-outlined text-[18px] text-outline">payments</span>
+</div>
+<div class="mt-2.5 flex items-baseline gap-1.5">
+<span class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold">$3,420.00</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ mo</span>
+</div>
+<p class="mt-1 font-body-sm text-body-sm text-on-surface-variant leading-snug">
+          Based on active CPU/RAM pod requests across 142 workloads
+        </p>
+</div>
+<div class="mt-4 pt-3 flex items-center justify-between bg-surface-container-lowest/40 -mx-4 -mb-4 px-4 py-2.5 rounded-b-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-secondary"></span> 100% Allocated Baseline
+        </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">730 hrs/mo</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-md shadow-md flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary-container to-transparent opacity-60"></div>
+<div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-primary">Optimized Estimated Cost</span>
+<span class="material-symbols-outlined text-[18px] text-primary">trending_down</span>
+</div>
+<div class="mt-2.5 flex items-baseline gap-1.5">
+<span class="font-headline-xl text-headline-xl text-primary tracking-tight font-bold">$2,485.00</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ mo</span>
+</div>
+<p class="mt-1 font-body-sm text-body-sm text-on-surface-variant leading-snug">
+          Projected fleet spend post-recommendation application
+        </p>
+</div>
+<div class="mt-4 pt-3 flex items-center justify-between bg-surface-container-lowest/40 -mx-4 -mb-4 px-4 py-2.5 rounded-b-xl">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span> -27.3% Fleet Reduction
+        </span>
+<span class="font-label-sm text-label-sm text-tertiary font-mono">P95 Safe</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-md shadow-md flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-tertiary to-transparent opacity-60"></div>
+<div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-tertiary">Potential Monthly Savings</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary">savings</span>
+</div>
+<div class="mt-2.5 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-tertiary tracking-tight font-bold">+$935.00</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ mo</span>
+</div>
+<div class="mt-1 flex items-center gap-2">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary-container/30 text-tertiary font-semibold">~$11,220.00 / yr</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">annualized</span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex items-center justify-between bg-surface-container-lowest/40 -mx-4 -mb-4 px-4 py-2.5 rounded-b-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">
+          Reclaims <strong class="text-on-surface font-semibold">18.4 Cores</strong> &amp; <strong class="text-on-surface font-semibold">42 GiB RAM</strong>
+</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-md shadow-md flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent opacity-40"></div>
+<div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-secondary">Optimization Opportunities</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">tune</span>
+</div>
+<div class="mt-2.5 flex items-baseline gap-1.5">
+<span class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold">34</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Workloads</span>
+</div>
+<p class="mt-1 font-body-sm text-body-sm text-on-surface-variant leading-snug">
+          14 Pending · 6 Approved PR · 14 Staged
+        </p>
+</div>
+<div class="mt-4 pt-3 flex items-center justify-between bg-surface-container-lowest/40 -mx-4 -mb-4 px-4 py-2.5 rounded-b-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-tertiary"></span> Risk: Low (96/100)
+        </span>
+<a class="font-label-sm text-label-sm text-primary hover:underline flex items-center" href="#">
+          Apply All <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</a>
+</div>
+</div>
+</section>
+<!-- MAIN VISUAL: CURRENT COST VS OPTIMIZED COST -->
+<section class="rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-lg">
+<!-- Header of visual section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">analytics</span>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Current Cost vs. Optimized Cost (Estimated)</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Resource footprint redistribution model based on 30-day continuous cluster profiling
+        </p>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-lowest/60 px-3.5 py-1.5 rounded-lg self-start md:self-auto">
+<div class="flex items-center gap-2">
+<span class="h-3 w-3 rounded-sm bg-primary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">CPU Requests</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="h-3 w-3 rounded-sm bg-secondary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Memory Requests</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="h-3 w-3 rounded-sm bg-tertiary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Delta Savings</span>
+</div>
+</div>
+</div>
+<!-- Comparative Macro Bars -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center pt-2 pb-6">
+<!-- Bars container (8 Cols) -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Current Baseline Row -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-medium">Current Baseline Allocation</span>
+<span class="font-label-sm text-label-sm px-2 py-0.2 rounded bg-surface-container-highest text-on-surface-variant font-mono">142 Workloads</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-label-md text-label-md font-bold text-on-surface">$3,420.00 / mo</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">(100%)</span>
+</div>
+</div>
+<!-- Stacked Bar (Current) -->
+<div class="h-9 w-full bg-surface-container-lowest rounded-lg flex overflow-hidden p-1 gap-1">
+<div class="h-full bg-primary-container rounded flex items-center justify-between px-3 text-on-primary-container transition-all" style="width: 63.7%;">
+<span class="font-label-sm text-label-sm font-semibold truncate">CPU $2,180.00</span>
+<span class="font-label-sm text-label-sm opacity-90 hidden sm:inline font-mono">63.7%</span>
+</div>
+<div class="h-full bg-secondary-container rounded flex items-center justify-between px-3 text-on-secondary-container transition-all" style="width: 36.3%;">
+<span class="font-label-sm text-label-sm font-semibold truncate">Mem $1,240.00</span>
+<span class="font-label-sm text-label-sm opacity-90 hidden sm:inline font-mono">36.3%</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant px-1">
+<span>Provisioned: 44.8 vCPU requests</span>
+<span>Provisioned: 112 GiB RAM requests</span>
+</div>
+</div>
+<!-- Optimized Projected Row -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-primary font-medium">Optimized Target Footprint</span>
+<span class="font-label-sm text-label-sm px-2 py-0.2 rounded bg-tertiary-container/20 text-tertiary font-mono">Recommendation Applied</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-label-md text-label-md font-bold text-primary">$2,485.00 / mo</span>
+<span class="font-label-sm text-label-sm text-tertiary">(-27.3%)</span>
+</div>
+</div>
+<!-- Stacked Bar (Optimized) -->
+<div class="h-9 w-full bg-surface-container-lowest rounded-lg flex overflow-hidden p-1 gap-1">
+<div class="h-full bg-primary-container/85 rounded flex items-center justify-between px-3 text-on-primary-container transition-all" style="width: 43.7%;">
+<span class="font-label-sm text-label-sm font-semibold truncate">CPU $1,495.00</span>
+<span class="font-label-sm text-label-sm opacity-90 hidden sm:inline font-mono">60.2%</span>
+</div>
+<div class="h-full bg-secondary-container/85 rounded flex items-center justify-between px-3 text-on-secondary-container transition-all" style="width: 28.9%;">
+<span class="font-label-sm text-label-sm font-semibold truncate">Mem $990.00</span>
+<span class="font-label-sm text-label-sm opacity-90 hidden sm:inline font-mono">39.8%</span>
+</div>
+<div class="h-full bg-tertiary-container/25 rounded flex items-center justify-center px-2 text-tertiary" style="width: 27.4%;">
+<span class="font-label-sm text-label-sm font-semibold font-mono tracking-tight truncate">-$935.00 Savings</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant px-1">
+<span>Downscaled: 26.4 vCPU requests (-41%)</span>
+<span>Downscaled: 70 GiB RAM requests (-37.5%)</span>
+</div>
+</div>
+</div>
+<!-- Delta Highlight Callout Card (4 Cols) -->
+<div class="lg:col-span-4 bg-surface-container-high/60 rounded-xl p-space-md flex flex-col justify-between h-full shadow-sm">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary font-semibold">Projected Net Delta</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary font-mono">High Confidence</span>
+</div>
+<div class="text-3xl font-bold font-headline-xl text-tertiary leading-tight">
+            -$935.00 <span class="font-body-md text-body-md font-normal text-on-surface-variant">/ month</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Achievable by trimming idle headroom based on 30-day P95 CPU/memory actual utilization metrics without violating SLA safety margins.
+          </p>
+</div>
+<div class="mt-4 pt-3 space-y-2 bg-surface-container-lowest/50 -mx-4 -mb-4 p-4 rounded-b-xl">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Efficiency Ratio</span>
+<span class="text-tertiary font-mono font-medium">48.2% → 81.4% Target</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 81.4%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Category / Tier Breakdown Visual (Sub-bars) -->
+<div class="mt-4 pt-6 bg-surface-container-lowest/30 -mx-6 -mb-6 p-6 rounded-b-xl">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider text-outline">Estimated Spend by Workload Tier</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Comparison: Current Baseline vs. Proposed Model</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Tier 1 -->
+<div class="bg-surface-container/60 rounded-lg p-3 space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-on-surface">Core Services</span>
+<span class="font-label-sm text-label-sm text-tertiary font-mono">-$510/mo</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>Current</span>
+<span class="font-mono text-on-surface">$1,850.00</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 100%"></div>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant pt-1">
+<span class="text-primary">Optimized</span>
+<span class="font-mono text-primary font-medium">$1,340.00</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 72.4%"></div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>56 workloads</span>
+<span class="text-tertiary">-27.6%</span>
+</div>
+</div>
+<!-- Tier 2 -->
+<div class="bg-surface-container/60 rounded-lg p-3 space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-on-surface">Observability</span>
+<span class="font-label-sm text-label-sm text-tertiary font-mono">-$205/mo</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>Current</span>
+<span class="font-mono text-on-surface">$890.00</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 100%"></div>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant pt-1">
+<span class="text-primary">Optimized</span>
+<span class="font-mono text-primary font-medium">$685.00</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 77%"></div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>22 workloads</span>
+<span class="text-tertiary">-23.0%</span>
+</div>
+</div>
+<!-- Tier 3 -->
+<div class="bg-surface-container/60 rounded-lg p-3 space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-on-surface">Staging &amp; Pre-prod</span>
+<span class="font-label-sm text-label-sm text-tertiary font-mono">-$140/mo</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>Current</span>
+<span class="font-mono text-on-surface">$420.00</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 100%"></div>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant pt-1">
+<span class="text-primary">Optimized</span>
+<span class="font-mono text-primary font-medium">$280.00</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 66.7%"></div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>41 workloads</span>
+<span class="text-tertiary">-33.3%</span>
+</div>
+</div>
+<!-- Tier 4 -->
+<div class="bg-surface-container/60 rounded-lg p-3 space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-on-surface">Async &amp; Jobs</span>
+<span class="font-label-sm text-label-sm text-tertiary font-mono">-$80/mo</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>Current</span>
+<span class="font-mono text-on-surface">$260.00</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 100%"></div>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant pt-1">
+<span class="text-primary">Optimized</span>
+<span class="font-mono text-primary font-medium">$180.00</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 69.2%"></div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>23 workloads</span>
+<span class="text-tertiary">-30.8%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECOND SECTION: COST BY WORKLOAD TABLE -->
+<section class="rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-lg flex flex-col space-y-4">
+<!-- Header of table with controls -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-tertiary">table_chart</span>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Cost by Workload (Estimated)</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          P95 request profiling recommendations sorted by projected delta impact
+        </p>
+</div>
+<!-- Table micro-filters -->
+<div class="flex flex-wrap items-center gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-[16px] text-outline">search</span>
+<input class="bg-surface-container-lowest/80 text-on-surface font-body-sm text-body-sm pl-8 pr-3 py-1.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary w-48 sm:w-60" placeholder="Filter workload..." type="text"/>
+</div>
+<button class="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+<span>Status: All</span>
+</button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto rounded-lg bg-surface-container-lowest/40">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/40 text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-3 px-4">Workload &amp; Scope</th>
+<th class="py-3 px-4">Current Requests</th>
+<th class="py-3 px-4">Proposed Requests</th>
+<th class="py-3 px-4 text-right">Current Est.</th>
+<th class="py-3 px-4 text-right">Proposed Est.</th>
+<th class="py-3 px-4 text-right">Est. Monthly Savings</th>
+<th class="py-3 px-4 text-center">Action / Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-body-sm font-body-sm">
+<!-- Row 1: payment-service -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-3 px-4">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-mono font-medium">payment-service</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant">Deployment</span>
+<span class="font-label-sm text-label-sm text-outline">ns/production</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm text-on-surface-variant">
+<div>500m CPU</div>
+<div class="text-outline">1.0 GiB RAM</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm">
+<div class="flex items-center gap-1 text-tertiary">
+<span>300m CPU</span>
+<span class="text-[10px] px-1 rounded bg-tertiary-container/20">-40%</span>
+</div>
+<div class="text-on-surface-variant">1.0 GiB RAM (unchanged)</div>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-on-surface-variant">
+              $45.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-primary font-medium">
+              $27.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold">
+                +$18.00 / mo (-40%)
+              </span>
+</td>
+<td class="py-3 px-4 text-center">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container-high hover:bg-surface-bright text-primary font-label-sm text-label-sm transition-colors">
+<span>Review</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: checkout-api-deployment -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-3 px-4">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-mono font-medium">checkout-api-deployment</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant">Deployment</span>
+<span class="font-label-sm text-label-sm text-outline">ns/production</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm text-on-surface-variant">
+<div>4,000m CPU</div>
+<div class="text-outline">8.0 GiB RAM</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm">
+<div class="flex items-center gap-1 text-tertiary">
+<span>1,500m CPU</span>
+<span class="text-[10px] px-1 rounded bg-tertiary-container/20">-62%</span>
+</div>
+<div class="flex items-center gap-1 text-tertiary">
+<span>3.5 GiB RAM</span>
+<span class="text-[10px] px-1 rounded bg-tertiary-container/20">-56%</span>
+</div>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-on-surface-variant">
+              $310.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-primary font-medium">
+              $215.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold">
+                +$95.00 / mo (-30.6%)
+              </span>
+</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-container/20 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Approved PR
+              </span>
+</td>
+</tr>
+<!-- Row 3: redis-cache-statefulset -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-3 px-4">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-mono font-medium">redis-cache-statefulset</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant">StatefulSet</span>
+<span class="font-label-sm text-label-sm text-outline">ns/caching</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm text-on-surface-variant">
+<div>1,000m CPU</div>
+<div class="text-outline">6.0 GiB RAM</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm">
+<div class="text-on-surface-variant">1,000m CPU (steady)</div>
+<div class="flex items-center gap-1 text-tertiary">
+<span>4.5 GiB RAM</span>
+<span class="text-[10px] px-1 rounded bg-tertiary-container/20">-25%</span>
+</div>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-on-surface-variant">
+              $162.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-primary font-medium">
+              $120.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold">
+                +$42.00 / mo (-25.9%)
+              </span>
+</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-container/20 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Approved
+              </span>
+</td>
+</tr>
+<!-- Row 4: elasticsearch-data (Reliability tuning) -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-3 px-4">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-mono font-medium">elasticsearch-data</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant">StatefulSet</span>
+<span class="font-label-sm text-label-sm text-outline">ns/observability</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm text-on-surface-variant">
+<div>3,700m CPU</div>
+<div class="text-outline">16.0 GiB RAM</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm">
+<div class="flex items-center gap-1 text-secondary">
+<span>5,000m CPU</span>
+<span class="text-[10px] px-1 rounded bg-secondary-container/20">+35% (Anti-Throttle)</span>
+</div>
+<div class="text-on-surface-variant">16.0 GiB RAM</div>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-on-surface-variant">
+              $240.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-secondary font-medium">
+              $264.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/20 text-secondary font-label-sm text-label-sm font-semibold">
+                -$24.00 / mo (+10% Headroom)
+              </span>
+</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-highest text-secondary-fixed-dim font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">shield</span> Reliability
+              </span>
+</td>
+</tr>
+<!-- Row 5: auth-worker -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-3 px-4">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-mono font-medium">auth-worker</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant">Deployment</span>
+<span class="font-label-sm text-label-sm text-outline">ns/staging</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm text-on-surface-variant">
+<div>4 Replicas (800m)</div>
+<div class="text-outline">2.0 GiB Total</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm">
+<div class="flex items-center gap-1 text-tertiary">
+<span>2 Replicas (400m)</span>
+<span class="text-[10px] px-1 rounded bg-tertiary-container/20">-50% Pods</span>
+</div>
+<div class="text-tertiary">1.0 GiB Total</div>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-on-surface-variant">
+              $88.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-primary font-medium">
+              $52.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold">
+                +$36.00 / mo (-40.9%)
+              </span>
+</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">done_all</span> Applied
+              </span>
+</td>
+</tr>
+<!-- Row 6: order-processor-svc -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-3 px-4">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-mono font-medium">order-processor-svc</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant">Deployment</span>
+<span class="font-label-sm text-label-sm text-outline">ns/production</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm text-on-surface-variant">
+<div>2,500m CPU</div>
+<div class="text-outline">4.0 GiB RAM</div>
+</td>
+<td class="py-3 px-4 font-mono text-label-sm">
+<div class="flex items-center gap-1 text-tertiary">
+<span>1,800m CPU</span>
+<span class="text-[10px] px-1 rounded bg-tertiary-container/20">-28%</span>
+</div>
+<div class="flex items-center gap-1 text-tertiary">
+<span>3.0 GiB RAM</span>
+<span class="text-[10px] px-1 rounded bg-tertiary-container/20">-25%</span>
+</div>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-on-surface-variant">
+              $195.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right font-mono text-label-md text-primary font-medium">
+              $140.00 <span class="text-outline text-label-sm">/mo</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold">
+                +$55.00 / mo (-28.2%)
+              </span>
+</td>
+<td class="py-3 px-4 text-center">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container-high hover:bg-surface-bright text-primary font-label-sm text-label-sm transition-colors">
+<span>Review</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination / Footer Meta -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 text-label-sm font-label-sm text-on-surface-variant">
+<div>
+        Showing <span class="text-on-surface font-semibold">6</span> of <span class="text-on-surface font-semibold">34</span> opportunity workloads · Filtered by potential savings descending
+      </div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1 rounded bg-surface-container text-outline hover:text-on-surface transition-colors disabled:opacity-50" disabled="">Previous</button>
+<span class="px-2 font-mono text-on-surface">Page 1 of 6</span>
+<button class="px-3 py-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors">Next</button>
+</div>
+</div>
+</section>
+<!-- THIRD SECTION: MODELING PRINCIPLES & GUARDRAILS -->
+<section class="rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-lg">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-[20px] text-outline">account_balance_wallet</span>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Cost Assumptions &amp; Modeling Principles</h2>
+</div>
+<!-- 6 Grid Attribute Callouts -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md mb-6">
+<!-- Item 1 -->
+<div class="p-3.5 rounded-lg bg-surface-container/60 space-y-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Pricing Source</span>
+<p class="font-body-md text-body-md text-on-surface font-medium">Standard Public On-Demand Rates</p>
+<p class="font-code-snippet text-code-snippet text-on-surface-variant">
+          $0.04048 / vCPU-hr · $0.004445 / GB-hr (c6g / m6g compute baseline)
+        </p>
+</div>
+<!-- Item 2 -->
+<div class="p-3.5 rounded-lg bg-surface-container/60 space-y-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Region &amp; Baseline</span>
+<p class="font-body-md text-body-md text-on-surface font-medium">AWS us-east-1 (N. Virginia)</p>
+<p class="font-code-snippet text-code-snippet text-on-surface-variant">
+          Single reference standard currency USD normalized across multi-cluster fleet
+        </p>
+</div>
+<!-- Item 3 -->
+<div class="p-3.5 rounded-lg bg-surface-container/60 space-y-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Calculation Period</span>
+<p class="font-body-md text-body-md text-on-surface font-medium">30-Day Rolling Window</p>
+<p class="font-code-snippet text-code-snippet text-on-surface-variant">
+          Normalized to 730 runtime hours per monthly cycle, accounting for autoscaling variance
+        </p>
+</div>
+<!-- Item 4 -->
+<div class="p-3.5 rounded-lg bg-surface-container/60 space-y-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Allocation Method</span>
+<p class="font-body-md text-body-md text-on-surface font-medium">Pod Capacity Requests</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Committed resource reservations (`resources.requests`) amortized across actual worker capacity.
+        </p>
+</div>
+<!-- Item 5 -->
+<div class="p-3.5 rounded-lg bg-surface-container/60 space-y-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Included Resources</span>
+<p class="font-body-md text-body-md text-on-surface font-medium">CPU, Memory &amp; Multi-AZ Replicas</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Direct core requests, heap/RAM limits, and scheduled replica count footprints.
+        </p>
+</div>
+<!-- Item 6 -->
+<div class="p-3.5 rounded-lg bg-surface-container/60 space-y-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Excluded Charges</span>
+<p class="font-body-md text-body-md text-on-surface font-medium">Storage &amp; Network Egress</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Excludes EBS persistent volumes, inter-AZ transit data fees, and $0.10/hr EKS control plane.
+        </p>
+</div>
+</div>
+<!-- Official Non-Invoicing Disclaimer Banner -->
+<div class="rounded-lg bg-surface-container-high/40 p-4 flex items-start gap-3.5">
+<span class="material-symbols-outlined text-[22px] text-outline mt-0.5">info</span>
+<div class="space-y-0.5">
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">
+          Notice: Telemetry Right-Sizing Model Only
+        </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          These financial metrics reflect heuristic capacity models calculated strictly from container resource requests and telemetry utilization baselines to help engineering teams prioritize right-sizing workflows. They do not mirror exact cloud provider invoices, reserved instance blended amortizations, enterprise discount programs (EDP), or savings plans contracts.
+        </p>
+</div>
+</div>
+</section>
+</div></main></div></body></html>
