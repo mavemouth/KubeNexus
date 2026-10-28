@@ -11,6 +11,7 @@ RiskLevel = Literal['Low', 'Medium', 'High']
 ConfidenceLevel = Literal['High', 'Medium', 'Low']
 AlertSeverity = Literal['Critical', 'Warning', 'Info']
 AuditAction = Literal['Approved', 'Rejected', 'Applied', 'Failed', 'Rolled Back']
+AuthMethod = Literal['local', 'kubeconfig', 'token']
 
 class ClusterBase(BaseModel):
     name: str
@@ -23,13 +24,19 @@ class ClusterBase(BaseModel):
     k8sVersion: str = 'v1.28.2'
     provider: Literal['AWS EKS', 'GKE', 'Self-Hosted Minikube', 'Azure AKS'] = 'AWS EKS'
     apiEndpoint: str = 'https://api.k8s.local'
+    authMethod: AuthMethod = 'local'
+    prometheusUrl: str = 'http://localhost:9090'
 
 class ClusterCreate(BaseModel):
     name: str
     environment: Optional[Literal['production', 'staging', 'development']] = 'production'
     provider: Optional[Literal['AWS EKS', 'GKE', 'Self-Hosted Minikube', 'Azure AKS']] = 'AWS EKS'
-    apiEndpoint: Optional[str] = 'https://api.k8s.local'
-    nodeCount: Optional[int] = 3
+    apiEndpoint: Optional[str] = None
+    nodeCount: Optional[int] = None
+    authMethod: Optional[AuthMethod] = 'local'
+    kubeconfigRaw: Optional[str] = None
+    bearerToken: Optional[str] = None
+    prometheusUrl: Optional[str] = 'http://localhost:9090'
 
 class Cluster(ClusterBase):
     id: str

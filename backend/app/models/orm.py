@@ -28,6 +28,10 @@ class ClusterModel(Base):
     k8s_version = Column(String(32), default="v1.28.2")
     provider = Column(String(64), default="AWS EKS")
     api_endpoint = Column(String(255), default="https://api.k8s.local")
+    auth_method = Column(String(32), default="local")
+    kubeconfig_raw = Column(Text, nullable=True)
+    bearer_token = Column(Text, nullable=True)
+    prometheus_url = Column(String(255), default="http://localhost:9090")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 class WorkloadModel(Base):
@@ -57,6 +61,18 @@ class WorkloadModel(Base):
     throttling_count = Column(Integer, default=0)
     last_analysis_time = Column(String(64), default="Just now")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+class MetricSampleModel(Base):
+    __tablename__ = "metric_samples"
+
+    id = Column(String(64), primary_key=True, index=True)
+    workload_id = Column(String(64), nullable=False, index=True)
+    timestamp = Column(String(64), nullable=False, index=True)
+    cpu_usage = Column(Float, nullable=False)
+    cpu_request = Column(Float, nullable=False)
+    cpu_limit = Column(Float, nullable=False)
+    memory_usage_mb = Column(Float, nullable=False)
+    memory_limit_mb = Column(Float, nullable=False)
 
 class RecommendationModel(Base):
     __tablename__ = "recommendations"

@@ -20,6 +20,20 @@ export interface Cluster {
   k8sVersion: string;
   provider: 'AWS EKS' | 'GKE' | 'Self-Hosted Minikube' | 'Azure AKS';
   apiEndpoint: string;
+  authMethod?: 'local' | 'kubeconfig' | 'token';
+  prometheusUrl?: string;
+}
+
+export interface ClusterCreatePayload {
+  name: string;
+  environment?: 'production' | 'staging' | 'development';
+  provider?: 'AWS EKS' | 'GKE' | 'Self-Hosted Minikube' | 'Azure AKS';
+  apiEndpoint?: string;
+  authMethod?: 'local' | 'kubeconfig' | 'token';
+  kubeconfigRaw?: string;
+  bearerToken?: string;
+  prometheusUrl?: string;
+  workloadCount?: number;
 }
 
 export interface MetricTimeSeriesPoint {

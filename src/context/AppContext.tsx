@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
   Cluster,
+  ClusterCreatePayload,
   Workload,
   Recommendation,
   AlertItem,
@@ -30,7 +31,7 @@ interface AppContextType {
   setSimulatedState: (state: string) => void;
   
   // Handlers
-  addCluster: (cluster: Partial<Cluster>) => Promise<void>;
+  addCluster: (cluster: ClusterCreatePayload | Partial<Cluster>) => Promise<void>;
   approveRecommendation: (id: string) => Promise<void>;
   rejectRecommendation: (id: string) => Promise<void>;
   applyRecommendation: (id: string) => Promise<void>;
@@ -110,7 +111,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return () => unsubscribe();
   }, []);
 
-  const addCluster = async (clusterData: Partial<Cluster>) => {
+  const addCluster = async (clusterData: ClusterCreatePayload | Partial<Cluster>) => {
     const newCluster = await api.createCluster(clusterData);
     setClusters((prev) => [newCluster, ...prev]);
     showToast(`Cluster "${newCluster.name}" registered successfully.`);

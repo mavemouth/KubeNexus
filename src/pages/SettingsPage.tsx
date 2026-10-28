@@ -5,7 +5,7 @@ export const SettingsPage: React.FC = () => {
   const { settings, updateSettings } = useApp();
 
   const [safetyMarginPct, setSafetyMarginPct] = useState(settings.safetyMarginPct || 20);
-  const [minObservationDays, setMinObservationDays] = useState(settings.minObservationDays || 7);
+  const [minObservationDays, setMinObservationDays] = useState(settings.minObservationDays ?? 7);
   const [prometheusUrl, setPrometheusUrl] = useState(settings.prometheusUrl || 'http://prometheus.monitoring.svc.cluster.local:9090');
   const [scrapeInterval, setScrapeInterval] = useState(settings.scrapeIntervalSeconds || 30);
   const [apiBaseUrl, setApiBaseUrl] = useState(settings.apiBaseUrl || 'http://localhost:8000/api/v1');

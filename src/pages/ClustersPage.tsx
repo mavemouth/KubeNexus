@@ -8,26 +8,56 @@ export const ClustersPage: React.FC = () => {
 
   // Form State for Registering Cluster
   const [name, setName] = useState('');
-  const [provider, setProvider] = useState<'AWS EKS' | 'GKE' | 'Self-Hosted Minikube' | 'Azure AKS'>('AWS EKS');
-  const [environment, setEnvironment] = useState<'production' | 'staging' | 'development'>('production');
+  const [provider, setProvider] = useState<'AWS EKS' | 'GKE' | 'Self-Hosted Minikube' | 'Azure AKS'>('Self-Hosted Minikube');
+  const [environment, setEnvironment] = useState<'production' | 'staging' | 'development'>('development');
+  const [authMethod, setAuthMethod] = useState<'local' | 'kubeconfig' | 'token'>('local');
   const [apiEndpoint, setApiEndpoint] = useState('');
+  const [kubeconfigRaw, setKubeconfigRaw] = useState('');
+  const [bearerToken, setBearerToken] = useState('');
+  const [prometheusUrl, setPrometheusUrl] = useState('http://localhost:9090');
+  const [registerError, setRegisterError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      if (content) {
+        setKubeconfigRaw(content);
+      }
+    };
+    reader.readAsText(file);
+  };
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
-
-    await addCluster({
-      name,
-      provider,
-      environment,
-      apiEndpoint: apiEndpoint || 'https://api.k8s.internal:6443',
-      nodeCount: 4,
-      workloadCount: 0
-    });
-
-    setName('');
-    setApiEndpoint('');
-    setModalOpen(false);
+    setRegisterError('');
+    setIsSubmitting(true);
+    try {
+      await addCluster({
+        name,
+        provider,
+        environment,
+        authMethod,
+        apiEndpoint: apiEndpoint || undefined,
+        kubeconfigRaw: authMethod === 'kubeconfig' ? kubeconfigRaw : undefined,
+        bearerToken: authMethod === 'token' ? bearerToken : undefined,
+        prometheusUrl: prometheusUrl || 'http://localhost:9090',
+        workloadCount: 0
+      });
+      setName('');
+      setApiEndpoint('');
+      setKubeconfigRaw('');
+      setBearerToken('');
+      setModalOpen(false);
+    } catch (error) {
+      setRegisterError(error instanceof Error ? error.message : 'Could not connect to the cluster with provided credentials.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const connectedCount = clusters.filter((c) => c.connectionStatus === 'Connected').length;
@@ -144,6 +174,16 @@ export const ClustersPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-surface-container-high/50 font-body-sm text-body-sm">
                   <div>
+                    <span className="text-on-surface-variant text-xs">Auth Method:</span>
+                    <p className="font-medium text-on-surface text-xs capitalize mt-0.5">
+                      {c.authMethod === 'kubeconfig' ? 'Kubeconfig File' : c.authMethod === 'token' ? 'Bearer Token' : 'Local Context'}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-on-surface-variant text-xs">Prometheus Scraper:</span>
+                    <p className="font-mono text-tertiary text-xs truncate mt-0.5">{c.prometheusUrl || 'http://localhost:9090'}</p>
+                  </div>
+                  <div>
                     <span className="text-on-surface-variant text-xs">API Endpoint:</span>
                     <p className="font-mono text-on-surface text-xs truncate mt-0.5">{c.apiEndpoint}</p>
                   </div>
@@ -185,7 +225,7 @@ export const ClustersPage: React.FC = () => {
       {/* Register Cluster Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-lg rounded-xl bg-surface-container-low border border-surface-container-highest p-space-lg shadow-2xl space-y-4">
+          <div className="w-full max-w-xl rounded-xl bg-surface-container-low border border-surface-container-highest p-space-lg shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-surface-container-high">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-[22px] text-primary">add_circle</span>
@@ -201,12 +241,12 @@ export const ClustersPage: React.FC = () => {
             <form onSubmit={handleRegisterSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-medium text-on-surface-variant mb-1">
-                  Cluster Name
+                  Cluster Name *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. k8s-prod-us-east"
+                  placeholder="e.g. k8s-prod-us-east or minikube-dev"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container-highest text-on-surface focus:outline-none focus:border-primary-container text-body-md"
@@ -216,16 +256,16 @@ export const ClustersPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-on-surface-variant mb-1">
-                    Provider
+                    Cloud Provider
                   </label>
                   <select
                     value={provider}
                     onChange={(e) => setProvider(e.target.value as any)}
                     className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container-highest text-on-surface focus:outline-none focus:border-primary-container text-body-md"
                   >
+                    <option value="Self-Hosted Minikube">Self-Hosted Minikube</option>
                     <option value="AWS EKS">AWS EKS</option>
                     <option value="GKE">GKE</option>
-                    <option value="Self-Hosted Minikube">Self-Hosted Minikube</option>
                     <option value="Azure AKS">Azure AKS</option>
                   </select>
                 </div>
@@ -239,39 +279,181 @@ export const ClustersPage: React.FC = () => {
                     onChange={(e) => setEnvironment(e.target.value as any)}
                     className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container-highest text-on-surface focus:outline-none focus:border-primary-container text-body-md"
                   >
-                    <option value="production">Production</option>
-                    <option value="staging">Staging</option>
                     <option value="development">Development</option>
+                    <option value="staging">Staging</option>
+                    <option value="production">Production</option>
                   </select>
                 </div>
               </div>
 
-              <div>
+              {/* Authentication & Data Collection Method */}
+              <div className="space-y-2 pt-2 border-t border-surface-container-high/60">
+                <label className="block text-xs font-semibold text-primary uppercase tracking-wider">
+                  Authentication &amp; Access Method
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setAuthMethod('local')}
+                    className={`px-3 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
+                      authMethod === 'local'
+                        ? 'bg-primary-container/20 text-primary border-primary-container/60 shadow-sm'
+                        : 'bg-surface-container border-surface-container-highest text-on-surface-variant hover:bg-surface-container-high'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-[18px]">laptop</span>
+                    <span>Local / In-Cluster</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setAuthMethod('kubeconfig')}
+                    className={`px-3 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
+                      authMethod === 'kubeconfig'
+                        ? 'bg-primary-container/20 text-primary border-primary-container/60 shadow-sm'
+                        : 'bg-surface-container border-surface-container-highest text-on-surface-variant hover:bg-surface-container-high'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-[18px]">description</span>
+                    <span>Kubeconfig YAML</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setAuthMethod('token')}
+                    className={`px-3 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
+                      authMethod === 'token'
+                        ? 'bg-primary-container/20 text-primary border-primary-container/60 shadow-sm'
+                        : 'bg-surface-container border-surface-container-highest text-on-surface-variant hover:bg-surface-container-high'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-[18px]">key</span>
+                    <span>Bearer Token</span>
+                  </button>
+                </div>
+
+                {/* Conditional Fields Based on Auth Method */}
+                {authMethod === 'local' && (
+                  <div className="p-3 rounded-lg bg-surface-container/60 border border-surface-container-highest text-xs text-on-surface-variant space-y-1">
+                    <p className="font-semibold text-on-surface flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+                      Auto-detects active cluster from local kubeconfig
+                    </p>
+                    <p>
+                      Uses the active Minikube, Docker Desktop Kubernetes, or in-cluster ServiceAccount context. No file upload required.
+                    </p>
+                  </div>
+                )}
+
+                {authMethod === 'kubeconfig' && (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-medium text-on-surface-variant">
+                        Paste Kubeconfig YAML or upload file
+                      </label>
+                      <label className="cursor-pointer text-xs font-semibold text-primary hover:underline flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[14px]">upload_file</span>
+                        Upload File
+                        <input
+                          type="file"
+                          accept=".yaml,.yml,.config"
+                          onChange={handleFileUpload}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                    <textarea
+                      required={authMethod === 'kubeconfig'}
+                      rows={4}
+                      placeholder={`apiVersion: v1\nclusters:\n- cluster:\n    server: https://192.168.49.2:8443\n  name: minikube...`}
+                      value={kubeconfigRaw}
+                      onChange={(e) => setKubeconfigRaw(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container-highest text-on-surface font-mono text-xs focus:outline-none focus:border-primary-container"
+                    />
+                  </div>
+                )}
+
+                {authMethod === 'token' && (
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-medium text-on-surface-variant mb-1">
+                        Kubernetes API Server URL *
+                      </label>
+                      <input
+                        type="url"
+                        required={authMethod === 'token'}
+                        placeholder="https://k8s-cluster.example.com:6443"
+                        value={apiEndpoint}
+                        onChange={(e) => setApiEndpoint(e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container-highest text-on-surface font-mono text-xs focus:outline-none focus:border-primary-container"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-on-surface-variant mb-1">
+                        ServiceAccount Bearer Token *
+                      </label>
+                      <textarea
+                        required={authMethod === 'token'}
+                        rows={3}
+                        placeholder="eyJhbGciOiJSUzI1NiIsImtpZCI6..."
+                        value={bearerToken}
+                        onChange={(e) => setBearerToken(e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container-highest text-on-surface font-mono text-xs focus:outline-none focus:border-primary-container"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Prometheus Endpoint */}
+              <div className="pt-2 border-t border-surface-container-high/60">
                 <label className="block text-xs font-medium text-on-surface-variant mb-1">
-                  API Server Endpoint URL
+                  Prometheus Telemetry Scraper URL
                 </label>
                 <input
                   type="url"
-                  placeholder="https://eks-prod-us-east-1.amazonaws.com"
-                  value={apiEndpoint}
-                  onChange={(e) => setApiEndpoint(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container-highest text-on-surface focus:outline-none focus:border-primary-container text-body-md font-mono text-xs"
+                  placeholder="http://localhost:9090"
+                  value={prometheusUrl}
+                  onChange={(e) => setPrometheusUrl(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container-highest text-on-surface font-mono text-xs focus:outline-none focus:border-primary-container"
                 />
+                <span className="text-[11px] text-on-surface-variant mt-0.5 block">
+                  KubeNexus queries Prometheus on this endpoint for CPU and memory time-series observations.
+                </span>
               </div>
+
+              {registerError && (
+                <div role="alert" className="rounded-lg border border-error/40 bg-error-container/20 px-3 py-2 text-sm text-error flex items-start gap-2">
+                  <span className="material-symbols-outlined text-[18px] text-error mt-0.5">error</span>
+                  <span>{registerError}</span>
+                </div>
+              )}
 
               <div className="pt-3 border-t border-surface-container-high flex items-center justify-end gap-3">
                 <button
                   type="button"
+                  disabled={isSubmitting}
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-body-sm font-medium"
+                  className="px-4 py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-body-sm font-medium transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-primary-container text-on-primary-container font-semibold hover:brightness-110 text-body-sm shadow-md"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-container text-on-primary-container font-semibold hover:brightness-110 text-body-sm shadow-md transition-all disabled:opacity-50"
                 >
-                  Connect &amp; Register
+                  {isSubmitting ? (
+                    <>
+                      <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      <span>Verifying &amp; Discovering...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-[18px]">cloud_sync</span>
+                      <span>Connect &amp; Register</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>

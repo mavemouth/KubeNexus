@@ -60,13 +60,43 @@ class RecommendationService:
                 })
                 return r
 
-        # Generate a new recommendation for this workload
+        # Base the recommendation on samples retrieved from Prometheus instead
+        # of the placeholder values that used to be generated from the request.
+        samples = db.get_metrics(workload.id)
+        if len(samples) < 2:
+            raise HTTPException(status_code=409, detail="At least two Prometheus samples are required before analysis.")
+
+        def percentile(values: list[float], pct: float) -> float:
+            ordered_values = sorted(values)
+            index = min(len(ordered_values) - 1, max(0, int((len(ordered_values) - 1) * pct)))
+            return ordered_values[index]
+
+        cpu_values = [sample.cpuUsage for sample in samples]
+        memory_values = [sample.memoryUsageMb for sample in samples]
+        first = datetime.fromisoformat(samples[0].timestamp.replace("Z", "+00:00"))
+        last = datetime.fromisoformat(samples[-1].timestamp.replace("Z", "+00:00"))
+        observed_hours = max(0.0, (last - first).total_seconds() / 3600)
+        observed_label = f"{observed_hours:.1f} hours of Prometheus samples"
+        settings = db.get_settings()
+        headroom = 1 + max(0.0, settings.safetyMarginPct) / 100
+
+        # Keep a practical nonzero floor while giving the observed P99 the
+        # configured headroom. Savings remain an estimate based on the rates
+        # below, not a cloud-provider invoice calculation.
         from app.models.schemas import Percentiles
         rec_id = f"REC-{datetime.now(timezone.utc).strftime('%Y')}-{len(db.get_all_recommendations()) + 1:04d}"
 
-        target_cpu = max(0.2, round(workload.cpuUsageCores * 1.25, 2))
+        p50_cpu = percentile(cpu_values, 0.50)
+        p90_cpu = percentile(cpu_values, 0.90)
+        p99_cpu = percentile(cpu_values, 0.99)
+        max_cpu = max(cpu_values)
+        p50_memory = percentile(memory_values, 0.50)
+        p90_memory = percentile(memory_values, 0.90)
+        p99_memory = percentile(memory_values, 0.99)
+        max_memory = max(memory_values)
+        target_cpu = max(0.05, round(p99_cpu * headroom, 2))
         target_cpu_limit = round(target_cpu * 2.0, 2)
-        target_mem_mb = max(256.0, round(workload.memoryRequestMb * 0.7, 0))
+        target_mem_mb = max(64.0, round(p99_memory * headroom, 0))
         target_mem_limit_mb = round(target_mem_mb * 2.0, 0)
 
         cpu_diff = max(0.0, workload.cpuRequestCores - target_cpu)
@@ -88,11 +118,11 @@ class RecommendationService:
             recommendedMemoryRequest=f"{target_mem_mb / 1024.0:.1f} GB" if target_mem_mb >= 1024 else f"{int(target_mem_mb)} MB",
             currentMemoryLimit=f"{workload.memoryLimitMb / 1024.0:.1f} GB" if workload.memoryLimitMb >= 1024 else f"{int(workload.memoryLimitMb)} MB",
             recommendedMemoryLimit=f"{target_mem_limit_mb / 1024.0:.1f} GB" if target_mem_limit_mb >= 1024 else f"{int(target_mem_limit_mb)} MB",
-            observationWindow="7-day continuous analysis",
-            evidenceReason=f"Continuous analysis shows {workload.cpuUtilizationPct:.1f}% CPU utilization with peak P99 well below allocation.",
-            assumptions="Standard production safety margin applied (25% headroom).",
-            riskLevel="Low",
-            confidence="High",
+            observationWindow=observed_label,
+            evidenceReason=f"Prometheus returned {len(samples)} samples over {observed_label}; observed P99 is {p99_cpu:.3f} CPU cores and {p99_memory:.1f} MB memory.",
+            assumptions=f"Uses {settings.safetyMarginPct:.0f}% headroom and illustrative rates of $0.04 per CPU core-hour and $0.005 per GB-hour. Verify with your cloud bill before applying.",
+            riskLevel="Medium" if observed_hours < 24 * 7 else "Low",
+            confidence="Low" if observed_hours < 24 * 7 else "High",
             estimatedMonthlySavings=savings,
             status="Generated",
             createdAt="Just now",
@@ -102,14 +132,14 @@ class RecommendationService:
             dataQualityCheckPassed=True,
             metricsFresh=True,
             percentiles=Percentiles(
-                p50Cpu=round(workload.cpuUsageCores * 0.8, 2),
-                p90Cpu=round(workload.cpuUsageCores * 0.95, 2),
-                p99Cpu=round(workload.cpuUsageCores * 1.05, 2),
-                maxCpu=round(workload.cpuUsageCores * 1.15, 2),
-                p50MemoryMb=round(workload.memoryRequestMb * 0.4, 1),
-                p90MemoryMb=round(workload.memoryRequestMb * 0.55, 1),
-                p99MemoryMb=round(workload.memoryRequestMb * 0.65, 1),
-                maxMemoryMb=round(workload.memoryRequestMb * 0.70, 1)
+                p50Cpu=round(p50_cpu, 3),
+                p90Cpu=round(p90_cpu, 3),
+                p99Cpu=round(p99_cpu, 3),
+                maxCpu=round(max_cpu, 3),
+                p50MemoryMb=round(p50_memory, 1),
+                p90MemoryMb=round(p90_memory, 1),
+                p99MemoryMb=round(p99_memory, 1),
+                maxMemoryMb=round(max_memory, 1)
             )
         )
         db.save_recommendation(new_rec)

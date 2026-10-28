@@ -1,5 +1,6 @@
 import {
   Cluster,
+  ClusterCreatePayload,
   Workload,
   Recommendation,
   AlertItem,
@@ -43,32 +44,17 @@ export const api = {
     return fetchOrFallback('/clusters', INITIAL_CLUSTERS);
   },
   
-  createCluster: async (clusterData: Partial<Cluster>): Promise<Cluster> => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/clusters`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(clusterData)
-      });
-      if (response.ok) {
-        return await response.json();
-      }
-    } catch (e) {
-      console.error('Failed to create cluster:', e);
+  createCluster: async (clusterData: ClusterCreatePayload | Partial<Cluster>): Promise<Cluster> => {
+    const response = await fetch(`${API_BASE_URL}/clusters`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(clusterData)
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.detail || `Cluster connection failed (${response.status})`);
     }
-    return {
-      id: `cluster-${Date.now()}`,
-      name: clusterData.name || 'new-cluster',
-      environment: clusterData.environment || 'production',
-      connectionStatus: 'Connected',
-      lastChecked: 'Just now',
-      workloadCount: 0,
-      monitoringStatus: 'Healthy',
-      nodeCount: clusterData.nodeCount || 3,
-      k8sVersion: 'v1.28.2',
-      provider: clusterData.provider || 'AWS EKS',
-      apiEndpoint: clusterData.apiEndpoint || 'https://api.k8s.local'
-    };
+    return await response.json();
   },
 
   // Workloads API

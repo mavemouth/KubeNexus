@@ -1,3 +1,28 @@
+# ── Secrets & local config ────────────────────────────────────────
 .env
 !.env.example
-node_modules
+backend/.env
+!backend/.env.example
+
+# ── Node ──────────────────────────────────────────────────────────
+node_modules/
+dist/
+
+# ── Python ────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+.mypy_cache/
+
+# ── SQLite local database ─────────────────────────────────────────
+# Commit kubenexus.db only if you want to share pre-seeded demo data.
+# Remove the next line to track it.
+backend/kubenexus.db
+
+# ── OS & IDE ──────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,4 +1,5 @@
 import json
+import hashlib
 from typing import List, Optional
 from datetime import datetime, timezone
 from sqlalchemy.orm import Session
@@ -7,6 +8,7 @@ from app.database import SessionLocal, init_db
 from app.models.orm import (
     ClusterModel,
     WorkloadModel,
+    MetricSampleModel,
     RecommendationModel,
     AlertModel,
     AuditEventModel,
@@ -44,7 +46,9 @@ def cluster_to_pydantic(m: ClusterModel) -> Cluster:
         nodeCount=m.node_count,
         k8sVersion=m.k8s_version,
         provider=m.provider, # type: ignore
-        apiEndpoint=m.api_endpoint
+        apiEndpoint=m.api_endpoint,
+        authMethod=getattr(m, "auth_method", "local") or "local",
+        prometheusUrl=getattr(m, "prometheus_url", "http://localhost:9090") or "http://localhost:9090"
     )
 
 def workload_to_pydantic(m: WorkloadModel) -> Workload:
@@ -210,7 +214,7 @@ class PostgresDatabase:
             row = session.query(ClusterModel).filter(ClusterModel.id == cluster_id).first()
             return cluster_to_pydantic(row) if row else None
 
-    def add_cluster(self, cluster: Cluster) -> Cluster:
+    def add_cluster(self, cluster: Cluster, kubeconfig_raw: Optional[str] = None, bearer_token: Optional[str] = None) -> Cluster:
         with SessionLocal() as session:
             model = ClusterModel(
                 id=cluster.id,
@@ -223,11 +227,28 @@ class PostgresDatabase:
                 node_count=cluster.nodeCount,
                 k8s_version=cluster.k8sVersion,
                 provider=cluster.provider,
-                api_endpoint=cluster.apiEndpoint
+                api_endpoint=cluster.apiEndpoint,
+                auth_method=cluster.authMethod,
+                kubeconfig_raw=kubeconfig_raw,
+                bearer_token=bearer_token,
+                prometheus_url=cluster.prometheusUrl
             )
             session.add(model)
             session.commit()
             return cluster
+
+    def get_cluster_credentials(self, cluster_id: str) -> dict:
+        with SessionLocal() as session:
+            row = session.query(ClusterModel).filter(ClusterModel.id == cluster_id).first()
+            if not row:
+                return {}
+            return {
+                "auth_method": getattr(row, "auth_method", "local"),
+                "kubeconfig_raw": getattr(row, "kubeconfig_raw", None),
+                "bearer_token": getattr(row, "bearer_token", None),
+                "api_endpoint": getattr(row, "api_endpoint", None),
+                "prometheus_url": getattr(row, "prometheus_url", "http://localhost:9090")
+            }
 
     # Workload queries
     def get_all_workloads(self, cluster_id: Optional[str] = None) -> List[Workload]:
@@ -275,6 +296,45 @@ class PostgresDatabase:
             session.add(model)
             session.commit()
             return workload
+
+    def upsert_workloads(self, workloads: List[Workload]) -> None:
+        """Persist the latest discovered Kubernetes workload configuration."""
+        with SessionLocal() as session:
+            for workload in workloads:
+                model = session.query(WorkloadModel).filter(WorkloadModel.id == workload.id).first()
+                if model is None:
+                    model = WorkloadModel(id=workload.id, name=workload.name, namespace=workload.namespace,
+                                          cluster_name=workload.clusterName)
+                    session.add(model)
+                else:
+                    # Return the last collected evidence with newly discovered
+                    # Kubernetes configuration in the same API response.
+                    workload.cpuUsageCores = model.cpu_usage_cores or 0.0
+                    workload.cpuUtilizationPct = model.cpu_utilization_pct or 0.0
+                    workload.memoryUtilizationPct = model.memory_utilization_pct or 0.0
+                    workload.dataQualityStatus = model.data_quality_status or workload.dataQualityStatus
+                    workload.lastAnalysisTime = model.last_analysis_time or workload.lastAnalysisTime
+                model.name = workload.name
+                model.namespace = workload.namespace
+                model.cluster_id = workload.clusterId
+                model.cluster_name = workload.clusterName
+                model.type = workload.type
+                model.replicas_desired = workload.replicasDesired
+                model.replicas_available = workload.replicasAvailable
+                model.cpu_request = workload.cpuRequest
+                model.cpu_limit = workload.cpuLimit
+                model.cpu_request_cores = workload.cpuRequestCores
+                model.cpu_limit_cores = workload.cpuLimitCores
+                # Preserve utilization previously collected from Prometheus.
+                model.memory_request_mb = workload.memoryRequestMb
+                model.memory_limit_mb = workload.memoryLimitMb
+                # Preserve utilization percentages across inventory refreshes.
+                model.status = workload.status
+                # Preserve the current evidence status across inventory refreshes.
+                model.restarts = workload.restarts
+                model.oom_kills = workload.oomKills
+                # Preserve metrics collection metadata across inventory refreshes.
+            session.commit()
 
     def update_workload(self, workload: Workload) -> Workload:
         with SessionLocal() as session:
@@ -472,24 +532,30 @@ class PostgresDatabase:
         workload = self.get_workload(workload_id_or_name)
         if not workload:
             return []
-        
-        # Build 8-point telemetry window from workload's actual specs
-        points = []
-        timestamps = ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"]
-        factors = [0.85, 0.90, 1.05, 1.10, 0.98, 0.95, 1.02, 0.88]
-        
-        for t, f in zip(timestamps, factors):
-            points.append(
-                MetricTimeSeriesPoint(
-                    timestamp=t,
-                    cpuUsage=round(workload.cpuUsageCores * f, 3),
-                    cpuRequest=workload.cpuRequestCores,
-                    cpuLimit=workload.cpuLimitCores,
-                    memoryUsageMb=round((workload.memoryRequestMb * (workload.memoryUtilizationPct / 100.0)) * f, 1),
-                    memoryLimitMb=workload.memoryLimitMb
-                )
-            )
-        return points
+        with SessionLocal() as session:
+            rows = (session.query(MetricSampleModel)
+                    .filter(MetricSampleModel.workload_id == workload.id)
+                    .order_by(MetricSampleModel.timestamp.asc()).all())
+            return [MetricTimeSeriesPoint(
+                timestamp=row.timestamp, cpuUsage=row.cpu_usage,
+                cpuRequest=row.cpu_request, cpuLimit=row.cpu_limit,
+                memoryUsageMb=row.memory_usage_mb, memoryLimitMb=row.memory_limit_mb
+            ) for row in rows]
+
+    def store_metrics(self, workload_id: str, points: List[MetricTimeSeriesPoint]) -> None:
+        with SessionLocal() as session:
+            for point in points:
+                sample_key = f"{workload_id}:{point.timestamp}".encode("utf-8")
+                sample_id = hashlib.sha256(sample_key).hexdigest()
+                if session.query(MetricSampleModel.id).filter(MetricSampleModel.id == sample_id).first():
+                    continue
+                session.add(MetricSampleModel(
+                    id=sample_id, workload_id=workload_id, timestamp=point.timestamp,
+                    cpu_usage=point.cpuUsage, cpu_request=point.cpuRequest,
+                    cpu_limit=point.cpuLimit, memory_usage_mb=point.memoryUsageMb,
+                    memory_limit_mb=point.memoryLimitMb,
+                ))
+            session.commit()
 
     # Settings queries
     def get_settings(self) -> OptimizationSettings:
