@@ -117,6 +117,13 @@ class Recommendation(BaseModel):
     dataQualityCheckPassed: bool = True
     metricsFresh: bool = True
     
+    # Phase 2: Autoscaler & Safety Metadata
+    autoscalerStatus: Optional[str] = 'NOT_CONFIGURED'
+    safetyStatus: Optional[Literal['SAFE', 'WARNING', 'BLOCKED', 'UNKNOWN']] = 'SAFE'
+    safetyWarnings: List[str] = Field(default_factory=list)
+    blockedReasons: List[str] = Field(default_factory=list)
+    requiresManualReview: bool = False
+    
     percentiles: Percentiles
 
 class AlertItem(BaseModel):

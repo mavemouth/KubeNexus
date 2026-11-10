@@ -125,6 +125,11 @@ def rec_to_pydantic(m: RecommendationModel) -> Recommendation:
         vpaDetected=m.vpa_detected,
         dataQualityCheckPassed=m.data_quality_check_passed,
         metricsFresh=m.metrics_fresh,
+        autoscalerStatus=getattr(m, 'autoscaler_status', 'NOT_CONFIGURED') or 'NOT_CONFIGURED',
+        safetyStatus=getattr(m, 'safety_status', 'SAFE') or 'SAFE',
+        safetyWarnings=json.loads(getattr(m, 'safety_warnings_json', '[]') or '[]'),
+        blockedReasons=json.loads(getattr(m, 'blocked_reasons_json', '[]') or '[]'),
+        requiresManualReview=bool(getattr(m, 'requires_manual_review', False)),
         percentiles=percentiles
     )
 
@@ -394,6 +399,15 @@ class PostgresDatabase:
                 row.recommended_memory_limit = rec.recommendedMemoryLimit
                 row.evidence_reason = rec.evidenceReason
                 row.estimated_monthly_savings = rec.estimatedMonthlySavings
+                row.hpa_detected = rec.hpaDetected
+                row.vpa_detected = rec.vpaDetected
+                row.data_quality_check_passed = rec.dataQualityCheckPassed
+                row.metrics_fresh = rec.metricsFresh
+                row.autoscaler_status = rec.autoscalerStatus
+                row.safety_status = rec.safetyStatus
+                row.safety_warnings_json = json.dumps(rec.safetyWarnings or [])
+                row.blocked_reasons_json = json.dumps(rec.blockedReasons or [])
+                row.requires_manual_review = rec.requiresManualReview
                 row.percentiles_json = pct_json
                 session.commit()
             else:
@@ -425,6 +439,11 @@ class PostgresDatabase:
                     vpa_detected=rec.vpaDetected,
                     data_quality_check_passed=rec.dataQualityCheckPassed,
                     metrics_fresh=rec.metricsFresh,
+                    autoscaler_status=rec.autoscalerStatus,
+                    safety_status=rec.safetyStatus,
+                    safety_warnings_json=json.dumps(rec.safetyWarnings or []),
+                    blocked_reasons_json=json.dumps(rec.blockedReasons or []),
+                    requires_manual_review=rec.requiresManualReview,
                     percentiles_json=pct_json
                 )
                 session.add(model)

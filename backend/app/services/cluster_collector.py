@@ -32,7 +32,7 @@ def _kubernetes_clients(
             import yaml
             config_dict = yaml.safe_load(kubeconfig_raw)
             config.load_kube_config_from_dict(config_dict)
-            return client.CoreV1Api(), client.AppsV1Api(), client.BatchV1Api(), client.VersionApi()
+            return client.CoreV1Api(), client.AppsV1Api(), client.BatchV1Api(), client.VersionApi(), client.AutoscalingV2Api(), client.CustomObjectsApi()
 
         elif auth_method == "token" and bearer_token and bearer_token.strip():
             if not api_endpoint or not api_endpoint.strip():
@@ -46,7 +46,9 @@ def _kubernetes_clients(
                 client.CoreV1Api(api_client),
                 client.AppsV1Api(api_client),
                 client.BatchV1Api(api_client),
-                client.VersionApi(api_client)
+                client.VersionApi(api_client),
+                client.AutoscalingV2Api(api_client),
+                client.CustomObjectsApi(api_client)
             )
 
         else:
@@ -56,7 +58,7 @@ def _kubernetes_clients(
                 config.load_incluster_config()
             else:
                 config.load_kube_config(config_file=kubeconfig)
-            return client.CoreV1Api(), client.AppsV1Api(), client.BatchV1Api(), client.VersionApi()
+            return client.CoreV1Api(), client.AppsV1Api(), client.BatchV1Api(), client.VersionApi(), client.AutoscalingV2Api(), client.CustomObjectsApi()
 
     except Exception as exc:
         raise RuntimeError(f"Could not load Kubernetes configuration ({auth_method}): {exc}") from exc
@@ -106,7 +108,7 @@ class ClusterCollector:
         kubeconfig_raw: str | None = None,
         bearer_token: str | None = None
     ) -> dict[str, Any]:
-        core, apps, batch, version_api = _kubernetes_clients(
+        core, apps, batch, version_api, autoscaling, custom_objects = _kubernetes_clients(
             auth_method=auth_method,
             kubeconfig_raw=kubeconfig_raw,
             bearer_token=bearer_token,
@@ -132,6 +134,8 @@ class ClusterCollector:
             "core": core,
             "apps": apps,
             "batch": batch,
+            "autoscaling": autoscaling,
+            "custom_objects": custom_objects,
             "endpoint": actual_endpoint,
             "version": getattr(version, "git_version", "unknown"),
             "node_count": len(nodes.items),

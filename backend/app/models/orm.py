@@ -108,6 +108,14 @@ class RecommendationModel(Base):
     vpa_detected = Column(Boolean, default=False)
     data_quality_check_passed = Column(Boolean, default=True)
     metrics_fresh = Column(Boolean, default=True)
+
+    # Phase 2: Autoscaler and Safety metadata
+    autoscaler_status = Column(String(64), default="NOT_CONFIGURED")
+    safety_status = Column(String(32), default="SAFE")
+    safety_warnings_json = Column(Text, default="[]")
+    blocked_reasons_json = Column(Text, default="[]")
+    requires_manual_review = Column(Boolean, default=False)
+
     percentiles_json = Column(Text, default="{}")
 
 class AlertModel(Base):
