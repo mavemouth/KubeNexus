@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useApp } from '../context/AppContext';
 import { Cluster } from '../types';
 
@@ -10,7 +11,7 @@ export const ClustersPage: React.FC = () => {
   const [name, setName] = useState('');
   const [provider, setProvider] = useState<'AWS EKS' | 'GKE' | 'Self-Hosted Minikube' | 'Azure AKS'>('Self-Hosted Minikube');
   const [environment, setEnvironment] = useState<'production' | 'staging' | 'development'>('development');
-  const [authMethod, setAuthMethod] = useState<'local' | 'kubeconfig' | 'token'>('local');
+  const [authMethod, setAuthMethod] = useState<'local' | 'kubeconfig' | 'token' | 'demo'>('local');
   const [apiEndpoint, setApiEndpoint] = useState('');
   const [kubeconfigRaw, setKubeconfigRaw] = useState('');
   const [bearerToken, setBearerToken] = useState('');
@@ -223,9 +224,12 @@ export const ClustersPage: React.FC = () => {
       </div>
 
       {/* Register Cluster Modal */}
-      {modalOpen && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-xl rounded-xl bg-surface-container-low border border-surface-container-highest p-space-lg shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      {modalOpen && createPortal(
+        <div
+          className="fixed inset-0 z-[99999] bg-[#050b14]/80 backdrop-blur-xl flex items-center justify-center p-4 overflow-y-auto"
+          style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+        >
+          <div className="w-full max-w-xl rounded-xl bg-surface-container-low border border-surface-container-highest p-space-lg shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto my-auto relative z-10">
             <div className="flex items-center justify-between pb-3 border-b border-surface-container-high">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-[22px] text-primary">add_circle</span>
@@ -291,37 +295,37 @@ export const ClustersPage: React.FC = () => {
                 <label className="block text-xs font-semibold text-primary uppercase tracking-wider">
                   Authentication &amp; Access Method
                 </label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <button
                     type="button"
                     onClick={() => setAuthMethod('local')}
-                    className={`px-3 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
+                    className={`px-2.5 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
                       authMethod === 'local'
                         ? 'bg-primary-container/20 text-primary border-primary-container/60 shadow-sm'
                         : 'bg-surface-container border-surface-container-highest text-on-surface-variant hover:bg-surface-container-high'
                     }`}
                   >
                     <span className="material-symbols-outlined text-[18px]">laptop</span>
-                    <span>Local / In-Cluster</span>
+                    <span>Local Cluster</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setAuthMethod('kubeconfig')}
-                    className={`px-3 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
+                    className={`px-2.5 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
                       authMethod === 'kubeconfig'
                         ? 'bg-primary-container/20 text-primary border-primary-container/60 shadow-sm'
                         : 'bg-surface-container border-surface-container-highest text-on-surface-variant hover:bg-surface-container-high'
                     }`}
                   >
                     <span className="material-symbols-outlined text-[18px]">description</span>
-                    <span>Kubeconfig YAML</span>
+                    <span>Kubeconfig</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setAuthMethod('token')}
-                    className={`px-3 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
+                    className={`px-2.5 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
                       authMethod === 'token'
                         ? 'bg-primary-container/20 text-primary border-primary-container/60 shadow-sm'
                         : 'bg-surface-container border-surface-container-highest text-on-surface-variant hover:bg-surface-container-high'
@@ -330,9 +334,34 @@ export const ClustersPage: React.FC = () => {
                     <span className="material-symbols-outlined text-[18px]">key</span>
                     <span>Bearer Token</span>
                   </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setAuthMethod('demo' as any)}
+                    className={`px-2.5 py-2 rounded-lg text-xs font-semibold border flex flex-col items-center justify-center gap-1 transition-all ${
+                      authMethod === 'demo'
+                        ? 'bg-tertiary-container/20 text-tertiary border-tertiary-container/60 shadow-sm'
+                        : 'bg-surface-container border-surface-container-highest text-on-surface-variant hover:bg-surface-container-high'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-[18px]">smart_toy</span>
+                    <span>Demo Mode</span>
+                  </button>
                 </div>
 
                 {/* Conditional Fields Based on Auth Method */}
+                {authMethod === 'demo' && (
+                  <div className="p-3 rounded-lg bg-tertiary-container/10 border border-tertiary-container/30 text-xs text-on-surface-variant space-y-1">
+                    <p className="font-semibold text-tertiary flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[16px]">verified</span>
+                      Instant Sandbox &amp; Demo Mode
+                    </p>
+                    <p>
+                      Registers an active cluster with pre-populated workloads and telemetry. Perfect for testing and UI evaluation without needing a local Minikube or Docker process running.
+                    </p>
+                  </div>
+                )}
+
                 {authMethod === 'local' && (
                   <div className="p-3 rounded-lg bg-surface-container/60 border border-surface-container-highest text-xs text-on-surface-variant space-y-1">
                     <p className="font-semibold text-on-surface flex items-center gap-1">
@@ -458,7 +487,8 @@ export const ClustersPage: React.FC = () => {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

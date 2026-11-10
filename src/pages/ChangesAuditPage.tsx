@@ -2,7 +2,18 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 
 export const ChangesAuditPage: React.FC = () => {
-  const { auditEvents } = useApp();
+  const { auditEvents, workloads, clusters, selectedClusterId } = useApp();
+
+  const currentCluster = clusters.find((c) => c.id === selectedClusterId);
+  const clusterScopedEvents = selectedClusterId === 'all'
+    ? auditEvents
+    : currentCluster
+    ? auditEvents.filter((e) => {
+        if (e.clusterName === currentCluster.name) return true;
+        const wl = workloads.find((w) => w.name === e.workloadName);
+        return wl && (wl.clusterId === currentCluster.id || wl.clusterName === currentCluster.name);
+      })
+    : auditEvents;
 
   return (
     <div className="flex flex-col w-full space-y-space-lg pb-space-xl">
@@ -37,7 +48,7 @@ export const ChangesAuditPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-surface-container-high/40 text-body-sm">
-              {auditEvents.length === 0 ? (
+              {clusterScopedEvents.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="py-12 text-center text-on-surface-variant">
                     <div className="flex flex-col items-center justify-center space-y-2">
@@ -50,7 +61,7 @@ export const ChangesAuditPage: React.FC = () => {
                   </td>
                 </tr>
               ) : (
-                auditEvents.map((event) => (
+                clusterScopedEvents.map((event) => (
                 <tr key={event.id} className="hover:bg-surface-container-high/40 transition-colors">
                   <td className="py-4 px-4">
                     <div className="flex flex-col">

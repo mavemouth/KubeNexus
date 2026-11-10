@@ -7,10 +7,15 @@ export const MonitoringPage: React.FC = () => {
   const { clusters, selectedClusterId, workloads } = useApp();
   const [windowRange, setWindowRange] = useState('24h');
 
-  const currentCluster = clusters.find((c) => c.id === selectedClusterId) || clusters[0];
+  const isAllClusters = selectedClusterId === 'all';
+  const currentCluster = clusters.find((c) => c.id === selectedClusterId) || (isAllClusters ? null : clusters[0]);
 
   // Dynamic telemetry calculated from active database workloads
-  const clusterWorkloads = currentCluster ? workloads.filter((w) => !w.clusterId || w.clusterId === currentCluster.id || w.clusterName === currentCluster.name) : [];
+  const clusterWorkloads = isAllClusters
+    ? workloads
+    : currentCluster
+    ? workloads.filter((w) => w.clusterId === currentCluster.id || w.clusterName === currentCluster.name)
+    : [];
   const clusterCpuUsed = clusterWorkloads.reduce((sum, w) => sum + w.cpuUsageCores, 0);
   const clusterCpuReq = clusterWorkloads.reduce((sum, w) => sum + w.cpuRequestCores, 0);
   const clusterCpuUtil = clusterCpuReq > 0 ? (clusterCpuUsed / clusterCpuReq) * 100 : 0;

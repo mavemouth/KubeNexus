@@ -4,10 +4,20 @@ import { ResourceUtilizationChart } from '../components/charts/ResourceUtilizati
 import { MetricTimeSeriesPoint } from '../types';
 
 export const EvaluationPage: React.FC = () => {
-  const { evaluations } = useApp();
-  const [selectedEvalId, setSelectedEvalId] = useState(evaluations[0]?.id || '');
+  const { evaluations, workloads, clusters, selectedClusterId } = useApp();
 
-  const currentEval = evaluations.find((e) => e.id === selectedEvalId) || evaluations[0];
+  const currentCluster = clusters.find((c) => c.id === selectedClusterId);
+  const clusterScopedEvals = selectedClusterId === 'all'
+    ? evaluations
+    : currentCluster
+    ? evaluations.filter((ev) => {
+        const wl = workloads.find((w) => w.id === ev.workloadId || w.name === ev.workloadName);
+        return !wl || wl.clusterId === currentCluster.id || wl.clusterName === currentCluster.name;
+      })
+    : evaluations;
+
+  const [selectedEvalId, setSelectedEvalId] = useState('');
+  const currentEval = clusterScopedEvals.find((e) => e.id === selectedEvalId) || clusterScopedEvals[0];
 
   // Evaluation telemetry comparison series
   const evalMetrics: MetricTimeSeriesPoint[] = currentEval ? [
@@ -37,14 +47,14 @@ export const EvaluationPage: React.FC = () => {
           </p>
         </div>
 
-        {evaluations.length > 0 && (
+        {clusterScopedEvals.length > 0 && (
           <div className="flex items-center gap-2">
             <select
               value={selectedEvalId || currentEval?.id}
               onChange={(e) => setSelectedEvalId(e.target.value)}
               className="px-3.5 py-2 rounded-lg bg-surface-container border border-surface-container-highest text-on-surface text-body-sm focus:outline-none font-semibold"
             >
-              {evaluations.map((ev) => (
+              {clusterScopedEvals.map((ev) => (
                 <option key={ev.id} value={ev.id}>
                   {ev.workloadName} ({ev.changeTimestamp})
                 </option>

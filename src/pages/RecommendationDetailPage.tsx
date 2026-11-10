@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { api } from '../api';
@@ -346,9 +347,12 @@ export const RecommendationDetailPage: React.FC = () => {
       </div>
 
       {/* Confirmation Modal */}
-      {confirmModalAction && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-md rounded-xl bg-surface-container-low border border-surface-container-highest p-space-lg shadow-2xl space-y-4">
+      {confirmModalAction && createPortal(
+        <div
+          className="fixed inset-0 z-[99999] bg-[#050b14]/80 backdrop-blur-xl flex items-center justify-center p-4 overflow-y-auto"
+          style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+        >
+          <div className="w-full max-w-md rounded-xl bg-surface-container-low border border-surface-container-highest p-space-lg shadow-2xl space-y-4 relative z-10">
             <div className="flex items-center gap-2 text-primary">
               <span className="material-symbols-outlined text-[24px]">help_outline</span>
               <h3 className="font-headline-md text-headline-md text-on-surface font-semibold capitalize">
@@ -375,7 +379,8 @@ export const RecommendationDetailPage: React.FC = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

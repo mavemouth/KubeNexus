@@ -14,8 +14,10 @@ export const Header: React.FC = () => {
   const [clusterDropdownOpen, setClusterDropdownOpen] = useState(false);
   const [timeDropdownOpen, setTimeDropdownOpen] = useState(false);
 
-  const currentCluster = clusters.find((c) => c.id === selectedClusterId) || clusters[0];
+  const isAllClusters = selectedClusterId === 'all';
+  const currentCluster = clusters.find((c) => c.id === selectedClusterId) || (isAllClusters ? null : clusters[0]);
   const activeAlertsCount = alerts.filter((a) => a.status === 'Active').length;
+  const displayName = isAllClusters ? 'All Clusters (Fleet View)' : (currentCluster ? currentCluster.name : 'Select Cluster');
 
   const timeRanges = ['Last 1 Hour', 'Last 6 Hours', 'Last 24 Hours', 'Last 7 Days'];
 
@@ -30,8 +32,10 @@ export const Header: React.FC = () => {
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#1a273a] hover:bg-[#22324b] text-slate-200 text-sm font-medium border border-[#263750] transition-colors"
             type="button"
           >
-            <span className="material-symbols-outlined text-[18px] text-sky-400">hub</span>
-            <span>{currentCluster ? currentCluster.name : 'Select Cluster'}</span>
+            <span className="material-symbols-outlined text-[18px] text-sky-400">
+              {isAllClusters ? 'public' : 'hub'}
+            </span>
+            <span>{displayName}</span>
             <span className="material-symbols-outlined text-[16px] text-slate-400">keyboard_arrow_down</span>
           </button>
 
@@ -40,6 +44,23 @@ export const Header: React.FC = () => {
               <div className="px-2 py-1 text-[11px] font-medium text-slate-400 uppercase">
                 Active Clusters
               </div>
+              <button
+                onClick={() => {
+                  setSelectedClusterId('all');
+                  setClusterDropdownOpen(false);
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-left text-xs transition-colors mb-1 border-b border-[#1e2d42] pb-2 ${
+                  selectedClusterId === 'all'
+                    ? 'bg-sky-500/15 text-sky-400 font-medium'
+                    : 'text-slate-300 hover:bg-[#1e2d42]'
+                }`}
+              >
+                <div className="flex flex-col">
+                  <span className="font-semibold">All Clusters (Fleet View)</span>
+                  <span className="text-[10px] text-slate-400">{clusters.length} total clusters</span>
+                </div>
+                <span className="material-symbols-outlined text-[16px] text-sky-400">public</span>
+              </button>
               {clusters.map((c) => (
                 <button
                   key={c.id}

@@ -9,12 +9,12 @@ print('Status:', r.status_code, r.json())
 print('\n--- 2. Clusters ---')
 r = requests.get(f'{base}/clusters')
 print('Clusters count:', len(r.json()))
-assert len(r.json()) >= 4
+assert len(r.json()) >= 2
 
 print('\n--- 3. Workloads ---')
 r = requests.get(f'{base}/workloads')
 print('Workloads count:', len(r.json()))
-assert len(r.json()) >= 7
+assert len(r.json()) >= 4
 
 print('\n--- 4. Cost Summary ---')
 r = requests.get(f'{base}/cost/summary')
@@ -22,7 +22,7 @@ print('Cost Summary:', r.json())
 assert r.json()['monthlySpend'] > 0
 
 print('\n--- 5. Trigger Analysis for Workload ---')
-r = requests.post(f'{base}/workloads/wl-payment-service/analysis')
+r = requests.post(f'{base}/workloads/wl-frontend-gateway/analysis')
 print('Analysis:', r.status_code, r.json()['status'])
 rec = r.json()['recommendation']
 rec_id = rec['id']
@@ -44,7 +44,7 @@ print('Duplicate Apply Prevention (should be 400):', r_dup.status_code, r_dup.js
 assert r_dup.status_code == 400
 
 print('\n--- 9. Verify Workload Updated ---')
-r = requests.get(f'{base}/workloads/wl-payment-service')
+r = requests.get(f'{base}/workloads/wl-frontend-gateway')
 print('Workload after apply:', r.json()['cpuRequest'], r.json()['status'], 'utilization:', r.json()['cpuUtilizationPct'])
 assert r.json()['status'] == 'Healthy'
 

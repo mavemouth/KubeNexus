@@ -126,6 +126,15 @@ export const api = {
     return await res.json();
   },
 
+  rollbackRecommendation: async (id: string): Promise<Recommendation> => {
+    const res = await fetch(`${API_BASE_URL}/recommendations/${id}/rollback`, { method: 'POST' });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.detail || `Failed to rollback recommendation ${id}`);
+    }
+    return await res.json();
+  },
+
   // Alerts API
   getAlerts: (): Promise<AlertItem[]> => {
     return fetchOrFallback('/alerts', INITIAL_ALERTS);

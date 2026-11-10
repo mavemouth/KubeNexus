@@ -4,12 +4,35 @@ import { useApp } from '../context/AppContext';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
-  const { workloads, recommendations, alerts, refreshData } = useApp();
+  const { workloads, recommendations, alerts, clusters, selectedClusterId, refreshData } = useApp();
 
-  const activeRecommendations = recommendations.filter((r) => r.status === 'Generated' || r.status === 'Approved');
+  const currentCluster = clusters.find((c) => c.id === selectedClusterId);
+  const clusterWorkloads = selectedClusterId === 'all'
+    ? workloads
+    : currentCluster
+    ? workloads.filter((w) => w.clusterId === currentCluster.id || w.clusterName === currentCluster.name)
+    : workloads;
+
+  const clusterRecs = selectedClusterId === 'all'
+    ? recommendations
+    : currentCluster
+    ? recommendations.filter((r) => {
+        if (r.clusterName === currentCluster.name) return true;
+        const wl = clusterWorkloads.find((w) => w.id === r.workloadId || w.name === r.workloadName);
+        return wl !== undefined;
+      })
+    : recommendations;
+
+  const clusterAlerts = selectedClusterId === 'all'
+    ? alerts
+    : currentCluster
+    ? alerts.filter((a) => a.clusterName === currentCluster.name)
+    : alerts;
+
+  const activeRecommendations = clusterRecs.filter((r) => r.status === 'Generated' || r.status === 'Approved');
 
   // Dynamically calculated from live database records
-  const totalSpend = workloads.reduce((sum, w) => {
+  const totalSpend = clusterWorkloads.reduce((sum, w) => {
     const hourly = (w.cpuRequestCores * 0.04) + ((w.memoryRequestMb / 1024.0) * 0.005);
     return sum + (hourly * 730);
   }, 0);
@@ -20,12 +43,12 @@ export const DashboardPage: React.FC = () => {
 
   const savingsPct = totalSpend > 0 ? (potentialSavings / totalSpend) * 100 : 0;
 
-  const totalCpuUsed = workloads.reduce((sum, w) => sum + w.cpuUsageCores, 0);
-  const totalCpuReq = workloads.reduce((sum, w) => sum + w.cpuRequestCores, 0);
+  const totalCpuUsed = clusterWorkloads.reduce((sum, w) => sum + w.cpuUsageCores, 0);
+  const totalCpuReq = clusterWorkloads.reduce((sum, w) => sum + w.cpuRequestCores, 0);
   const cpuEfficiency = totalCpuReq > 0 ? (totalCpuUsed / totalCpuReq) * 100 : 0;
 
-  const totalMemUsedMb = workloads.reduce((sum, w) => sum + (w.memoryRequestMb * (w.memoryUtilizationPct / 100)), 0);
-  const totalMemReqMb = workloads.reduce((sum, w) => sum + w.memoryRequestMb, 0);
+  const totalMemUsedMb = clusterWorkloads.reduce((sum, w) => sum + (w.memoryRequestMb * (w.memoryUtilizationPct / 100)), 0);
+  const totalMemReqMb = clusterWorkloads.reduce((sum, w) => sum + w.memoryRequestMb, 0);
   const memEfficiency = totalMemReqMb > 0 ? (totalMemUsedMb / totalMemReqMb) * 100 : 0;
 
   return (
@@ -34,12 +57,12 @@ export const DashboardPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1e2d42]">
         <div>
           <h1 className="text-2xl font-bold text-slate-100 tracking-tight">
-            Cluster Overview
+            {selectedClusterId === 'all' ? 'Fleet Overview' : `${currentCluster?.name || 'Cluster'} Overview`}
           </h1>
           <p className="text-sm text-slate-400 mt-1">
-            {workloads.length > 0
-              ? `Live telemetry across ${workloads.length} monitored workloads · Connected to PostgreSQL`
-              : 'Live PostgreSQL database connected · Connect a Kubernetes cluster or register workloads to start analysis'}
+            {clusterWorkloads.length > 0
+              ? `Live telemetry across ${clusterWorkloads.length} monitored workloads ${selectedClusterId === 'all' ? 'across all clusters' : `in ${currentCluster?.name || 'this cluster'}`}`
+              : `Connected to ${currentCluster?.name || 'cluster'} · Register workloads or run analysis to start optimization`}
           </p>
         </div>
 
@@ -182,7 +205,7 @@ export const DashboardPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#1e2d42]">
-                  {recommendations.slice(0, 4).map((rec) => (
+                  {clusterRecs.slice(0, 4).map((rec) => (
                     <tr key={rec.id} className="hover:bg-[#1a273a] transition-colors">
                       <td className="py-3 px-2 font-medium text-slate-200">
                         <div>{rec.workloadName}</div>
@@ -228,14 +251,14 @@ export const DashboardPage: React.FC = () => {
             </div>
 
             <div className="mt-4 space-y-3">
-              {alerts.length === 0 ? (
+              {clusterAlerts.length === 0 ? (
                 <div className="py-10 flex flex-col items-center justify-center text-center">
                   <span className="material-symbols-outlined text-emerald-400 text-[32px] mb-2">check_circle</span>
                   <p className="text-sm font-medium text-slate-200">System Healthy</p>
                   <p className="text-xs text-slate-400 mt-1">No active resource pressure or saturation alerts</p>
                 </div>
               ) : (
-                alerts.slice(0, 3).map((a) => (
+                clusterAlerts.slice(0, 3).map((a) => (
                   <div key={a.id} className="p-3 rounded-lg bg-[#1a273a] border border-[#263750] space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-semibold text-slate-200">{a.title}</span>

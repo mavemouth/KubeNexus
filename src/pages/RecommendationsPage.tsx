@@ -5,13 +5,24 @@ import { RiskIndicator, ConfidenceBadge } from '../components/common/RiskIndicat
 
 export const RecommendationsPage: React.FC = () => {
   const navigate = useNavigate();
-  const { recommendations, approveRecommendation, applyRecommendation } = useApp();
+  const { recommendations, workloads, clusters, selectedClusterId, approveRecommendation, applyRecommendation } = useApp();
+
+  const currentCluster = clusters.find((c) => c.id === selectedClusterId);
+  const clusterScopedRecs = selectedClusterId === 'all'
+    ? recommendations
+    : currentCluster
+    ? recommendations.filter((r) => {
+        if (r.clusterName === currentCluster.name) return true;
+        const wl = workloads.find((w) => w.id === r.workloadId || w.name === r.workloadName);
+        return wl && (wl.clusterId === currentCluster.id || wl.clusterName === currentCluster.name);
+      })
+    : recommendations;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [riskFilter, setRiskFilter] = useState('all');
 
-  const filteredRecs = recommendations.filter((r) => {
+  const filteredRecs = clusterScopedRecs.filter((r) => {
     const matchesSearch =
       r.workloadName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       r.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -22,12 +33,12 @@ export const RecommendationsPage: React.FC = () => {
     return matchesSearch && matchesStatus && matchesRisk;
   });
 
-  const totalMonthlySavings = recommendations.reduce(
+  const totalMonthlySavings = clusterScopedRecs.reduce(
     (acc, r) => acc + (r.estimatedMonthlySavings > 0 ? r.estimatedMonthlySavings : 0),
     0
   );
-  const pendingCount = recommendations.filter((r) => r.status === 'Generated' || r.status === 'Reviewed').length;
-  const approvedCount = recommendations.filter((r) => r.status === 'Approved').length;
+  const pendingCount = clusterScopedRecs.filter((r) => r.status === 'Generated' || r.status === 'Reviewed').length;
+  const approvedCount = clusterScopedRecs.filter((r) => r.status === 'Approved').length;
 
   return (
     <div className="flex flex-col w-full space-y-space-lg pb-space-xl">
@@ -133,10 +144,19 @@ export const RecommendationsPage: React.FC = () => {
             <span className="material-symbols-outlined text-[48px] text-on-surface-variant mb-2">auto_awesome</span>
             <h3 className="font-headline-md text-headline-md font-semibold text-on-surface">No Recommendations Found</h3>
             <p className="font-body-md text-body-md text-on-surface-variant max-w-md mt-1">
-              {recommendations.length === 0
-                ? 'No recommendations exist in database yet. Connect a cluster or run analysis on workloads to generate right-sizing suggestions.'
+              {clusterScopedRecs.length === 0
+                ? `No recommendations exist for ${currentCluster?.name || 'this cluster'} yet. Go to Workloads and click "Inspect Details" -> "Run Analysis" to generate suggestions.`
                 : 'No recommendations matched your active search or filter criteria.'}
             </p>
+            {clusterScopedRecs.length === 0 && (
+              <button
+                onClick={() => navigate('/workloads')}
+                className="mt-4 px-4 py-2 rounded-lg bg-primary-container text-on-primary-container text-body-sm font-semibold hover:brightness-110 shadow transition-all flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined text-[18px]">deployed_code</span>
+                <span>Go to Workloads</span>
+              </button>
+            )}
           </div>
         ) : (
           filteredRecs.map((rec) => (

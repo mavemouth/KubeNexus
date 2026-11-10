@@ -6,12 +6,12 @@ ConnectionStatus = Literal['Connected', 'Degraded', 'Disconnected', 'Monitoring 
 WorkloadType = Literal['Deployment', 'StatefulSet', 'DaemonSet', 'Job']
 ProvisioningStatus = Literal['Healthy', 'Over-provisioned', 'Under-provisioned', 'Warning', 'Critical']
 DataQualityStatus = Literal['valid', 'insufficient_evidence', 'stale_data', 'monitoring_unavailable', 'invalid_data']
-RecommendationStatus = Literal['Generated', 'Reviewed', 'Approved', 'Applied', 'Evaluated', 'Rejected', 'Expired']
+RecommendationStatus = Literal['Generated', 'Reviewed', 'Approved', 'Applied', 'Evaluated', 'Rejected', 'Expired', 'Rolled Back']
 RiskLevel = Literal['Low', 'Medium', 'High']
 ConfidenceLevel = Literal['High', 'Medium', 'Low']
 AlertSeverity = Literal['Critical', 'Warning', 'Info']
 AuditAction = Literal['Approved', 'Rejected', 'Applied', 'Failed', 'Rolled Back']
-AuthMethod = Literal['local', 'kubeconfig', 'token']
+AuthMethod = Literal['local', 'kubeconfig', 'token', 'demo']
 
 class ClusterBase(BaseModel):
     name: str

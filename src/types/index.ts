@@ -2,7 +2,7 @@ export type ConnectionStatus = 'Connected' | 'Degraded' | 'Disconnected' | 'Moni
 export type WorkloadType = 'Deployment' | 'StatefulSet' | 'DaemonSet' | 'Job';
 export type ProvisioningStatus = 'Healthy' | 'Over-provisioned' | 'Under-provisioned' | 'Warning' | 'Critical';
 export type DataQualityStatus = 'valid' | 'insufficient_evidence' | 'stale_data' | 'monitoring_unavailable' | 'invalid_data';
-export type RecommendationStatus = 'Generated' | 'Reviewed' | 'Approved' | 'Applied' | 'Evaluated' | 'Rejected' | 'Expired';
+export type RecommendationStatus = 'Generated' | 'Reviewed' | 'Approved' | 'Applied' | 'Evaluated' | 'Rejected' | 'Expired' | 'Rolled Back';
 export type RiskLevel = 'Low' | 'Medium' | 'High';
 export type ConfidenceLevel = 'High' | 'Medium' | 'Low';
 export type AlertSeverity = 'Critical' | 'Warning' | 'Info';
@@ -20,7 +20,7 @@ export interface Cluster {
   k8sVersion: string;
   provider: 'AWS EKS' | 'GKE' | 'Self-Hosted Minikube' | 'Azure AKS';
   apiEndpoint: string;
-  authMethod?: 'local' | 'kubeconfig' | 'token';
+  authMethod?: 'local' | 'kubeconfig' | 'token' | 'demo';
   prometheusUrl?: string;
 }
 
@@ -29,7 +29,7 @@ export interface ClusterCreatePayload {
   environment?: 'production' | 'staging' | 'development';
   provider?: 'AWS EKS' | 'GKE' | 'Self-Hosted Minikube' | 'Azure AKS';
   apiEndpoint?: string;
-  authMethod?: 'local' | 'kubeconfig' | 'token';
+  authMethod?: 'local' | 'kubeconfig' | 'token' | 'demo';
   kubeconfigRaw?: string;
   bearerToken?: string;
   prometheusUrl?: string;

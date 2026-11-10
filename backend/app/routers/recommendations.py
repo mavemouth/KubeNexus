@@ -28,3 +28,7 @@ async def reject_recommendation(rec_id: str):
 @router.post("/{rec_id}/apply", response_model=Recommendation)
 async def apply_recommendation(rec_id: str):
     return await recommendation_service.apply(rec_id)
+
+@router.post("/{rec_id}/rollback", response_model=Recommendation)
+async def rollback_recommendation(rec_id: str):
+    return await recommendation_service.rollback(rec_id)

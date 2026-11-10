@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 export const AlertsPage: React.FC = () => {
-  const { alerts, resolveAlert } = useApp();
+  const { alerts, clusters, selectedClusterId, resolveAlert } = useApp();
   const [severityFilter, setSeverityFilter] = useState('all');
 
-  const filteredAlerts = alerts.filter((a) => {
+  const currentCluster = clusters.find((c) => c.id === selectedClusterId);
+  const clusterScopedAlerts = selectedClusterId === 'all'
+    ? alerts
+    : currentCluster
+    ? alerts.filter((a) => !a.clusterName || a.clusterName === currentCluster.name)
+    : alerts;
+
+  const filteredAlerts = clusterScopedAlerts.filter((a) => {
     return severityFilter === 'all' || a.severity === severityFilter;
   });
 

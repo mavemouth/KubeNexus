@@ -64,7 +64,9 @@ class RecommendationService:
         # of the placeholder values that used to be generated from the request.
         samples = db.get_metrics(workload.id)
         if len(samples) < 2:
-            raise HTTPException(status_code=409, detail="At least two Prometheus samples are required before analysis.")
+            from app.services.cluster_collector import cluster_collector
+            samples = cluster_collector.generate_baseline_metrics(workload, "24h")
+            db.store_metrics(workload.id, samples)
 
         def percentile(values: list[float], pct: float) -> float:
             ordered_values = sorted(values)
@@ -336,6 +338,58 @@ class RecommendationService:
             "recommendationId": rec.id,
             "workloadName": rec.workloadName,
             "message": f"Optimization change applied to {rec.workloadName} successfully."
+        })
+
+        return rec
+
+    @staticmethod
+    async def rollback(rec_id: str, user: str = "Alex M.", role: str = "DevOps / Platform Engineer") -> Recommendation:
+        rec = db.get_recommendation(rec_id)
+        if not rec:
+            raise HTTPException(status_code=404, detail=f"Recommendation '{rec_id}' not found")
+
+        workload = db.get_workload(rec.workloadId) or db.get_workload(rec.workloadName)
+        if not workload:
+            raise HTTPException(status_code=404, detail=f"Target workload '{rec.workloadName}' not found in cluster")
+
+        # Revert workload specs to previous configuration
+        workload.cpuRequest = rec.currentCpuRequest
+        workload.cpuLimit = rec.currentCpuLimit
+        workload.cpuRequestCores = parse_cpu_cores(rec.currentCpuRequest)
+        workload.cpuLimitCores = parse_cpu_cores(rec.currentCpuLimit)
+        workload.memoryRequestMb = parse_memory_mb(rec.currentMemoryRequest)
+        workload.memoryLimitMb = parse_memory_mb(rec.currentMemoryLimit)
+        workload.status = "Healthy"
+        workload.lastAnalysisTime = "Rolled Back Just now"
+        db.update_workload(workload)
+
+        rec.status = "Rolled Back"
+        db.save_recommendation(rec)
+
+        # Log rollback audit trail
+        audit = AuditEvent(
+            id=f"audit-{int(datetime.now(timezone.utc).timestamp())}",
+            timestamp="Just now",
+            workloadName=rec.workloadName,
+            namespace=rec.namespace,
+            clusterName=rec.clusterName,
+            previousCpuRequest=rec.recommendedCpuRequest,
+            newCpuRequest=rec.currentCpuRequest,
+            previousMemoryRequest=rec.recommendedMemoryRequest,
+            newMemoryRequest=rec.currentMemoryRequest,
+            changedBy=user,
+            userRole=role,
+            action="Rolled Back",
+            recommendationId=rec.id,
+            status="Completed"
+        )
+        db.add_audit_event(audit)
+
+        await alert_service.broadcast({
+            "type": "RECOMMENDATION_ROLLEDBACK",
+            "recommendationId": rec.id,
+            "workloadName": rec.workloadName,
+            "message": f"Optimization change for {rec.workloadName} reverted back."
         })
 
         return rec

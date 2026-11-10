@@ -7,16 +7,23 @@ import { ProvisioningStatus, WorkloadType } from '../types';
 
 export const WorkloadsPage: React.FC = () => {
   const navigate = useNavigate();
-  const { workloads, refreshData } = useApp();
+  const { workloads, clusters, selectedClusterId, refreshData } = useApp();
+
+  const currentCluster = clusters.find((c) => c.id === selectedClusterId);
+  const clusterScopedWorkloads = selectedClusterId === 'all'
+    ? workloads
+    : currentCluster
+    ? workloads.filter((w) => w.clusterId === currentCluster.id || w.clusterName === currentCluster.name)
+    : workloads;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNamespace, setSelectedNamespace] = useState('all');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
 
-  const namespaces = Array.from(new Set(workloads.map((w) => w.namespace)));
+  const namespaces = Array.from(new Set(clusterScopedWorkloads.map((w) => w.namespace)));
 
-  const filteredWorkloads = workloads.filter((w) => {
+  const filteredWorkloads = clusterScopedWorkloads.filter((w) => {
     const matchesSearch =
       w.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       w.namespace.toLowerCase().includes(searchQuery.toLowerCase());
@@ -140,8 +147,8 @@ export const WorkloadsPage: React.FC = () => {
                       <span className="material-symbols-outlined text-[36px] text-on-surface-variant">layers_clear</span>
                       <p className="font-semibold text-on-surface">No workloads found</p>
                       <p className="text-xs text-on-surface-variant max-w-sm">
-                        {workloads.length === 0
-                          ? 'No workloads have been registered or synced in the database yet.'
+                        {clusterScopedWorkloads.length === 0
+                          ? `No workloads registered for ${currentCluster?.name || 'this cluster'} yet.`
                           : 'No workloads matched your search or filter settings.'}
                       </p>
                     </div>

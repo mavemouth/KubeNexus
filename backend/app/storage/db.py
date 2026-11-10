@@ -97,6 +97,12 @@ def rec_to_pydantic(m: RecommendationModel) -> Recommendation:
         maxMemoryMb=pct_dict.get("maxMemoryMb", 0.0)
     )
 
+    raw_risk = (m.risk_level or "Low").replace(" Risk", "").strip()
+    risk_level = raw_risk if raw_risk in ["Low", "Medium", "High"] else "Low"
+
+    raw_conf = (m.confidence or "High").replace(" Confidence", "").strip()
+    confidence = raw_conf if raw_conf in ["High", "Medium", "Low"] else "High"
+
     return Recommendation(
         id=m.id,
         workloadId=m.workload_id,
@@ -115,8 +121,8 @@ def rec_to_pydantic(m: RecommendationModel) -> Recommendation:
         observationWindow=m.observation_window,
         evidenceReason=m.evidence_reason,
         assumptions=m.assumptions,
-        riskLevel=m.risk_level, # type: ignore
-        confidence=m.confidence, # type: ignore
+        riskLevel=risk_level, # type: ignore
+        confidence=confidence, # type: ignore
         estimatedMonthlySavings=m.estimated_monthly_savings,
         status=m.status, # type: ignore
         createdAt=m.created_at,
@@ -129,16 +135,30 @@ def rec_to_pydantic(m: RecommendationModel) -> Recommendation:
     )
 
 def alert_to_pydantic(m: AlertModel) -> AlertItem:
+    cat = m.category or "Utilization"
+    if cat == "Optimization":
+        cat = "Recommendation"
+    if cat not in ['Utilization', 'Provisioning', 'Data Quality', 'Recommendation', 'Audit']:
+        cat = "Utilization"
+
+    sev = m.severity or "Info"
+    if sev not in ['Critical', 'Warning', 'Info']:
+        sev = "Info"
+
+    stat = m.status or "Active"
+    if stat not in ['Active', 'Acknowledged', 'Resolved']:
+        stat = "Active"
+
     return AlertItem(
         id=m.id,
-        severity=m.severity, # type: ignore
+        severity=sev, # type: ignore
         title=m.title,
         description=m.description,
         affectedWorkload=m.affected_workload,
         clusterName=m.cluster_name,
         timestamp=m.timestamp,
-        status=m.status, # type: ignore
-        category=m.category # type: ignore
+        status=stat, # type: ignore
+        category=cat # type: ignore
     )
 
 def audit_to_pydantic(m: AuditEventModel) -> AuditEvent:
@@ -237,6 +257,17 @@ class PostgresDatabase:
             session.commit()
             return cluster
 
+    def update_cluster(self, cluster: Cluster) -> Cluster:
+        with SessionLocal() as session:
+            row = session.query(ClusterModel).filter(ClusterModel.id == cluster.id).first()
+            if row:
+                row.workload_count = cluster.workloadCount
+                row.monitoring_status = cluster.monitoringStatus
+                row.connection_status = cluster.connectionStatus
+                row.last_checked = cluster.lastChecked
+                session.commit()
+            return cluster
+
     def get_cluster_credentials(self, cluster_id: str) -> dict:
         with SessionLocal() as session:
             row = session.query(ClusterModel).filter(ClusterModel.id == cluster_id).first()
@@ -303,8 +334,17 @@ class PostgresDatabase:
             for workload in workloads:
                 model = session.query(WorkloadModel).filter(WorkloadModel.id == workload.id).first()
                 if model is None:
-                    model = WorkloadModel(id=workload.id, name=workload.name, namespace=workload.namespace,
-                                          cluster_name=workload.clusterName)
+                    model = WorkloadModel(
+                        id=workload.id,
+                        name=workload.name,
+                        namespace=workload.namespace,
+                        cluster_name=workload.clusterName,
+                        cpu_usage_cores=workload.cpuUsageCores,
+                        cpu_utilization_pct=workload.cpuUtilizationPct,
+                        memory_utilization_pct=workload.memoryUtilizationPct,
+                        data_quality_status=workload.dataQualityStatus,
+                        last_analysis_time=workload.lastAnalysisTime
+                    )
                     session.add(model)
                 else:
                     # Return the last collected evidence with newly discovered

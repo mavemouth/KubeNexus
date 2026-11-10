@@ -35,6 +35,7 @@ interface AppContextType {
   approveRecommendation: (id: string) => Promise<void>;
   rejectRecommendation: (id: string) => Promise<void>;
   applyRecommendation: (id: string) => Promise<void>;
+  rollbackRecommendation: (id: string) => Promise<void>;
   resolveAlert: (id: string) => void;
   updateSettings: (newSettings: Partial<OptimizationSettings>) => void;
   runAnalysis: (id: string) => Promise<void>;
@@ -79,6 +80,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         api.getSettings()
       ]);
       setClusters(c);
+      if (c.length > 0) {
+        setSelectedClusterId((prev) => {
+          if (prev === 'all' || c.some((cluster) => cluster.id === prev)) {
+            return prev;
+          }
+          return c[0].id;
+        });
+      }
       setWorkloads(w);
       setRecommendations(r);
       setAlerts(a);
@@ -114,6 +123,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const addCluster = async (clusterData: ClusterCreatePayload | Partial<Cluster>) => {
     const newCluster = await api.createCluster(clusterData);
     setClusters((prev) => [newCluster, ...prev]);
+    setSelectedClusterId(newCluster.id);
     showToast(`Cluster "${newCluster.name}" registered successfully.`);
     refreshData();
   };
@@ -158,6 +168,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } catch (err: any) {
       console.error('Failed to apply recommendation:', err);
       showToast(err?.message || 'Failed to apply recommendation');
+    }
+  };
+
+  const rollbackRecommendation = async (id: string) => {
+    try {
+      await api.rollbackRecommendation(id);
+      setRecommendations((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, status: 'Rolled Back' } : r))
+      );
+      showToast(`Recommendation ${id} successfully rolled back.`);
+      await refreshData();
+    } catch (err: any) {
+      console.error('Failed to rollback recommendation:', err);
+      showToast(err?.message || 'Failed to rollback recommendation');
     }
   };
 
@@ -217,6 +241,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         approveRecommendation,
         rejectRecommendation,
         applyRecommendation,
+        rollbackRecommendation,
         resolveAlert,
         updateSettings,
         runAnalysis,

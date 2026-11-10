@@ -2,14 +2,31 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 
 export const CostOptimizationPage: React.FC = () => {
-  const { workloads, recommendations } = useApp();
+  const { workloads, recommendations, clusters, selectedClusterId } = useApp();
 
-  const currentSpend = workloads.reduce((sum, w) => {
+  const currentCluster = clusters.find((c) => c.id === selectedClusterId);
+  const clusterWorkloads = selectedClusterId === 'all'
+    ? workloads
+    : currentCluster
+    ? workloads.filter((w) => w.clusterId === currentCluster.id || w.clusterName === currentCluster.name)
+    : workloads;
+
+  const clusterRecs = selectedClusterId === 'all'
+    ? recommendations
+    : currentCluster
+    ? recommendations.filter((r) => {
+        if (r.clusterName === currentCluster.name) return true;
+        const wl = clusterWorkloads.find((w) => w.id === r.workloadId || w.name === r.workloadName);
+        return wl !== undefined;
+      })
+    : recommendations;
+
+  const currentSpend = clusterWorkloads.reduce((sum, w) => {
     const hourly = (w.cpuRequestCores * 0.04) + ((w.memoryRequestMb / 1024.0) * 0.005);
     return sum + (hourly * 730);
   }, 0);
 
-  const potentialSavings = recommendations
+  const potentialSavings = clusterRecs
     .filter((r) => (r.status === 'Generated' || r.status === 'Approved') && r.estimatedMonthlySavings > 0)
     .reduce((sum, r) => sum + r.estimatedMonthlySavings, 0);
 
@@ -96,20 +113,22 @@ export const CostOptimizationPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-surface-container-high/40 text-body-sm font-mono">
-              {recommendations.length === 0 ? (
+              {clusterRecs.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="py-12 text-center text-on-surface-variant">
                     <div className="flex flex-col items-center justify-center space-y-2">
                       <span className="material-symbols-outlined text-[36px] text-on-surface-variant">savings</span>
                       <p className="font-semibold text-on-surface font-sans">No cost optimization opportunities recorded</p>
                       <p className="text-xs text-on-surface-variant max-w-sm font-sans">
-                        When recommendations are generated in the database, individual workload cost breakdowns will appear here.
+                        {clusterWorkloads.length === 0
+                          ? `No workloads found for ${currentCluster?.name || 'this cluster'}.`
+                          : `Run analysis on workloads in ${currentCluster?.name || 'this cluster'} to generate cost savings opportunities.`}
                       </p>
                     </div>
                   </td>
                 </tr>
               ) : (
-                recommendations.map((rec) => {
+                clusterRecs.map((rec) => {
                   const currentEst = rec.estimatedMonthlySavings > 0 ? rec.estimatedMonthlySavings * 3.5 : 90;
                   const optimizedEst = Math.max(0, currentEst - rec.estimatedMonthlySavings);
                   return (
