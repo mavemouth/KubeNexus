@@ -31,15 +31,15 @@ if DATABASE_URL:
     # Supabase Transaction Pooler (PgBouncer port 6543) configuration:
     # 1. SSL is mandatory for Supabase
     # 2. Connection timeout set to 10 seconds to avoid hanging
-    connect_args = {
+    connect_args: dict[str, Any] = {
         "connect_timeout": 10,
     }
     if "supabase.co" in DATABASE_URL or "pooler.supabase.com" in DATABASE_URL or "sslmode" not in DATABASE_URL:
         connect_args["sslmode"] = "require"
 
-    engine_kwargs = {
+    engine_kwargs: dict[str, Any] = {
         "connect_args": connect_args,
-        "echo": False
+        "echo": False,
     }
 
     # In serverless environments (Vercel Functions), NullPool avoids connection exhaustion
