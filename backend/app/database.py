@@ -11,10 +11,10 @@ backend_env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(
 if os.path.exists(backend_env_path):
     load_dotenv(backend_env_path)
 
-DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
+DATABASE_URL = os.getenv("DATABASE_URL", "").strip().strip("'\"")
 
 # Supabase / PostgreSQL compatibility:
-# SQLAlchemy 2.0 requires "postgresql://" or "postgresql+psycopg2://"
+# SQLAlchemy 2.0 requires "postgresql://", "postgresql+psycopg2://", or "postgresql+psycopg://"
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
@@ -44,16 +44,40 @@ if DATABASE_URL:
         engine_kwargs["pool_pre_ping"] = True
         engine_kwargs["pool_recycle"] = 300
 
-    try:
-        temp_engine = create_engine(DATABASE_URL, **engine_kwargs)
-        # Test connection actively
-        with temp_engine.connect() as conn:
-            pass
-        engine = temp_engine
-        print("[Database] Connected to PostgreSQL / Supabase successfully.")
-    except Exception as exc:
+    connected = False
+    candidate_urls = [DATABASE_URL]
+
+    # Generate fallback driver candidates if URL specifies or implies a specific driver
+    if "+psycopg2" in DATABASE_URL:
+        candidate_urls.append(DATABASE_URL.replace("postgresql+psycopg2://", "postgresql+psycopg://", 1))
+    elif "+psycopg" in DATABASE_URL:
+        candidate_urls.append(DATABASE_URL.replace("postgresql+psycopg://", "postgresql+psycopg2://", 1))
+    elif DATABASE_URL.startswith("postgresql://"):
+        candidate_urls.append(DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1))
+        candidate_urls.append(DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://", 1))
+
+    last_exc = None
+    for url_attempt in candidate_urls:
+        try:
+            temp_engine = create_engine(url_attempt, **engine_kwargs)
+            # Test connection actively
+            with temp_engine.connect() as conn:
+                pass
+            engine = temp_engine
+            DATABASE_URL = url_attempt
+            connected = True
+            print("[Database] Connected to PostgreSQL / Supabase successfully.")
+            break
+        except Exception as exc:
+            last_exc = exc
+            # If error is not driver-related (e.g. auth failed or host unreachable), don't try alternate driver loops
+            err_str = str(exc).lower()
+            if "no module named" not in err_str and "driver" not in err_str:
+                break
+
+    if not connected:
         # Sanitize exception message so database credentials are never leaked in logs
-        raw_exc = str(exc)
+        raw_exc = str(last_exc) if last_exc else "Unknown error"
         if "@" in raw_exc:
             safe_msg = raw_exc.split("@")[-1]
         else:
