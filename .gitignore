@@ -26,3 +26,4 @@ backend/kubenexus.db
 Thumbs.db
 .vscode/
 .idea/
+.vercel/

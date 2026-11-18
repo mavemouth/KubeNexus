@@ -37,7 +37,11 @@ if DATABASE_URL:
         print(f"[Database] Warning: Failed to connect to PostgreSQL ({exc}).")
         print("           Falling back to local SQLite database (kubenexus.db).")
         is_sqlite = True
-        local_db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "kubenexus.db")
+        if os.getenv("VERCEL"):
+            import tempfile
+            local_db_path = os.path.join(tempfile.gettempdir(), "kubenexus.db")
+        else:
+            local_db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "kubenexus.db")
         fallback_url = f"sqlite:///{local_db_path}"
         engine = create_engine(
             fallback_url,
@@ -47,9 +51,13 @@ if DATABASE_URL:
 else:
     # Safe local fallback when user has not yet configured Supabase
     is_sqlite = True
-    local_db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "kubenexus.db")
+    if os.getenv("VERCEL"):
+        import tempfile
+        local_db_path = os.path.join(tempfile.gettempdir(), "kubenexus.db")
+    else:
+        local_db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "kubenexus.db")
     fallback_url = f"sqlite:///{local_db_path}"
-    print("[Database] Running on local SQLite fallback (kubenexus.db)")
+    print(f"[Database] Running on local SQLite fallback ({local_db_path})")
     engine = create_engine(
         fallback_url,
         connect_args={"check_same_thread": False},

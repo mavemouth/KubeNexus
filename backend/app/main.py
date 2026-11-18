@@ -1,3 +1,4 @@
+import os
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
@@ -30,16 +31,24 @@ async def background_monitoring_loop():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: trigger initial rule scan and spawn background task
-    await alert_service.scan_and_evaluate_rules()
-    task = asyncio.create_task(background_monitoring_loop())
+    # Startup: trigger initial rule scan
+    try:
+        await alert_service.scan_and_evaluate_rules()
+    except Exception as e:
+        print(f"[Warning] Rule evaluation on startup skipped: {e}")
+    
+    # In serverless environments (like Vercel), long-running infinite loops are skipped
+    task = None
+    if not os.getenv("VERCEL"):
+        task = asyncio.create_task(background_monitoring_loop())
     yield
     # Shutdown
-    task.cancel()
-    try:
-        await task
-    except asyncio.CancelledError:
-        pass
+    if task:
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
 
 app = FastAPI(
     title="KubeNexus API",
