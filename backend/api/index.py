@@ -1,6 +1,8 @@
 # pyright: reportMissingImports=false
 import os
 import sys
+import re
+import urllib.parse
 from pathlib import Path
 
 # Ensure backend root directory is in sys.path
@@ -13,34 +15,50 @@ from app.main import app as fastapi_app
 class VercelPathFixASGI:
     """
     ASGI middleware for Vercel Serverless Functions.
-    When Vercel rewrites requests to /api/index.py, scope['path'] is often
-    set to '/api/index.py' instead of the client's original requested URL.
-    This middleware restores the original URL from Vercel's x-matched-path,
-    x-forwarded-uri, or strips function prefix artifacts so FastAPI routes match.
+    Restores the client's actual requested path from the __path__ query param or headers,
+    stripping Vercel entrypoint artifacts so FastAPI routes match cleanly.
     """
     def __init__(self, app):
         self.app = app
 
     async def __call__(self, scope, receive, send):
         if scope.get("type") in ("http", "websocket"):
-            headers = dict(scope.get("headers", []))
-            # Vercel sends the client request path in x-matched-path
-            real_path = (
-                headers.get(b"x-matched-path", b"").decode("utf-8")
-                or headers.get(b"x-forwarded-uri", b"").decode("utf-8")
-                or headers.get(b"x-original-url", b"").decode("utf-8")
-            )
-            curr = scope.get("path", "")
+            query_bytes = scope.get("query_string", b"")
+            query_str = query_bytes.decode("utf-8", errors="ignore")
             
-            if real_path and (curr in ("/api/index.py", "/api/index", "/api", "") or curr.startswith("/api/index.py")):
+            real_path = ""
+            new_query = query_bytes
+
+            if "__path__=" in query_str:
+                parsed = urllib.parse.parse_qs(query_str, keep_blank_values=True)
+                if "__path__" in parsed:
+                    real_path = parsed.pop("__path__", [""])[0]
+                    new_query = urllib.parse.urlencode([(k, v) for k, vs in parsed.items() for v in vs]).encode("utf-8")
+
+            if not real_path:
+                headers = dict(scope.get("headers", []))
+                real_path = (
+                    headers.get(b"x-matched-path", b"").decode("utf-8", errors="ignore")
+                    or headers.get(b"x-forwarded-uri", b"").decode("utf-8", errors="ignore")
+                    or headers.get(b"x-original-url", b"").decode("utf-8", errors="ignore")
+                )
+
+            curr = scope.get("path", "")
+            if real_path and real_path not in ("/api/index.py", "/api/index", "/api"):
+                if not real_path.startswith("/"):
+                    real_path = "/" + real_path
+                real_path = re.sub(r"/+", "/", real_path)
                 scope["path"] = real_path
                 scope["raw_path"] = real_path.encode("utf-8")
+                scope["query_string"] = new_query
             elif curr.startswith("/api/index.py"):
                 cleaned = curr.replace("/api/index.py", "", 1) or "/"
+                cleaned = re.sub(r"/+", "/", cleaned)
                 scope["path"] = cleaned
                 scope["raw_path"] = cleaned.encode("utf-8")
             elif curr.startswith("/api/index"):
                 cleaned = curr.replace("/api/index", "", 1) or "/"
+                cleaned = re.sub(r"/+", "/", cleaned)
                 scope["path"] = cleaned
                 scope["raw_path"] = cleaned.encode("utf-8")
 
