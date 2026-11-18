@@ -19,3 +19,6 @@ try:
     from app.main import app  # type: ignore
 except ImportError:
     from backend.app.main import app  # type: ignore
+
+# Expose both app and handler for Vercel's ASGI runtime
+handler = app

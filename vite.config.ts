@@ -7,7 +7,8 @@ export default defineConfig(({ mode }) => {
   // Load env files from both root and src directory so either location works seamlessly
   const envSrc = loadEnv(mode, path.resolve(__dirname, 'src'), '');
   const envRoot = loadEnv(mode, process.cwd(), '');
-  const apiBaseUrl = process.env.VITE_API_BASE_URL || envRoot.VITE_API_BASE_URL || envSrc.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+  const defaultUrl = mode === 'production' ? '/api/v1' : 'http://localhost:8000/api/v1';
+  const apiBaseUrl = process.env.VITE_API_BASE_URL || envRoot.VITE_API_BASE_URL || envSrc.VITE_API_BASE_URL || defaultUrl;
 
   return {
     plugins: [react()],

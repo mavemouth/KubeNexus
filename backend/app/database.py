@@ -1,4 +1,5 @@
 import os
+import tempfile
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
@@ -20,14 +21,25 @@ is_sqlite = False
 
 if DATABASE_URL:
     print(f"[Database] Connecting to PostgreSQL / Supabase...")
+    connect_args = {"connect_timeout": 10}
+    if "supabase.co" in DATABASE_URL or "pooler.supabase.com" in DATABASE_URL:
+        connect_args["sslmode"] = "require"
+
+    engine_kwargs = {
+        "connect_args": connect_args,
+        "echo": False
+    }
+
+    # In serverless environments (Vercel Functions), NullPool avoids connection leaks
+    if os.getenv("VERCEL"):
+        from sqlalchemy.pool import NullPool
+        engine_kwargs["poolclass"] = NullPool
+    else:
+        engine_kwargs["pool_pre_ping"] = True
+        engine_kwargs["pool_recycle"] = 300
+
     try:
-        temp_engine = create_engine(
-            DATABASE_URL,
-            pool_pre_ping=True,
-            pool_recycle=300,
-            connect_args={"connect_timeout": 5},
-            echo=False
-        )
+        temp_engine = create_engine(DATABASE_URL, **engine_kwargs)
         # Test connection actively
         with temp_engine.connect() as conn:
             pass
@@ -38,7 +50,6 @@ if DATABASE_URL:
         print("           Falling back to local SQLite database (kubenexus.db).")
         is_sqlite = True
         if os.getenv("VERCEL"):
-            import tempfile
             local_db_path = os.path.join(tempfile.gettempdir(), "kubenexus.db")
         else:
             local_db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "kubenexus.db")
@@ -52,7 +63,6 @@ else:
     # Safe local fallback when user has not yet configured Supabase
     is_sqlite = True
     if os.getenv("VERCEL"):
-        import tempfile
         local_db_path = os.path.join(tempfile.gettempdir(), "kubenexus.db")
     else:
         local_db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "kubenexus.db")
@@ -104,7 +114,7 @@ def init_db():
                 if not result:
                     conn.execute(text("""
                         INSERT INTO settings (id, safety_margin_pct, min_observation_days, auto_approve_min_confidence, prometheus_url, scrape_interval_seconds, enable_hpa_safety_check, enable_vpa_conflict_check, api_base_url)
-                        VALUES (1, 20.0, 7, 'High', 'http://prometheus.monitoring.svc.cluster.local:9090', 30, 1, 1, 'http://localhost:8000/api/v1')
+                        VALUES (1, 20.0, 7, 'High', 'http://prometheus.monitoring.svc.cluster.local:9090', 30, true, true, '/api/v1')
                     """))
                     conn.commit()
 
