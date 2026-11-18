@@ -15,10 +15,20 @@ router = APIRouter(prefix="/workloads", tags=["Workloads"])
 
 @router.get("", response_model=List[Workload])
 def get_workloads(clusterId: Optional[str] = Query(None, alias="clusterId")):
+    # Fast path: return stored database records immediately
+    stored = db.get_all_workloads(clusterId)
+    if stored:
+        return stored
+
+    # In serverless environments, avoid long network discovery timeouts
+    import os
+    if os.getenv("VERCEL"):
+        return stored
+
     clusters = [db.get_cluster(clusterId)] if clusterId else db.get_all_clusters()
     clusters = [cluster for cluster in clusters if cluster]
     if not clusters:
-        return db.get_all_workloads(clusterId)
+        return stored
 
     result = []
     for cluster in clusters:
@@ -27,14 +37,9 @@ def get_workloads(clusterId: Optional[str] = Query(None, alias="clusterId")):
             result.extend(discovered)
             db.upsert_workloads(discovered)
         except Exception:
-            # When live Kubernetes discovery is offline, fall back to stored database records
-            stored = db.get_all_workloads(cluster.id)
-            result.extend(stored)
+            pass
 
-    if not result:
-        result = db.get_all_workloads(clusterId)
-
-    return result
+    return result or stored
 
 @router.post("", response_model=Workload)
 def create_workload(workload: Workload):
