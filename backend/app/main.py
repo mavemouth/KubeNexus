@@ -115,14 +115,16 @@ async def global_exception_handler(request: Request, exc: Exception):
 @app.get("/", tags=["System"])
 @app.get("/api", tags=["System"])
 @app.get("/api/index.py", tags=["System"])
-def root_status():
+def root_status(request: Request):
     return {
         "service": "KubeNexus API",
         "status": "online",
         "version": "1.4.0",
         "docs": "/docs",
         "health": "/health",
-        "apiPrefix": "/api/v1"
+        "apiPrefix": "/api/v1",
+        "debug_headers": dict(request.headers),
+        "debug_path": request.scope.get("path", "")
     }
 
 # Health & Overview Status Endpoint
