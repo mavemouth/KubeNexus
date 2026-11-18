@@ -1,4 +1,5 @@
 import os
+import re
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
@@ -61,6 +62,7 @@ app = FastAPI(
 # Default allowed origins: production frontend + local development
 default_origins = [
     "https://kube-nexus-navy.vercel.app",
+    "https://kube-nexus-1z5e.vercel.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:5173",
@@ -76,12 +78,18 @@ if env_origins_raw:
         if cleaned and cleaned not in allowed_origins:
             allowed_origins.append(cleaned)
 
+# Regex matching any Vercel deployment URL (production, preview, staging) + localhost
+origin_regex = r"^https:\/\/.*\.vercel\.app$|^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$"
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    allow_origin_regex=origin_regex,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=86400,
 )
 
 # Global exception handler to guarantee proper CORS headers on 500 errors
@@ -90,7 +98,7 @@ async def global_exception_handler(request: Request, exc: Exception):
     import traceback
     traceback.print_exc()
     origin = request.headers.get("origin", "")
-    cors_origin = origin if origin in allowed_origins else allowed_origins[0]
+    cors_origin = origin if (origin and (origin in allowed_origins or re.match(origin_regex, origin))) else (allowed_origins[0] if allowed_origins else "*")
     return JSONResponse(
         status_code=500,
         content={"detail": str(exc)},

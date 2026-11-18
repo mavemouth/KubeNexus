@@ -1,3 +1,5 @@
+import os
+import time
 import asyncio
 import json
 from fastapi import APIRouter, HTTPException, Query, Request
@@ -23,6 +25,10 @@ async def stream_notifications(request: Request):
     Pushes real-time alerts and optimization events to the frontend.
     """
     queue = alert_service.subscribe()
+    is_serverless = bool(os.getenv("VERCEL"))
+    # In Vercel serverless functions, stay within the execution window (e.g. 8s) to avoid 504 Gateway Timeout
+    max_duration = 8.0 if is_serverless else None
+    start_time = time.time()
 
     async def event_generator():
         try:
@@ -31,8 +37,11 @@ async def stream_notifications(request: Request):
             while True:
                 if await request.is_disconnected():
                     break
+                if max_duration and (time.time() - start_time) >= max_duration:
+                    # Clean completion before serverless function timeout; EventSource will auto-reconnect
+                    break
                 try:
-                    message = await asyncio.wait_for(queue.get(), timeout=15.0)
+                    message = await asyncio.wait_for(queue.get(), timeout=2.0)
                     yield f"data: {json.dumps(message)}\n\n"
                 except asyncio.TimeoutError:
                     # Keep-alive heartbeat ping
@@ -40,7 +49,15 @@ async def stream_notifications(request: Request):
         finally:
             alert_service.unsubscribe(queue)
 
-    return StreamingResponse(event_generator(), media_type="text/event-stream")
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        }
+    )
 
 @router.get("/{alert_id}", response_model=AlertItem)
 def get_alert(alert_id: str):
