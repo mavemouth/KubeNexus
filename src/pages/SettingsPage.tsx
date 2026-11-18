@@ -8,7 +8,7 @@ export const SettingsPage: React.FC = () => {
   const [minObservationDays, setMinObservationDays] = useState(settings.minObservationDays ?? 7);
   const [prometheusUrl, setPrometheusUrl] = useState(settings.prometheusUrl || 'http://prometheus.monitoring.svc.cluster.local:9090');
   const [scrapeInterval, setScrapeInterval] = useState(settings.scrapeIntervalSeconds || 30);
-  const [apiBaseUrl, setApiBaseUrl] = useState(settings.apiBaseUrl || 'http://localhost:8000/api/v1');
+  const [apiBaseUrl, setApiBaseUrl] = useState(settings.apiBaseUrl || (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1'));
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();

@@ -21,7 +21,19 @@ import {
   INITIAL_SETTINGS
 } from '../mock';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? '/api/v1' : 'http://localhost:8000/api/v1');
+const getCleanBaseUrl = (): string => {
+  let url = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim();
+  if (!url) {
+    return 'http://localhost:8000/api/v1';
+  }
+  url = url.replace(/\/+$/, '');
+  if (!url.endsWith('/api/v1') && !url.endsWith('/api')) {
+    url = `${url}/api/v1`;
+  }
+  return url;
+};
+
+const API_BASE_URL = getCleanBaseUrl();
 
 // Safe fetcher connecting directly to FastAPI + PostgreSQL backend
 async function fetchOrFallback<T>(url: string, fallback: T, options?: RequestInit): Promise<T> {

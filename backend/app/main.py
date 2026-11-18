@@ -18,7 +18,7 @@ from app.routers import (
 from app.services.alert_service import alert_service
 from app.storage.db import db
 
-# Background periodic rule evaluator
+# Background periodic rule evaluator (skipped in serverless runtime)
 async def background_monitoring_loop():
     while True:
         try:
@@ -57,37 +57,62 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Enable CORS for frontend applications
+# ── Dynamic CORS Configuration ───────────────────────────────────────
+# Default allowed origins: production frontend + local development
+default_origins = [
+    "https://kube-nexus-navy.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173"
+]
+
+# Read optional extra origins from environment variable (comma-separated)
+env_origins_raw = os.getenv("ALLOWED_ORIGINS", "").strip()
+allowed_origins = list(default_origins)
+if env_origins_raw:
+    for origin in env_origins_raw.split(","):
+        cleaned = origin.strip()
+        if cleaned and cleaned not in allowed_origins:
+            allowed_origins.append(cleaned)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "*"
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
-# Global exception handler to guarantee CORS headers on internal errors
+# Global exception handler to guarantee proper CORS headers on 500 errors
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     import traceback
     traceback.print_exc()
-    origin = request.headers.get("origin", "*")
+    origin = request.headers.get("origin", "")
+    cors_origin = origin if origin in allowed_origins else allowed_origins[0]
     return JSONResponse(
         status_code=500,
         content={"detail": str(exc)},
         headers={
-            "Access-Control-Allow-Origin": origin if origin != "*" else "*",
+            "Access-Control-Allow-Origin": cors_origin,
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Methods": "*"
+            "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS"
         }
     )
+
+# Root Platform Discovery Endpoint
+@app.get("/", tags=["System"])
+def root_status():
+    return {
+        "service": "KubeNexus API",
+        "status": "online",
+        "version": "1.4.0",
+        "docs": "/docs",
+        "health": "/health",
+        "apiPrefix": "/api/v1"
+    }
 
 # Health & Overview Status Endpoint
 @app.get("/health", tags=["System"])
@@ -118,4 +143,4 @@ api_v1_routers = [
 
 for r in api_v1_routers:
     app.include_router(r, prefix="/api/v1")
-    app.include_router(r)  # Also mount at root for seamless compatibility
+    app.include_router(r)  # Mount at root for seamless compatibility

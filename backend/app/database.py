@@ -3,6 +3,7 @@ import tempfile
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.pool import NullPool
 
 # Load environment variables from backend/.env or root .env
 load_dotenv()
@@ -12,7 +13,7 @@ if os.path.exists(backend_env_path):
 
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 
-# Supabase and PostgreSQL compatibility:
+# Supabase / PostgreSQL compatibility:
 # SQLAlchemy 2.0 requires "postgresql://" or "postgresql+psycopg2://"
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
@@ -20,9 +21,15 @@ if DATABASE_URL.startswith("postgres://"):
 is_sqlite = False
 
 if DATABASE_URL:
-    print(f"[Database] Connecting to PostgreSQL / Supabase...")
-    connect_args = {"connect_timeout": 10}
-    if "supabase.co" in DATABASE_URL or "pooler.supabase.com" in DATABASE_URL:
+    print("[Database] Initializing PostgreSQL / Supabase connection...")
+
+    # Supabase Transaction Pooler (PgBouncer port 6543) configuration:
+    # 1. SSL is mandatory for Supabase
+    # 2. Connection timeout set to 10 seconds to avoid hanging
+    connect_args = {
+        "connect_timeout": 10,
+    }
+    if "supabase.co" in DATABASE_URL or "pooler.supabase.com" in DATABASE_URL or "sslmode" not in DATABASE_URL:
         connect_args["sslmode"] = "require"
 
     engine_kwargs = {
@@ -30,9 +37,8 @@ if DATABASE_URL:
         "echo": False
     }
 
-    # In serverless environments (Vercel Functions), NullPool avoids connection leaks
+    # In serverless environments (Vercel Functions), NullPool avoids connection exhaustion
     if os.getenv("VERCEL"):
-        from sqlalchemy.pool import NullPool
         engine_kwargs["poolclass"] = NullPool
     else:
         engine_kwargs["pool_pre_ping"] = True
@@ -46,7 +52,13 @@ if DATABASE_URL:
         engine = temp_engine
         print("[Database] Connected to PostgreSQL / Supabase successfully.")
     except Exception as exc:
-        print(f"[Database] Warning: Failed to connect to PostgreSQL ({exc}).")
+        # Sanitize exception message so database credentials are never leaked in logs
+        raw_exc = str(exc)
+        if "@" in raw_exc:
+            safe_msg = raw_exc.split("@")[-1]
+        else:
+            safe_msg = raw_exc
+        print(f"[Database] Warning: Failed to connect to PostgreSQL ({safe_msg}).")
         print("           Falling back to local SQLite database (kubenexus.db).")
         is_sqlite = True
         if os.getenv("VERCEL"):
@@ -91,7 +103,7 @@ def init_db():
         from app.models import orm  # noqa: F401
         Base.metadata.create_all(bind=engine)
 
-        # Ensure newly added columns exist in existing SQLite/Postgres schemas
+        # Ensure newly added columns exist in existing schemas
         from sqlalchemy import inspect, text
         inspector = inspect(engine)
         if "clusters" in inspector.get_table_names():
