@@ -8,6 +8,34 @@ backend_root = Path(__file__).resolve().parent
 if str(backend_root) not in sys.path:
     sys.path.insert(0, str(backend_root))
 
-from app.main import app
+from app.main import app as fastapi_app
 
+class VercelPathFixASGI:
+    """
+    ASGI middleware for Vercel Serverless Functions.
+    Restores the real requested path from x-matched-path if rewritten by Vercel.
+    """
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        if scope.get("type") in ("http", "websocket"):
+            headers = dict(scope.get("headers", []))
+            real_path = (
+                headers.get(b"x-matched-path", b"").decode("utf-8")
+                or headers.get(b"x-forwarded-uri", b"").decode("utf-8")
+                or headers.get(b"x-original-url", b"").decode("utf-8")
+            )
+            curr = scope.get("path", "")
+            if real_path and (curr in ("/api/index.py", "/api/index", "/api", "") or curr.startswith("/api/index.py")):
+                scope["path"] = real_path
+                scope["raw_path"] = real_path.encode("utf-8")
+            elif curr.startswith("/api/index.py"):
+                cleaned = curr.replace("/api/index.py", "", 1) or "/"
+                scope["path"] = cleaned
+                scope["raw_path"] = cleaned.encode("utf-8")
+
+        await self.app(scope, receive, send)
+
+app = VercelPathFixASGI(fastapi_app)
 handler = app

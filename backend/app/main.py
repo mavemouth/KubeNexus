@@ -55,7 +55,8 @@ app = FastAPI(
     title="KubeNexus API",
     description="Kubernetes Workload Resource Optimization & Decision Support Microservice",
     version="1.4.0",
-    lifespan=lifespan
+    lifespan=lifespan,
+    redirect_slashes=False
 )
 
 # ── Dynamic CORS Configuration ───────────────────────────────────────
@@ -112,6 +113,8 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 # Root Platform Discovery Endpoint
 @app.get("/", tags=["System"])
+@app.get("/api", tags=["System"])
+@app.get("/api/index.py", tags=["System"])
 def root_status():
     return {
         "service": "KubeNexus API",
@@ -125,6 +128,7 @@ def root_status():
 # Health & Overview Status Endpoint
 @app.get("/health", tags=["System"])
 @app.get("/api/health", tags=["System"])
+@app.get("/v1/health", tags=["System"])
 @app.get("/api/v1/health", tags=["System"])
 def health_check():
     return {
@@ -137,7 +141,7 @@ def health_check():
         "activeAlerts": len([a for a in db.get_all_alerts() if a.status == "Active"])
     }
 
-# Mount routers under /api/v1
+# Mount routers under /api/v1, /v1, /api, and root
 api_v1_routers = [
     clusters.router,
     workloads.router,
@@ -151,4 +155,6 @@ api_v1_routers = [
 
 for r in api_v1_routers:
     app.include_router(r, prefix="/api/v1")
+    app.include_router(r, prefix="/v1")
+    app.include_router(r, prefix="/api")
     app.include_router(r)  # Mount at root for seamless compatibility
