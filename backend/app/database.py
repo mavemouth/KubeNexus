@@ -1,5 +1,9 @@
+# pyright: reportMissingImports=false
+# pyright: reportPossiblyUnboundVariable=false
+# pyright: reportUnusedVariable=false
 import os
 import tempfile
+from typing import Any
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
@@ -19,6 +23,7 @@ if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 is_sqlite = False
+engine: Any = None
 
 if DATABASE_URL:
     print("[Database] Initializing PostgreSQL / Supabase connection...")
@@ -61,7 +66,7 @@ if DATABASE_URL:
         try:
             temp_engine = create_engine(url_attempt, **engine_kwargs)
             # Test connection actively
-            with temp_engine.connect() as conn:
+            with temp_engine.connect():
                 pass
             engine = temp_engine
             DATABASE_URL = url_attempt

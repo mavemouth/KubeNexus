@@ -1,6 +1,18 @@
 {
+  "include": [
+    "backend"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.venv"
+  ],
   "extraPaths": [
     "backend",
     "."
-  ]
+  ],
+  "reportMissingImports": false,
+  "reportMissingTypeStubs": false,
+  "reportPossiblyUnboundVariable": false,
+  "reportUnusedVariable": false
 }
